@@ -26,20 +26,20 @@ export default function AboutUs() {
             <p className="text-textMuted text-lg leading-relaxed mb-10">
               With one dedicated lawyer from instruction to completion, you will always have direct access to the person handling your case. We believe in clear communication, honest advice, and putting your needs first.
             </p>
-            <div className="flex items-center gap-8">
+            <div className="flex items-center justify-between sm:justify-start sm:gap-8">
               <div className="text-center">
-                <p className="text-4xl font-bold font-serif text-legalDark">12+</p>
-                <p className="text-sm text-textMuted mt-1">Years Experience</p>
+                <p className="text-2xl sm:text-4xl font-bold font-serif text-legalDark">12+</p>
+                <p className="text-xs sm:text-sm text-textMuted mt-1">Years Experience</p>
               </div>
-              <div className="w-[1px] h-12 bg-gray-200"></div>
+              <div className="w-[1px] h-10 sm:h-12 bg-gray-200"></div>
               <div className="text-center">
-                <p className="text-4xl font-bold font-serif text-legalDark">4.9</p>
-                <p className="text-sm text-textMuted mt-1">Average Rating</p>
+                <p className="text-2xl sm:text-4xl font-bold font-serif text-legalDark">4.9</p>
+                <p className="text-xs sm:text-sm text-textMuted mt-1">Average Rating</p>
               </div>
-              <div className="w-[1px] h-12 bg-gray-200"></div>
+              <div className="w-[1px] h-10 sm:h-12 bg-gray-200"></div>
               <div className="text-center">
-                <p className="text-4xl font-bold font-serif text-legalDark">5000+</p>
-                <p className="text-sm text-textMuted mt-1">Cases Handled</p>
+                <p className="text-2xl sm:text-4xl font-bold font-serif text-legalDark">5000+</p>
+                <p className="text-xs sm:text-sm text-textMuted mt-1">Cases Handled</p>
               </div>
             </div>
           </motion.div>
