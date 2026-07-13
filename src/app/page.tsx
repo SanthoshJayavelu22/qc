@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import AboutUs from "@/components/AboutUs";
 import FeeCalculator from "@/components/FeeCalculator";
 import ValuePropositions from "@/components/ValuePropositions";
 import Commitment from "@/components/Commitment";
@@ -17,6 +18,7 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <AboutUs />
         <FeeCalculator />
         <ValuePropositions />
         <Commitment />
