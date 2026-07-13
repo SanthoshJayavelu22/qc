@@ -11,7 +11,6 @@ export default function Hero() {
         <video 
           autoPlay loop muted playsInline
           preload="auto"
-          poster="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1920&q=80"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src="/qc-hero-vid.mp4" type="video/mp4" />
