@@ -2,12 +2,25 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Phone, ChevronRight } from "lucide-react";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { Phone, ChevronRight, Menu, X } from "lucide-react";
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 
 export default function Header() {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Prevent scrolling when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMobileMenuOpen]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 20);
@@ -87,10 +100,10 @@ export default function Header() {
           </nav>
 
           {/* CTAs */}
-          <div className="flex items-center gap-3">
+          <div className="hidden lg:flex items-center gap-3">
             <Link
               href="#"
-              className="hidden md:flex items-center justify-center px-5 py-2.5 rounded border border-white/20 text-white hover:bg-white/10 font-bold text-sm transition-all"
+              className="hidden xl:flex items-center justify-center px-5 py-2.5 rounded border border-white/20 text-white hover:bg-white/10 font-bold text-sm transition-all"
             >
               Instruct Us
             </Link>
@@ -104,8 +117,80 @@ export default function Header() {
               </span>
             </Link>
           </div>
+
+          {/* Mobile Menu Toggle */}
+          <div className="lg:hidden flex items-center">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-white hover:text-cyanAccent transition-colors p-2"
+              aria-label="Toggle Mobile Menu"
+            >
+              {isMobileMenuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+            </button>
+          </div>
         </div>
       </motion.header>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "100vh" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed top-20 left-0 w-full bg-legalDark/95 backdrop-blur-xl z-40 overflow-y-auto border-t border-white/10 lg:hidden flex flex-col"
+          >
+            <div className="container mx-auto px-6 py-8 flex flex-col gap-6">
+              <nav className="flex flex-col gap-4">
+                {navLinks.map((link, i) => (
+                  <motion.div
+                    key={link.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                  >
+                    <Link
+                      href={link.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-2xl font-bold text-white hover:text-cyanAccent block py-2 border-b border-white/5"
+                    >
+                      {link.name}
+                    </Link>
+                  </motion.div>
+                ))}
+              </nav>
+
+              <div className="flex flex-col gap-4 mt-4">
+                <Link
+                  href="#"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full flex items-center justify-center px-5 py-4 rounded bg-cyanAccent text-legalDark font-bold text-lg"
+                >
+                  Request a Quote
+                </Link>
+                <Link
+                  href="#"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full flex items-center justify-center px-5 py-4 rounded border border-white/20 text-white font-bold text-lg"
+                >
+                  Instruct Us Online
+                </Link>
+              </div>
+
+              {/* Mobile Contact Footer */}
+              <div className="mt-8 flex flex-col gap-4 border-t border-white/10 pt-8 pb-32">
+                <a href="tel:02037636767" className="flex items-center gap-3 text-gray-300">
+                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
+                    <Phone className="w-5 h-5 text-cyanAccent" />
+                  </div>
+                  <span className="text-xl font-medium">020 3763 6767</span>
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

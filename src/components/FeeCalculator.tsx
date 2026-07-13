@@ -40,7 +40,7 @@ export default function FeeCalculator() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
             {/* Transaction Type */}
             <div className="flex flex-col gap-2">
               <label className="text-xs font-bold text-gray-400 uppercase tracking-widest">Transaction Type</label>
