@@ -1,7 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { User, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
+import Image from "next/image";
+
+import brindaImg from "@/assets/Brinda-N.webp";
+import jayshreeImg from "@/assets/Jayshree-C.webp";
+import patImg from "@/assets/Pat-N_1.webp";
 
 const FacebookIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
@@ -18,14 +23,17 @@ export default function Team() {
     {
       name: "Brinda Nicholson",
       role: "Director & Head of Property Team",
+      image: brindaImg,
     },
     {
       name: "Jayshree Chudasama",
       role: "Director & Conveyancing Manager",
+      image: jayshreeImg,
     },
     {
       name: "Pat Nathan",
       role: "Business Development Manager",
+      image: patImg,
     }
   ];
 
@@ -70,10 +78,14 @@ export default function Team() {
             >
               <div className="relative overflow-hidden rounded-2xl bg-[#0a1120] border border-white/10 aspect-[3/4] mb-6 shadow-2xl">
                 {/* Image Placeholder with Gradient Hover Reveal */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a1120]/50 to-[#0a1120] z-10"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <User className="w-24 h-24 text-white/10 group-hover:text-cyanAccent/20 transition-colors duration-500 group-hover:scale-110" />
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a1120]/30 to-[#0a1120] z-10 pointer-events-none group-hover:opacity-70 transition-opacity duration-500"></div>
+                <Image 
+                  src={member.image} 
+                  alt={member.name} 
+                  placeholder="blur"
+                  fill 
+                  className="object-cover object-top grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 z-0" 
+                />
                 
                 {/* Social Overlay Reveal */}
                 <div className="absolute inset-x-0 bottom-0 p-6 z-20 flex justify-center gap-4 translate-y-full group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 bg-gradient-to-t from-black/80 to-transparent pt-12">
