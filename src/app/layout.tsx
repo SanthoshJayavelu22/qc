@@ -28,6 +28,8 @@ export const metadata: Metadata = {
   }
 };
 
+import ThemeSwitcher from "@/components/ThemeSwitcher";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -35,7 +37,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${elMessiri.variable} antialiased scroll-smooth`}>
-      <body className="min-h-screen bg-lightBg font-sans text-legalDark">{children}</body>
+      <body className="min-h-screen bg-lightBg font-sans text-legalDark">
+        <ThemeSwitcher />
+        {children}
+      </body>
     </html>
   );
 }
