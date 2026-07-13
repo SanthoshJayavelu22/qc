@@ -12,9 +12,9 @@ export default function ProcessTimeline() {
   ];
 
   return (
-    <section className="py-28 md:py-40 bg-legalDark text-white relative overflow-hidden">
+    <section className="py-28 md:py-40 bg-warmGray text-legalDark relative overflow-hidden">
       {/* Subtle glow */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-tealAccent/5 rounded-full blur-[150px] pointer-events-none"></div>
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-tealAccent/10 rounded-full blur-[150px] pointer-events-none"></div>
 
       <div className="container mx-auto px-6 lg:px-12 max-w-7xl relative z-10">
         <motion.div
@@ -28,7 +28,7 @@ export default function ProcessTimeline() {
           <h2 className="text-4xl md:text-5xl font-bold font-serif leading-tight mb-6">
             Clear Expert Guidance at<br />Every Stage
           </h2>
-          <p className="text-white/60 text-lg max-w-2xl mx-auto">
+          <p className="text-textMuted text-lg max-w-2xl mx-auto">
             A simplified, stress-free conveyancing workflow designed to keep you in control.
           </p>
         </motion.div>
@@ -43,13 +43,13 @@ export default function ProcessTimeline() {
               transition={{ delay: index * 0.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               className="group relative"
             >
-              <div className="border border-white/10 rounded-xl p-8 hover:border-tealAccent/30 transition-all duration-500 h-full">
-                <span className="text-5xl font-bold text-tealAccent/20 font-serif block mb-6 group-hover:text-tealAccent/40 transition-colors">
+              <div className="border border-legalDark/10 bg-white rounded-xl p-8 hover:border-tealAccent/30 hover:shadow-lg transition-all duration-500 h-full">
+                <span className="text-5xl font-bold text-tealAccent/30 font-serif block mb-6 group-hover:text-tealAccent/60 transition-colors">
                   {step.num}
                 </span>
                 <step.icon className="w-6 h-6 text-tealAccent mb-4" />
                 <h3 className="text-xl font-bold font-serif mb-3">{step.title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{step.description}</p>
+                <p className="text-textMuted text-sm leading-relaxed">{step.description}</p>
               </div>
             </motion.div>
           ))}

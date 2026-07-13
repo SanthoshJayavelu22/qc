@@ -25,7 +25,7 @@ export default function Hero() {
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="fixed inset-0 z-[100] bg-legalDark flex flex-col items-center justify-center"
+            className="fixed inset-0 z-[100] bg-lightBg flex flex-col items-center justify-center"
           >
             <div className="relative w-48 h-16 mb-8 animate-pulse">
               <Image 

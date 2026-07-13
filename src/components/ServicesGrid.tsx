@@ -64,13 +64,13 @@ export default function ServicesGrid() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: index * 0.05, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              className="group p-8 rounded-xl bg-warmGray hover:bg-legalDark transition-all duration-500 cursor-pointer"
+              className="group p-8 rounded-xl bg-warmGray hover:bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-500 cursor-pointer"
             >
               <service.icon className="w-7 h-7 text-tealAccent mb-6 group-hover:scale-110 transition-transform duration-300" />
-              <h3 className="text-lg font-bold font-serif text-legalDark group-hover:text-white transition-colors mb-3">
+              <h3 className="text-lg font-bold font-serif text-legalDark mb-3">
                 {service.title}
               </h3>
-              <p className="text-sm text-textMuted group-hover:text-white/70 transition-colors leading-relaxed">
+              <p className="text-sm text-textMuted leading-relaxed">
                 {service.desc}
               </p>
             </motion.div>
