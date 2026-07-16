@@ -6,102 +6,81 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const themes = [
   {
-    name: "Pastel Teal",
+    name: 'Vibrant Sage',
     colors: {
-      "--theme-dark": "#5d7782",
-      "--theme-navy": "#4f6872",
-      "--theme-accent": "#3bd6c6",
-      "--theme-bg": "#fafcfc",
-      "--theme-gray": "#f1f6f5",
-      "--theme-muted": "#8093a0",
+      '--theme-dark': '#2e4a3d',
+      '--theme-navy': '#3b5c4d',
+      '--theme-accent': '#A0D684',
+      '--theme-bg': '#f5fbf5',
+      '--theme-gray': '#eaf5eb',
+      '--theme-muted': '#8abf8a',
+      '--theme-sage1': '#A0D684',
+      '--theme-sage2': '#AAF001',
     }
   },
   {
-    name: "Ocean Blue",
+    name: 'Electric Cyan',
     colors: {
-      "--theme-dark": "#3f5a7a",
-      "--theme-navy": "#2d4563",
-      "--theme-accent": "#5ea3db",
-      "--theme-bg": "#f8fafc",
-      "--theme-gray": "#f1f5f9",
-      "--theme-muted": "#7f9bb5",
+      '--theme-dark': '#004d40',
+      '--theme-navy': '#006064',
+      '--theme-accent': '#00e5ff',
+      '--theme-bg': '#e0f7fa',
+      '--theme-gray': '#b2ebf2',
+      '--theme-muted': '#4dd0e1',
+      '--theme-sage1': '#A0D684',
+      '--theme-sage2': '#AAF001',
     }
   },
   {
-    name: "Lavender",
+    name: 'Hot Pink',
     colors: {
-      "--theme-dark": "#645d7a",
-      "--theme-navy": "#544d6b",
-      "--theme-accent": "#b39de8",
-      "--theme-bg": "#fcfbfe",
-      "--theme-gray": "#f5f4f7",
-      "--theme-muted": "#938ba6",
+      '--theme-dark': '#880e4f',
+      '--theme-navy': '#c2185b',
+      '--theme-accent': '#ff007f',
+      '--theme-bg': '#fce4ec',
+      '--theme-gray': '#f8bbd0',
+      '--theme-muted': '#f06292',
+      '--theme-sage1': '#A0D684',
+      '--theme-sage2': '#AAF001',
     }
   },
   {
-    name: "Sage Green",
+    name: 'Vivid Orange',
     colors: {
-      "--theme-dark": "#536853",
-      "--theme-navy": "#435543",
-      "--theme-accent": "#8abf8a",
-      "--theme-bg": "#f9fbf9",
-      "--theme-gray": "#f0f5f0",
-      "--theme-muted": "#809480",
+      '--theme-dark': '#e65100',
+      '--theme-navy': '#ef6c00',
+      '--theme-accent': '#ff6600',
+      '--theme-bg': '#fff3e0',
+      '--theme-gray': '#ffe0b2',
+      '--theme-muted': '#ffb74d',
+      '--theme-sage1': '#A0D684',
+      '--theme-sage2': '#AAF001',
     }
   },
   {
-    name: "Rose",
+    name: 'Neon Purple',
     colors: {
-      "--theme-dark": "#7a5a5e",
-      "--theme-navy": "#664b4e",
-      "--theme-accent": "#e89da4",
-      "--theme-bg": "#fcf9f9",
-      "--theme-gray": "#f7f2f2",
-      "--theme-muted": "#a6898d",
+      '--theme-dark': '#4a148c',
+      '--theme-navy': '#6a1b9a',
+      '--theme-accent': '#d500f9',
+      '--theme-bg': '#f3e5f5',
+      '--theme-gray': '#e1bee7',
+      '--theme-muted': '#ba68c8',
+      '--theme-sage1': '#A0D684',
+      '--theme-sage2': '#AAF001',
     }
   },
   {
-    name: "Champagne Gold",
+    name: 'Lime Zap',
     colors: {
-      "--theme-dark": "#635845",
-      "--theme-navy": "#524838",
-      "--theme-accent": "#d4af37",
-      "--theme-bg": "#fdfdfa",
-      "--theme-gray": "#f7f5ef",
-      "--theme-muted": "#a39887",
-    }
-  },
-  {
-    name: "Sandstone",
-    colors: {
-      "--theme-dark": "#7a6256",
-      "--theme-navy": "#665045",
-      "--theme-accent": "#d98c63",
-      "--theme-bg": "#fcfaf9",
-      "--theme-gray": "#f7f2ef",
-      "--theme-muted": "#a68f85",
-    }
-  },
-  {
-    name: "Peach Sunrise",
-    colors: {
-      "--theme-dark": "#785854",
-      "--theme-navy": "#634743",
-      "--theme-accent": "#ff9a76",
-      "--theme-bg": "#fffaf8",
-      "--theme-gray": "#fff1ed",
-      "--theme-muted": "#a3827d",
-    }
-  },
-  {
-    name: "Monochrome",
-    colors: {
-      "--theme-dark": "#4a4a4a",
-      "--theme-navy": "#333333",
-      "--theme-accent": "#8c8c8c",
-      "--theme-bg": "#fafafa",
-      "--theme-gray": "#f2f2f2",
-      "--theme-muted": "#808080",
+      '--theme-dark': '#33691e',
+      '--theme-navy': '#558b2f',
+      '--theme-accent': '#76ff03',
+      '--theme-bg': '#f1f8e9',
+      '--theme-gray': '#dcedc8',
+      '--theme-muted': '#aed581',
+      '--theme-sage1': '#A0D684',
+      '--theme-sage2': '#AAF001',
     }
   }
 ];

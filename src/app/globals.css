@@ -4,6 +4,8 @@
   --color-legalDark: var(--theme-dark);
   --color-legalNavy: var(--theme-navy);
   --color-tealAccent: var(--theme-accent);
+  --color-sage1: var(--theme-sage1);
+  --color-sage2: var(--theme-sage2);
   --color-lightBg: var(--theme-bg);
   --color-warmGray: var(--theme-gray);
   --color-textMuted: var(--theme-muted);
@@ -13,12 +15,14 @@
 }
 
 :root {
-  --theme-dark: #5d7782;
-  --theme-navy: #4f6872;
-  --theme-accent: #3bd6c6;
-  --theme-bg: #fafcfc;
-  --theme-gray: #f1f6f5;
-  --theme-muted: #8093a0;
+  --theme-dark: #2e4a3d;
+  --theme-navy: #3b5c4d;
+  --theme-accent: #A0D684;
+  --theme-sage1: #A0D684;
+  --theme-sage2: #AAF001;
+  --theme-bg: #f5fbf5;
+  --theme-gray: #eaf5eb;
+  --theme-muted: #8abf8a;
 }
 
 @layer base {
