@@ -69,17 +69,24 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`text-[13px] font-medium tracking-wide uppercase transition-colors duration-300 hover:text-tealAccent ${
-                  isTransparent ? "text-white" : "text-legalDark"
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => {
+                    if (link.href === "/" && pathname === "/") {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    } else if (link.href === "/") {
+                      window.scrollTo({ top: 0, behavior: "instant" });
+                    }
+                  }}
+                  className={`text-[13px] font-medium tracking-wide uppercase transition-colors duration-300 hover:text-tealAccent ${
+                    isTransparent ? "text-white" : "text-legalDark"
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
           </nav>
 
           {/* Phone + Mobile Toggle */}
@@ -126,7 +133,12 @@ export default function Header() {
                 >
                   <Link
                     href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      if (link.href === "/") {
+                        window.scrollTo({ top: 0, behavior: "instant" });
+                      }
+                    }}
                     className="text-2xl font-serif font-bold text-legalDark hover:text-tealAccent block py-3 border-b border-gray-100"
                   >
                     {link.name}
