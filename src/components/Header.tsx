@@ -7,7 +7,11 @@ import { Phone, Menu, X } from "lucide-react";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
 import logoImg from "@/assets/qc-logo.png";
 
+import { usePathname } from "next/navigation";
+
 export default function Header() {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -26,14 +30,18 @@ export default function Header() {
   });
 
   const navLinks = [
-    { name: "Home", href: "#" },
-    { name: "Our Services", href: "#" },
+    { name: "Home", href: "/" },
+    { name: "Our Services", href: "/services" },
     { name: "Get a Quote", href: "#" },
     { name: "Meet the Team", href: "#" },
-    { name: "Endorsements", href: "#" },
-    { name: "Careers", href: "#" },
-    { name: "Contact Us", href: "#" },
+    { name: "Endorsements", href: "/endorsements" },
+    { name: "Careers", href: "/careers" },
+    { name: "Blogs", href: "/blogs" },
+    { name: "Contact Us", href: "/contact" },
   ];
+
+  // Header should be transparent only on home page when top of scroll; otherwise white background
+  const isTransparent = isHomePage && !isScrolled;
 
   return (
     <>
@@ -42,14 +50,14 @@ export default function Header() {
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 80, damping: 20 }}
         className={`fixed top-0 z-50 w-full transition-all duration-500 ${
-          isScrolled
-            ? "bg-white shadow-sm"
-            : "bg-transparent"
+          isTransparent
+            ? "bg-transparent"
+            : "bg-white shadow-sm"
         }`}
       >
         <div className="container mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
           {/* Logo */}
-          <Link href="#" className="relative h-16 w-48 block">
+          <Link href="/" className="relative h-16 w-48 block">
             <Image
               src={logoImg}
               alt="Quality Conveyancing"
@@ -66,7 +74,7 @@ export default function Header() {
                 key={link.name}
                 href={link.href}
                 className={`text-[13px] font-medium tracking-wide uppercase transition-colors duration-300 hover:text-tealAccent ${
-                  isScrolled ? "text-legalDark" : "text-white"
+                  isTransparent ? "text-white" : "text-legalDark"
                 }`}
               >
                 {link.name}
@@ -79,7 +87,7 @@ export default function Header() {
             <a
               href="tel:02037636767"
               className={`hidden md:flex items-center gap-2 text-sm font-medium transition-colors ${
-                isScrolled ? "text-legalDark" : "text-white"
+                isTransparent ? "text-white" : "text-legalDark"
               }`}
             >
               <Phone className="w-4 h-4 text-tealAccent" />
@@ -88,7 +96,7 @@ export default function Header() {
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={`lg:hidden p-2 transition-colors ${
-                isScrolled ? "text-legalDark" : "text-white"
+                isTransparent ? "text-white" : "text-legalDark"
               }`}
               aria-label="Menu"
             >
