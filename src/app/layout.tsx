@@ -16,6 +16,11 @@ export const metadata: Metadata = {
   title: "Quality Conveyancing | Specialist Property Solicitors London",
   description: "Expert property solicitors in London offering residential conveyancing, leasehold, remortgages, and more. No completion, no legal fee. Get a fixed-fee quote today.",
   keywords: ["Conveyancing Solicitors London", "Property Solicitors Ealing", "Residential Conveyancing", "Fixed Fee Conveyancing", "Property Lawyers", "Quality Conveyancing"],
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
   openGraph: {
     title: "Quality Conveyancing | Specialist Property Solicitors London",
     description: "Expert property solicitors offering swift, transparent, fixed-fee conveyancing. No completion, no legal fee.",

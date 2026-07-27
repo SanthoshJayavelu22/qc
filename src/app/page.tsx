@@ -11,10 +11,12 @@ import Team from "@/components/Team";
 import FAQ from "@/components/FAQ";
 import Insights from "@/components/Insights";
 import Footer from "@/components/Footer";
+import PageLoader from "@/components/PageLoader";
 
 export default function Home() {
   return (
     <>
+      <PageLoader />
       <Header />
       <main>
         <Hero />

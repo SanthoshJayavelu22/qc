@@ -1,71 +1,24 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
-import Image from "next/image";
-
-import desktopHeroImg from "@/assets/Christ_the_Saviour,_Ealing_Broadway.webp";
-import mobileHeroImg from "@/assets/ph-Christ-The-Saviour-Church-Ealing.webp";
 
 export default function Hero() {
-  const [showVideo, setShowVideo] = useState(false);
-
-  useEffect(() => {
-    // Show initial images for 2 seconds before playing video on all screens
-    const videoTimer = setTimeout(() => {
-      setShowVideo(true);
-    }, 3000);
-
-    return () => clearTimeout(videoTimer);
-  }, []);
-
   return (
     <section className="relative min-h-[550px] sm:min-h-screen h-screen w-full overflow-hidden bg-legalDark">
-      {/* Background Image / Video */}
+      {/* Background Video */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-black/25 z-10"></div>
         
-        {/* Mobile Initial Image (Visible for first 3 seconds on mobile) */}
-        <div className={`block md:hidden absolute inset-0 transition-opacity duration-1000 ${
-          showVideo ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}>
-          <Image 
-            src={mobileHeroImg}
-            alt="Christ The Saviour Church Ealing Mobile"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-          />
-        </div>
-
-        {/* Desktop/Tablet Initial Image (Visible for first 3 seconds on md+) */}
-        <div className={`hidden md:block absolute inset-0 transition-opacity duration-1000 ${
-          showVideo ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}>
-          <Image 
-            src={desktopHeroImg}
-            alt="Christ the Saviour, Ealing Broadway Desktop"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-
-        {/* Background video (Cover fill across full screen to remove black space) */}
-        {showVideo && (
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-            preload="auto"
-            className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 opacity-100"
-          >
-            <source src="/qc-hero-vid.mp4" type="video/mp4" />
-          </video>
-        )}
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        >
+          <source src="/qc-hero-vid.mp4" type="video/mp4" />
+        </video>
       </div>
 
       {/* Centered Content */}
