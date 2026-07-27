@@ -29,6 +29,7 @@ export const metadata: Metadata = {
 };
 
 import CookieConsent from "@/components/CookieConsent";
+import TawkToChat from "@/components/TawkToChat";
 
 export default function RootLayout({
   children,
@@ -36,10 +37,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${elMessiri.variable} antialiased scroll-smooth`}>
-      <body className="min-h-screen bg-lightBg font-sans text-legalDark">
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${elMessiri.variable} antialiased scroll-smooth`}>
+      <body className="min-h-screen bg-lightBg font-sans text-legalDark" suppressHydrationWarning>
         {children}
         <CookieConsent />
+        <TawkToChat />
       </body>
     </html>
   );

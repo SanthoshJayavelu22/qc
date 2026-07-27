@@ -91,10 +91,30 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="text-xl md:text-2xl text-white/90 font-light tracking-wide"
+            className="text-xl md:text-2xl text-white/90 font-light tracking-wide mb-8"
           >
             Expert Property Solicitors
           </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-wrap gap-4 justify-center"
+          >
+            <a
+              href="/quote"
+              className="px-8 py-3.5 bg-tealAccent text-legalDark font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-white transition-all shadow-lg hover:shadow-tealAccent/20"
+            >
+              Get Instant Quote
+            </a>
+            <a
+              href="tel:02037636767"
+              className="px-8 py-3.5 bg-white/10 text-white border border-white/20 font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-white/20 transition-all backdrop-blur-sm"
+            >
+              Call 020 3763 6767
+            </a>
+          </motion.div>
 
           {/* Scroll indicator */}
           <motion.div

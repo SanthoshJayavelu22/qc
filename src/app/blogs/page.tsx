@@ -8,10 +8,12 @@ import Image from "next/image";
 import { Clock, User, ArrowRight, Tag, Search } from "lucide-react";
 import { motion } from "framer-motion";
 
-import heroImg from "@/assets/Christ_the_Saviour,_Ealing_Broadway.webp";
-import servicesImg from "@/assets/Our Services.png";
-import ealingChurchImg from "@/assets/ph-Christ-The-Saviour-Church-Ealing.webp";
-
+import sdltImg from "@/assets/blog-sdlt.png";
+import leaseholdImg from "@/assets/blog-leasehold.png";
+import timelineImg from "@/assets/blog-timeline.png";
+import delaysImg from "@/assets/blog-delays.png";
+import remortgageImg from "@/assets/blog-remortgage.png";
+import newbuildImg from "@/assets/blog-newbuild.png";
 import blogsHeroImg from "@/assets/blogs-hero-news.png";
 
 interface BlogPost {
@@ -36,7 +38,7 @@ const blogPosts: BlogPost[] = [
     author: "Sarah Jenkins",
     date: "July 20, 2026",
     readTime: "5 min read",
-    image: heroImg,
+    image: sdltImg,
   },
   {
     id: "2",
@@ -47,7 +49,7 @@ const blogPosts: BlogPost[] = [
     author: "David Miller",
     date: "July 15, 2026",
     readTime: "7 min read",
-    image: servicesImg,
+    image: leaseholdImg,
   },
   {
     id: "3",
@@ -58,7 +60,7 @@ const blogPosts: BlogPost[] = [
     author: "Elena Rostova",
     date: "July 08, 2026",
     readTime: "6 min read",
-    image: ealingChurchImg,
+    image: timelineImg,
   },
   {
     id: "4",
@@ -69,7 +71,7 @@ const blogPosts: BlogPost[] = [
     author: "Marcus Vance",
     date: "June 28, 2026",
     readTime: "4 min read",
-    image: heroImg,
+    image: delaysImg,
   },
   {
     id: "5",
@@ -80,7 +82,7 @@ const blogPosts: BlogPost[] = [
     author: "Sarah Jenkins",
     date: "June 18, 2026",
     readTime: "4 min read",
-    image: servicesImg,
+    image: remortgageImg,
   },
   {
     id: "6",
@@ -91,7 +93,7 @@ const blogPosts: BlogPost[] = [
     author: "David Miller",
     date: "June 10, 2026",
     readTime: "8 min read",
-    image: ealingChurchImg,
+    image: newbuildImg,
   },
 ];
 

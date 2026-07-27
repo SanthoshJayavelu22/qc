@@ -8,12 +8,10 @@ import {
   Mail, 
   MapPin, 
   Clock, 
-  Printer, 
   Send, 
   CheckCircle2, 
-  Sparkles,
-  MessageSquare,
-  ShieldCheck
+  Loader2,
+  AlertCircle
 } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -22,6 +20,10 @@ import officeImg from "@/assets/contact-office-ealing.png";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -30,9 +32,66 @@ export default function ContactPage() {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateForm = () => {
+    const errs: Record<string, string> = {};
+
+    if (!formData.name.trim()) {
+      errs.name = "Full name is required.";
+    }
+
+    if (!formData.email.trim()) {
+      errs.email = "Email address is required.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      errs.email = "Please enter a valid email address (e.g. john@example.com).";
+    }
+
+    if (!formData.phone.trim()) {
+      errs.phone = "Phone number is required.";
+    } else if (formData.phone.trim().replace(/\s+/g, "").length < 7) {
+      errs.phone = "Please enter a valid telephone number.";
+    }
+
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSubmitError(null);
+
+    if (!validateForm()) return;
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/santhoshjayavelu57@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify({
+          _subject: `New Contact Form Enquiry: ${formData.name}`,
+          _template: "table",
+          Name: formData.name,
+          Email: formData.email,
+          Phone: formData.phone,
+          "Service Required": formData.service,
+          Message: formData.message,
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        setSubmitError("Failed to transmit enquiry. Please call us directly on 020 3763 6767.");
+      }
+    } catch (err) {
+      console.error("FormSubmit submission error:", err);
+      setSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,7 +99,7 @@ export default function ContactPage() {
       <Header />
 
       <main className="flex-grow pt-20">
-        {/* Contact Hero (Matching Careers/Services Split Layout) */}
+        {/* Contact Hero */}
         <section className="bg-legalDark text-white py-16 px-6 lg:px-12">
           <div className="container mx-auto max-w-6xl">
             <div className="grid lg:grid-cols-12 gap-8 items-center">
@@ -138,7 +197,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              {/* Right Column: Contact Form */}
+              {/* Right Column: FormSubmit Integrated Contact Form */}
               <div className="lg:col-span-7 bg-warmGray/30 p-8 md:p-10 rounded-2xl border border-gray-100">
                 <span className="text-xs font-bold uppercase tracking-widest text-tealAccent mb-2 block">
                   Enquire Online
@@ -154,35 +213,56 @@ export default function ContactPage() {
                     className="p-8 bg-white rounded-xl text-center border border-gray-200"
                   >
                     <CheckCircle2 className="w-12 h-12 text-tealAccent mx-auto mb-4" />
-                    <h3 className="text-xl font-bold font-serif text-legalDark mb-2">Thank You!</h3>
+                    <h3 className="text-xl font-bold font-serif text-legalDark mb-2">Enquiry Sent Successfully!</h3>
                     <p className="text-textMuted text-sm leading-relaxed">
-                      Your enquiry has been sent directly to our conveyancing team. We will call or email you shortly.
+                      Thank you for reaching out. Your enquiry has been sent to our legal team (<strong className="text-legalDark">santhoshjayavelu57@gmail.com</strong>). We will contact you shortly.
                     </p>
                   </motion.div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-4">
+                    {submitError && (
+                      <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-xs font-medium flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4 shrink-0" />
+                        <span>{submitError}</span>
+                      </div>
+                    )}
+
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-xs font-semibold uppercase text-legalDark mb-1">Full Name *</label>
                         <input
                           type="text"
+                          name="name"
                           required
                           value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          onChange={(e) => {
+                            setFormData({ ...formData, name: e.target.value });
+                            if (errors.name) setErrors({ ...errors, name: "" });
+                          }}
                           placeholder="John Smith"
-                          className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-legalDark focus:outline-none focus:border-tealAccent"
+                          className={`w-full px-4 py-2.5 bg-white border ${errors.name ? "border-red-500 bg-red-50/20" : "border-gray-200"} rounded-lg text-sm text-legalDark focus:outline-none focus:border-tealAccent`}
                         />
+                        {errors.name && (
+                          <p className="text-red-500 text-xs mt-1 font-medium">{errors.name}</p>
+                        )}
                       </div>
                       <div>
                         <label className="block text-xs font-semibold uppercase text-legalDark mb-1">Phone Number *</label>
                         <input
                           type="tel"
+                          name="phone"
                           required
                           value={formData.phone}
-                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          onChange={(e) => {
+                            setFormData({ ...formData, phone: e.target.value });
+                            if (errors.phone) setErrors({ ...errors, phone: "" });
+                          }}
                           placeholder="07123 456789"
-                          className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-legalDark focus:outline-none focus:border-tealAccent"
+                          className={`w-full px-4 py-2.5 bg-white border ${errors.phone ? "border-red-500 bg-red-50/20" : "border-gray-200"} rounded-lg text-sm text-legalDark focus:outline-none focus:border-tealAccent`}
                         />
+                        {errors.phone && (
+                          <p className="text-red-500 text-xs mt-1 font-medium">{errors.phone}</p>
+                        )}
                       </div>
                     </div>
 
@@ -191,16 +271,24 @@ export default function ContactPage() {
                         <label className="block text-xs font-semibold uppercase text-legalDark mb-1">Email Address *</label>
                         <input
                           type="email"
+                          name="email"
                           required
                           value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          onChange={(e) => {
+                            setFormData({ ...formData, email: e.target.value });
+                            if (errors.email) setErrors({ ...errors, email: "" });
+                          }}
                           placeholder="john@example.com"
-                          className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-legalDark focus:outline-none focus:border-tealAccent"
+                          className={`w-full px-4 py-2.5 bg-white border ${errors.email ? "border-red-500 bg-red-50/20" : "border-gray-200"} rounded-lg text-sm text-legalDark focus:outline-none focus:border-tealAccent`}
                         />
+                        {errors.email && (
+                          <p className="text-red-500 text-xs mt-1 font-medium">{errors.email}</p>
+                        )}
                       </div>
                       <div>
                         <label className="block text-xs font-semibold uppercase text-legalDark mb-1">Service Required</label>
                         <select
+                          name="service"
                           value={formData.service}
                           onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                           className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-legalDark focus:outline-none focus:border-tealAccent"
@@ -218,6 +306,7 @@ export default function ContactPage() {
                     <div>
                       <label className="block text-xs font-semibold uppercase text-legalDark mb-1">Property Address / Details</label>
                       <textarea
+                        name="message"
                         rows={4}
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
@@ -228,9 +317,18 @@ export default function ContactPage() {
 
                     <button
                       type="submit"
-                      className="w-full py-3.5 bg-legalDark text-white font-bold rounded-lg hover:bg-legalNavy transition-colors flex items-center justify-center gap-2 text-sm"
+                      disabled={loading}
+                      className="w-full py-3.5 bg-legalDark text-white font-bold rounded-lg hover:bg-legalNavy transition-colors flex items-center justify-center gap-2 text-sm disabled:opacity-50"
                     >
-                      <Send className="w-4 h-4 text-tealAccent" /> Submit Conveyancing Enquiry
+                      {loading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 text-tealAccent animate-spin" /> Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4 text-tealAccent" /> Submit Conveyancing Enquiry
+                        </>
+                      )}
                     </button>
                   </form>
                 )}

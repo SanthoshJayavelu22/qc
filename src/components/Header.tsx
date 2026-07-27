@@ -32,8 +32,8 @@ export default function Header() {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Our Services", href: "/services" },
-    { name: "Get a Quote", href: "#" },
-    { name: "Meet the Team", href: "#" },
+    { name: "Get a Quote", href: "/quote" },
+    { name: "Meet the Team", href: "/team" },
     { name: "Endorsements", href: "/endorsements" },
     { name: "Careers", href: "/careers" },
     { name: "Blogs", href: "/blogs" },
@@ -49,7 +49,7 @@ export default function Header() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 80, damping: 20 }}
-        className={`fixed top-0 z-50 w-full transition-all duration-500 ${
+        className={`fixed top-0 z-40 w-full transition-all duration-500 ${
           isTransparent
             ? "bg-transparent"
             : "bg-white shadow-sm"
