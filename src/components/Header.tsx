@@ -49,15 +49,19 @@ export default function Header() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 80, damping: 20 }}
-        className={`fixed top-0 z-40 w-full transition-all duration-500 ${
-          isTransparent
+        className={`fixed top-0 z-[90] w-full transition-all duration-500 ${
+          isTransparent && !isMobileMenuOpen
             ? "bg-transparent"
             : "bg-white shadow-sm"
         }`}
       >
         <div className="container mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="relative h-12 w-36 sm:h-16 sm:w-48 block">
+          <Link 
+            href="/" 
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="relative h-12 w-36 sm:h-16 sm:w-48 block"
+          >
             <Image
               src={logoImg}
               alt="Quality Conveyancing"
@@ -74,9 +78,7 @@ export default function Header() {
                   key={link.name}
                   href={link.href}
                   onClick={() => {
-                    if (link.href === "/" && pathname === "/") {
-                      window.scrollTo({ top: 0, behavior: "smooth" });
-                    } else if (link.href === "/") {
+                    if (link.href === "/") {
                       window.scrollTo({ top: 0, behavior: "instant" });
                     }
                   }}
@@ -94,7 +96,7 @@ export default function Header() {
             <a
               href="tel:02037636767"
               className={`hidden md:flex items-center gap-2 text-sm font-medium transition-colors ${
-                isTransparent ? "text-white" : "text-legalDark"
+                isTransparent && !isMobileMenuOpen ? "text-white" : "text-legalDark"
               }`}
             >
               <Phone className="w-4 h-4 text-tealAccent" />
@@ -102,34 +104,36 @@ export default function Header() {
             </a>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`lg:hidden p-2 transition-colors ${
-                isTransparent ? "text-white" : "text-legalDark"
+              className={`lg:hidden p-2.5 rounded-lg transition-colors ${
+                isTransparent && !isMobileMenuOpen 
+                  ? "text-white hover:bg-white/10" 
+                  : "text-legalDark hover:bg-gray-100"
               }`}
-              aria-label="Menu"
+              aria-label={isMobileMenuOpen ? "Close Menu" : "Open Menu"}
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMobileMenuOpen ? <X className="w-6 h-6 text-legalDark" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
       </motion.header>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-white z-40 pt-24 lg:hidden"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 bg-white z-[85] pt-24 pb-8 overflow-y-auto lg:hidden"
           >
-            <div className="container mx-auto px-6 py-8 flex flex-col gap-1">
+            <div className="container mx-auto px-6 flex flex-col gap-1">
               {navLinks.map((link, i) => (
                 <motion.div
                   key={link.name}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
+                  transition={{ delay: i * 0.04 }}
                 >
                   <Link
                     href={link.href}
@@ -139,16 +143,20 @@ export default function Header() {
                         window.scrollTo({ top: 0, behavior: "instant" });
                       }
                     }}
-                    className="text-2xl font-serif font-bold text-legalDark hover:text-tealAccent block py-3 border-b border-gray-100"
+                    className="text-xl sm:text-2xl font-serif font-bold text-legalDark hover:text-tealAccent flex items-center justify-between py-3.5 border-b border-gray-100"
                   >
-                    {link.name}
+                    <span>{link.name}</span>
                   </Link>
                 </motion.div>
               ))}
-              <div className="mt-8">
-                <a href="tel:02037636767" className="flex items-center gap-3 text-legalDark text-xl">
+
+              <div className="mt-8 pt-4 border-t border-gray-100">
+                <a 
+                  href="tel:02037636767" 
+                  className="flex items-center gap-3 text-legalDark text-lg font-semibold bg-warmGray/50 p-4 rounded-xl border border-gray-100"
+                >
                   <Phone className="w-5 h-5 text-tealAccent" />
-                  020 3763 6767
+                  <span>Call 020 3763 6767</span>
                 </a>
               </div>
             </div>
