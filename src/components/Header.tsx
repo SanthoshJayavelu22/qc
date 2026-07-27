@@ -57,7 +57,7 @@ export default function Header() {
       >
         <div className="container mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="relative h-16 w-48 block">
+          <Link href="/" className="relative h-12 w-36 sm:h-16 sm:w-48 block">
             <Image
               src={logoImg}
               alt="Quality Conveyancing"

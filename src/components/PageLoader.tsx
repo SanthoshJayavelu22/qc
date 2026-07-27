@@ -9,11 +9,28 @@ export default function PageLoader() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1200);
+    // Lock scroll while loader is visible
+    document.body.style.overflow = "hidden";
 
-    return () => clearTimeout(timer);
+    const handleLoad = () => {
+      setIsLoading(false);
+      document.body.style.overflow = "unset";
+    };
+
+    if (document.readyState === "complete") {
+      // Small timeout to allow initial render smoothing
+      const timer = setTimeout(handleLoad, 800);
+      return () => clearTimeout(timer);
+    } else {
+      window.addEventListener("load", handleLoad);
+      // Safety fallback timer if load event takes longer
+      const timer = setTimeout(handleLoad, 2500);
+      return () => {
+        window.removeEventListener("load", handleLoad);
+        clearTimeout(timer);
+        document.body.style.overflow = "unset";
+      };
+    }
   }, []);
 
   return (
