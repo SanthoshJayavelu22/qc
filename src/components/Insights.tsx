@@ -66,11 +66,11 @@ export default function Insights() {
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
-              <p className="text-xs text-textMuted uppercase tracking-wider mb-3">{article.date}</p>
+              <p className="text-xs text-legalDark/60 font-semibold uppercase tracking-wider mb-3">{article.date}</p>
               <h3 className="text-xl font-bold font-serif text-legalDark mb-3 group-hover:text-tealAccent transition-colors">
                 {article.title}
               </h3>
-              <p className="text-textMuted text-sm leading-relaxed">{article.excerpt}</p>
+              <p className="text-legalDark/75 text-sm leading-relaxed">{article.excerpt}</p>
             </motion.article>
           ))}
         </div>

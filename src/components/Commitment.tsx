@@ -43,7 +43,7 @@ export default function Commitment() {
             <h2 className="text-4xl md:text-5xl font-bold text-legalDark font-serif leading-tight mb-6">
               Our Commitment to You
             </h2>
-            <p className="text-textMuted text-lg leading-relaxed mb-12">
+            <p className="text-legalDark/80 text-lg leading-relaxed mb-12">
               Our experts always start by listening, so we understand what matters most from day one.
             </p>
 
@@ -57,12 +57,12 @@ export default function Commitment() {
                   transition={{ delay: index * 0.15, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                   className="flex gap-6 group"
                 >
-                  <span className="text-4xl font-bold text-tealAccent/30 font-serif shrink-0 leading-none group-hover:text-tealAccent transition-colors duration-300">
+                  <span className="text-4xl font-bold text-tealAccent/60 font-serif shrink-0 leading-none group-hover:text-tealAccent transition-colors duration-300">
                     {item.num}
                   </span>
                   <div>
                     <h3 className="text-xl font-bold font-serif text-legalDark mb-2">{item.title}</h3>
-                    <p className="text-textMuted leading-relaxed">{item.description}</p>
+                    <p className="text-legalDark/75 leading-relaxed">{item.description}</p>
                   </div>
                 </motion.div>
               ))}

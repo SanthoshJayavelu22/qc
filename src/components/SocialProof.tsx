@@ -46,14 +46,14 @@ export default function SocialProof() {
 
             <div className="flex flex-col gap-8">
               {testimonials.map((t, i) => (
-                <div key={i} className="border-l-2 border-tealAccent pl-6">
+                <div key={i} className="border-l-4 border-tealAccent/60 bg-emerald-50/40 p-6 rounded-r-xl transition-all hover:bg-emerald-50/80">
                   <div className="flex gap-1 mb-3">
                     {[...Array(t.rating)].map((_, j) => (
-                      <Star key={j} className="w-4 h-4 text-yellow-400 fill-current" />
+                      <Star key={j} className="w-4 h-4 text-amber-400 fill-current" />
                     ))}
                   </div>
-                  <p className="text-textMuted leading-relaxed mb-3 italic">&ldquo;{t.text}&rdquo;</p>
-                  <p className="text-legalDark font-semibold text-sm">{t.name}</p>
+                  <p className="text-legalDark/85 leading-relaxed mb-3 italic font-serif text-lg">&ldquo;{t.text}&rdquo;</p>
+                  <p className="text-legalDark font-bold text-sm tracking-wide">{t.name}</p>
                 </div>
               ))}
             </div>

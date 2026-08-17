@@ -29,30 +29,31 @@ export default function Footer() {
   return (
     <>
       {/* CTA Banner */}
-      <section className="py-28 bg-warmGray">
+      <section className="py-24 bg-emerald-50/60 border-t border-emerald-100/80">
         <div className="container mx-auto px-6 lg:px-12 max-w-4xl text-center">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-legalDark font-serif mb-6">
+            <span className="text-xs font-bold uppercase tracking-widest text-tealAccent mb-3 block">Start Your Journey</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-legalDark font-serif mb-6 leading-tight">
               Ready to Make Your Move?
             </h2>
-            <p className="text-textMuted text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-legalDark/80 text-base md:text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
               Experience modern, swift, and transparent conveyancing. Calculate your fixed-fee quote or instruct our legal team today.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link
                 href="/quote"
-                className="inline-flex items-center justify-center gap-2 bg-tealAccent text-legalDark font-bold px-8 py-4 rounded-lg hover:shadow-lg hover:shadow-tealAccent/20 transition-all duration-300"
+                className="inline-flex items-center justify-center gap-2 bg-tealAccent text-legalDark font-bold px-8 py-4 rounded-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
               >
                 Get a Quote <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex items-center justify-center bg-legalDark text-white font-bold px-8 py-4 rounded-lg hover:bg-legalNavy transition-colors"
+                className="inline-flex items-center justify-center bg-legalDark text-white font-bold px-8 py-4 rounded-lg hover:bg-legalNavy hover:scale-[1.02] transition-all duration-300"
               >
                 Instruct Us Online
               </Link>
@@ -114,7 +115,7 @@ export default function Footer() {
             <div className="space-y-4">
               <h3 className="text-2xl font-bold font-serif text-white">Quality Conveyancing</h3>
               <p className="text-white/70 text-xs leading-relaxed">
-                Directors and Licensed Conveyancers: Brinda Nicholson & Jayshree Chudasama | Company Registration Number: 7566902 (Registered office address is the same as the trading address)
+                Directors and Licensed Conveyancers: Brinda Nicholson, Mrs Pathmajani Chandrasekaram (Pat Nathan) & Jayshree Chudasama | Company Registration Number: 7566902 (Registered office address is the same as the trading address)
               </p>
               <p className="text-white/70 text-xs leading-relaxed">
                 "Quality Conveyancing" is the trading name of Quality Conveyancing Limited | Regulated by the Council for Licensed Conveyancers (CLC Practice No. 11359)

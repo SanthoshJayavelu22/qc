@@ -133,7 +133,7 @@ export default function EndorsementsPage() {
               {stats.map((s) => (
                 <div key={s.label}>
                   <div className="text-2xl md:text-3xl font-serif font-bold text-legalDark">{s.value}</div>
-                  <div className="text-xs text-textMuted uppercase tracking-wider font-semibold mt-1">{s.label}</div>
+                  <div className="text-xs text-legalDark/75 uppercase tracking-wider font-semibold mt-1">{s.label}</div>
                 </div>
               ))}
             </div>
@@ -152,49 +152,59 @@ export default function EndorsementsPage() {
               <h2 className="text-3xl md:text-5xl font-serif font-bold text-legalDark mb-3">
                 What Our Clients Say About Us
               </h2>
-              <p className="text-textMuted text-sm md:text-base leading-relaxed">
+              <p className="text-legalDark/80 text-sm md:text-base leading-relaxed">
                 Verified 5-Star Google Reviews from property buyers, sellers, and first-time buyers across London and the UK.
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
-              {endorsementsList.map((item, idx) => (
-                <motion.div
-                  key={item.name}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.04 }}
-                  className="p-8 bg-warmGray/30 border border-gray-100 rounded-2xl flex flex-col justify-between shadow-sm hover:shadow-md transition-all relative"
-                >
-                  <div>
-                    <Quote className="w-8 h-8 text-tealAccent/30 mb-4" />
-                    
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex text-amber-400 gap-1">
-                        {[...Array(item.rating)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-amber-400" />
-                        ))}
-                      </div>
-                      <span className="text-[11px] font-semibold uppercase tracking-wider bg-tealAccent/20 text-legalDark px-2.5 py-0.5 rounded-full">
-                        Solicitor: {item.solicitor}
-                      </span>
-                    </div>
+              {endorsementsList.map((item, idx) => {
+                const cardTints = [
+                  "bg-emerald-50/40 border-emerald-100/80",
+                  "bg-sky-50/40 border-sky-100/80",
+                  "bg-amber-50/40 border-amber-100/80",
+                  "bg-purple-50/40 border-purple-100/80",
+                ];
+                const tintStyle = cardTints[idx % cardTints.length];
 
-                    <p className="text-legalDark text-xs md:text-sm leading-relaxed mb-6">
-                      "{item.review}"
-                    </p>
-                  </div>
-
-                  <div className="border-t border-gray-200/60 pt-4 flex items-center justify-between">
+                return (
+                  <motion.div
+                    key={item.name}
+                    initial={{ opacity: 0, y: 15 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.04 }}
+                    className={`p-8 ${tintStyle} border rounded-2xl flex flex-col justify-between shadow-sm hover:shadow-md transition-all relative`}
+                  >
                     <div>
-                      <h4 className="font-bold font-serif text-legalDark text-base">{item.name}</h4>
-                      <p className="text-textMuted text-xs">{item.role}</p>
+                      <Quote className="w-8 h-8 text-tealAccent/50 mb-4" />
+                      
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex text-amber-400 gap-1">
+                          {[...Array(item.rating)].map((_, i) => (
+                            <Star key={i} className="w-4 h-4 fill-amber-400" />
+                          ))}
+                        </div>
+                        <span className="text-[11px] font-semibold uppercase tracking-wider bg-white/80 border border-gray-200 text-legalDark px-2.5 py-0.5 rounded-full shadow-sm">
+                          Solicitor: {item.solicitor}
+                        </span>
+                      </div>
+
+                      <p className="text-legalDark/85 text-xs md:text-sm leading-relaxed mb-6 font-normal">
+                        "{item.review}"
+                      </p>
                     </div>
-                    <span className="text-xs text-textMuted">{item.date} • Google Review</span>
-                  </div>
-                </motion.div>
-              ))}
+
+                    <div className="border-t border-gray-200/60 pt-4 flex items-center justify-between">
+                      <div>
+                        <h4 className="font-bold font-serif text-legalDark text-base">{item.name}</h4>
+                        <p className="text-legalDark/70 text-xs font-medium">{item.role}</p>
+                      </div>
+                      <span className="text-xs text-legalDark/65 font-medium">{item.date} • Google Review</span>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>

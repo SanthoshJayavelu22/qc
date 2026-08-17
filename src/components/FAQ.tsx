@@ -49,7 +49,7 @@ export default function FAQ() {
                 <span className="text-lg font-semibold text-legalDark group-hover:text-tealAccent transition-colors pr-4">
                   {faq.q}
                 </span>
-                <ChevronDown className={`w-5 h-5 text-textMuted shrink-0 transition-transform duration-300 ${openIndex === index ? "rotate-180" : ""}`} />
+                <ChevronDown className={`w-5 h-5 text-legalDark/60 shrink-0 transition-transform duration-300 ${openIndex === index ? "rotate-180 text-tealAccent" : ""}`} />
               </button>
               <AnimatePresence>
                 {openIndex === index && (
@@ -60,7 +60,7 @@ export default function FAQ() {
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                     className="overflow-hidden"
                   >
-                    <p className="text-textMuted leading-relaxed pb-6 pr-12">{faq.a}</p>
+                    <p className="text-legalDark/80 leading-relaxed pb-6 pr-12">{faq.a}</p>
                   </motion.div>
                 )}
               </AnimatePresence>

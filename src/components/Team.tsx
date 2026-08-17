@@ -11,8 +11,8 @@ import patImg from "@/assets/Pat-N_1.webp";
 export default function Team() {
   const team = [
     { name: "Brinda Nicholson", role: "Director & Head of Property Team", image: brindaImg },
+    { name: "Mrs Pathmajani Chandrasekaram (Pat Nathan)", role: "Director", image: patImg },
     { name: "Jayshree Chudasama", role: "Director & Conveyancing Manager", image: jayshreeImg },
-    { name: "Pat Nathan", role: "Business Development Manager", image: patImg },
   ];
 
   return (

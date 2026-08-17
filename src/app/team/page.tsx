@@ -46,11 +46,11 @@ const teamMembers = [
     description: "Specialist Senior Solicitor heading complex residential & commercial conveyancing transactions across London.",
   },
   {
-    name: "Pat Nathan",
-    role: "Director (Senior Solicitor)",
+    name: "Mrs Pathmajani Chandrasekaram (Pat Nathan)",
+    role: "Director",
     image: patImg,
     category: "Leadership",
-    description: "Senior Solicitor with extensive expertise in property law, title investigation, and strategic client representation.",
+    description: "Director with extensive expertise in property law, title investigation, and strategic client representation.",
   },
   {
     name: "Jayshree Chudasama",
@@ -125,7 +125,7 @@ const teamMembers = [
 ];
 
 const stats = [
-  { label: "Track Record", value: "12 Years Young", subtitle: "and growing strong", icon: TrendingUp },
+  { label: "Track Record", value: "15 Years Young", subtitle: "and growing strong", icon: TrendingUp },
   { label: "Client Satisfaction", value: "100%", subtitle: "Personalised and Transparent", icon: ShieldCheck },
   { label: "Repeat Clients", value: "90%", subtitle: "Client Retention Rate", icon: UserCheck },
   { label: "Turnaround Speed", value: "80%", subtitle: "Fastest Lawyers in London", icon: Clock },
@@ -245,8 +245,8 @@ export default function TeamPage() {
               {stats.map((s) => (
                 <div key={s.label}>
                   <div className="text-2xl md:text-3xl font-serif font-bold text-legalDark">{s.value}</div>
-                  <div className="text-xs text-textMuted uppercase tracking-wider font-semibold mt-1">{s.label}</div>
-                  <div className="text-[11px] text-textMuted/80 mt-0.5">{s.subtitle}</div>
+                  <div className="text-xs text-legalDark/75 uppercase tracking-wider font-semibold mt-1">{s.label}</div>
+                  <div className="text-[11px] text-legalDark/65 mt-0.5">{s.subtitle}</div>
                 </div>
               ))}
             </div>
@@ -411,10 +411,10 @@ export default function TeamPage() {
                     London Property Conveyancing Specialists Dedicated to Your Move
                   </h2>
                 </div>
-                <p className="text-textMuted text-sm md:text-base leading-relaxed">
+                <p className="text-legalDark/80 text-sm md:text-base leading-relaxed">
                   Quality Conveyancing is one of London’s leading conveyancing firms that specialises in Property Law. Our objective is to carry out all conveyancing transactions with utmost integrity, efficiency and transparency.
                 </p>
-                <p className="text-textMuted text-sm md:text-base leading-relaxed">
+                <p className="text-legalDark/80 text-sm md:text-base leading-relaxed">
                   Each case and transaction comes with its own quirks and complications; however, we have a highly skilled and experienced team of conveyancers with the knowledge and experience to work their way around even the most complicated transactions.
                 </p>
                 <div className="pt-2 flex flex-wrap gap-4">
@@ -441,29 +441,29 @@ export default function TeamPage() {
             </div>
 
             <div className="space-y-6">
-              <div className="p-6 bg-warmGray/30 rounded-2xl border border-gray-100 shadow-sm">
+              <div className="p-6 bg-emerald-50/40 rounded-2xl border border-emerald-100/80 shadow-sm">
                 <h3 className="font-serif font-bold text-base md:text-lg text-legalDark mb-2">
                   Will I get direct contact details for my assigned conveyancer?
                 </h3>
-                <p className="text-textMuted text-sm leading-relaxed">
+                <p className="text-legalDark/80 text-sm leading-relaxed">
                   Yes, absolutely. Unlike traditional law firms or high-volume call centres, Quality Conveyancing provides you with the direct dial telephone number and personal email address of your conveyancing solicitor.
                 </p>
               </div>
 
-              <div className="p-6 bg-warmGray/30 rounded-2xl border border-gray-100 shadow-sm">
+              <div className="p-6 bg-emerald-50/40 rounded-2xl border border-emerald-100/80 shadow-sm">
                 <h3 className="font-serif font-bold text-base md:text-lg text-legalDark mb-2">
                   What areas of London and England do Quality Conveyancing cover?
                 </h3>
-                <p className="text-textMuted text-sm leading-relaxed">
+                <p className="text-legalDark/80 text-sm leading-relaxed">
                   Our conveyancing experts are based in London (Ealing) and serve clients purchasing, selling, or remortgaging residential properties across London and all of England & Wales.
                 </p>
               </div>
 
-              <div className="p-6 bg-warmGray/30 rounded-2xl border border-gray-100 shadow-sm">
+              <div className="p-6 bg-emerald-50/40 rounded-2xl border border-emerald-100/80 shadow-sm">
                 <h3 className="font-serif font-bold text-base md:text-lg text-legalDark mb-2">
                   How does Quality Conveyancing complete transactions 80% faster?
                 </h3>
-                <p className="text-textMuted text-sm leading-relaxed">
+                <p className="text-legalDark/80 text-sm leading-relaxed">
                   Through direct dial communication, proactive search ordering, dedicated operational oversight by Head of Operations Paul Joseph, and senior solicitor leadership from Directors Brinda Nicholson, Pat Nathan, and Jayshree Chudasama.
                 </p>
               </div>

@@ -210,7 +210,7 @@ export default function ServicesPage() {
               <h2 className="text-3xl md:text-4xl font-serif font-bold text-legalDark mb-4">
                 We Serve The Best Conveyancing Service in the UK
               </h2>
-              <p className="text-textMuted text-sm md:text-base leading-relaxed">
+              <p className="text-legalDark/80 text-sm md:text-base leading-relaxed">
                 Our focus is on making the conveyancing process of buying and selling a property as smooth, simple, and straightforward for you as possible.
               </p>
             </div>
@@ -232,7 +232,7 @@ export default function ServicesPage() {
                     <h3 className="text-lg font-bold font-serif text-legalDark mb-2">
                       {item.title}
                     </h3>
-                    <p className="text-textMuted text-xs leading-relaxed">
+                    <p className="text-legalDark/75 text-xs leading-relaxed">
                       {item.description}
                     </p>
                   </div>
@@ -253,7 +253,7 @@ export default function ServicesPage() {
                 <h2 className="text-3xl md:text-4xl font-serif font-bold text-legalDark mb-6 leading-tight">
                   Direct Line To Your Personal Conveyancer—No Call Centres
                 </h2>
-                <div className="space-y-4 text-textMuted text-sm leading-relaxed">
+                <div className="space-y-4 text-legalDark/80 text-sm leading-relaxed">
                   <p>
                     <strong className="text-legalDark">Fast & Efficient Service:</strong> Our innovative use of technology has taken us to greater heights with an 80% faster completion rate than the UK industry average. From the moment we are instructed, we waste no time in dealing with your case to keep property chains from collapsing.
                   </p>
@@ -297,7 +297,7 @@ export default function ServicesPage() {
               <h2 className="text-3xl md:text-5xl font-serif font-bold text-legalDark mb-4">
                 Services We Offer
               </h2>
-              <p className="text-textMuted text-sm md:text-base">
+              <p className="text-legalDark/80 text-sm md:text-base">
                 Specialist residential and commercial conveyancing services tailored to your goals.
               </p>
             </div>
@@ -317,7 +317,7 @@ export default function ServicesPage() {
                       <div className="w-10 h-10 bg-warmGray rounded-lg flex items-center justify-center text-legalDark group-hover:bg-tealAccent/20 transition-colors">
                         <service.icon className="w-5 h-5 text-legalDark" />
                       </div>
-                      <span className="text-[11px] font-medium text-textMuted uppercase tracking-wider bg-warmGray px-2.5 py-0.5 rounded-full">
+                      <span className="text-[11px] font-medium text-legalDark/70 uppercase tracking-wider bg-warmGray px-2.5 py-0.5 rounded-full">
                         {service.subtitle}
                       </span>
                     </div>
@@ -325,7 +325,7 @@ export default function ServicesPage() {
                     <h3 className="text-lg font-bold font-serif text-legalDark mb-2 group-hover:text-tealAccent transition-colors">
                       {service.title}
                     </h3>
-                    <p className="text-textMuted text-xs leading-relaxed mb-4">
+                    <p className="text-legalDark/75 text-xs leading-relaxed mb-4">
                       {service.description}
                     </p>
                   </div>
@@ -385,20 +385,20 @@ export default function ServicesPage() {
               <h2 className="text-3xl md:text-4xl font-serif font-bold text-legalDark mb-2">
                 What Our Clients Say About Us
               </h2>
-              <p className="text-textMuted text-sm">
-                Rated <strong>4.8 out of 5</strong> on Google Reviews based on verified client feedback.
+              <p className="text-legalDark/75 text-sm">
+                Rated <strong className="text-legalDark">4.8 out of 5</strong> on Google Reviews based on verified client feedback.
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               {testimonials.map((t) => (
-                <div key={t.name} className="p-6 bg-warmGray/30 border border-gray-100 rounded-2xl flex flex-col justify-between">
-                  <p className="text-textMuted text-xs md:text-sm leading-relaxed italic mb-6">
+                <div key={t.name} className="p-6 bg-emerald-50/40 border border-emerald-100/80 rounded-2xl flex flex-col justify-between">
+                  <p className="text-legalDark/85 text-xs md:text-sm leading-relaxed italic mb-6">
                     "{t.content}"
                   </p>
                   <div className="flex items-center justify-between border-t border-gray-200/60 pt-4 text-xs">
                     <span className="font-bold text-legalDark">{t.name}</span>
-                    <span className="text-textMuted">{t.time} • Google Review</span>
+                    <span className="text-legalDark/70">{t.time} • Google Review</span>
                   </div>
                 </div>
               ))}

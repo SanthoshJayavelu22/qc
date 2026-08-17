@@ -20,28 +20,12 @@ export default function AboutUs() {
             <h2 className="text-4xl md:text-5xl font-bold font-serif text-legalDark leading-tight mb-8">
               Specialist Conveyancing for Your Property Journey
             </h2>
-            <p className="text-textMuted text-lg leading-relaxed mb-6">
-              Established in 2012, Quality Conveyancing is a premier firm of <strong className="text-legalDark">Conveyancing Solicitors London</strong>. Based in Ealing (W5), our specialist <strong className="text-legalDark">Property Solicitors Ealing</strong> deliver swift, transparent, fixed-fee legal services.
+            <p className="text-legalDark/80 text-lg leading-relaxed mb-6 font-normal">
+              Established in 2012, Quality Conveyancing is a premier law firm of property solicitors and conveyancers based in West London, Ealing (W5), proudly serving clients across the whole of England and Wales. We deliver swift and transparent legal services designed to make your move stress-free, achieving an 80% faster completion rate than the industry average through innovative technology.
             </p>
-            <p className="text-textMuted text-lg leading-relaxed mb-10">
-              With one dedicated lawyer from instruction to completion, you will always have direct access to the person handling your case. We believe in clear communication, honest advice, and putting your needs first.
+            <p className="text-legalDark/80 text-lg leading-relaxed font-normal">
+              When you work with us, you are assigned one dedicated lawyer from instruction to completion, ensuring you always have direct, personal access to the person handling your case. We believe in clear communication, honest advice, and putting your needs first every step of the way.
             </p>
-            <div className="flex items-center justify-between sm:justify-start sm:gap-8">
-              <div className="text-center">
-                <p className="text-2xl sm:text-4xl font-bold font-serif text-legalDark">12+</p>
-                <p className="text-xs sm:text-sm text-textMuted mt-1">Years Experience</p>
-              </div>
-              <div className="w-[1px] h-10 sm:h-12 bg-gray-200"></div>
-              <div className="text-center">
-                <p className="text-2xl sm:text-4xl font-bold font-serif text-legalDark">4.9</p>
-                <p className="text-xs sm:text-sm text-textMuted mt-1">Average Rating</p>
-              </div>
-              <div className="w-[1px] h-10 sm:h-12 bg-gray-200"></div>
-              <div className="text-center">
-                <p className="text-2xl sm:text-4xl font-bold font-serif text-legalDark">5000+</p>
-                <p className="text-xs sm:text-sm text-textMuted mt-1">Cases Handled</p>
-              </div>
-            </div>
           </motion.div>
 
           {/* Image */}
