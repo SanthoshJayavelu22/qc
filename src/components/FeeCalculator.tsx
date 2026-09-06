@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Calculator, PoundSterling, ArrowRight, Home, FileText, AlertCircle, CheckCircle, Info, Phone, Mail, Printer, X } from "lucide-react";
+import { Calculator, PoundSterling, ArrowRight, Home, FileText, AlertCircle, CheckCircle, Info, Phone, Mail, Printer, X, Building2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function FeeCalculator() {
@@ -172,7 +172,15 @@ export default function FeeCalculator() {
     let purchaseFee = 0;
     let isPOA = false;
 
-    // Handle Sale & Purchase separately
+    // Handle Commercial Purchase or Commercial Sale
+    if (transactionType === "Commercial Purchase" || transactionType === "Commercial Sale") {
+      setQuoteResult({
+        type: "COMMERCIAL",
+        message: "* Thank you for requesting a commercial conveyancing quote with us. To ensure we provide the most accurate, custom-tailored pricing for your specific transaction, one of our commercial specialists will review your information and contact you. Alternatively, please call us on 020 3763 6767 and speak to one of our friendly team members right away. We look forward to speaking with you! If you have any urgent questions in the meantime, please feel free to give us a call or send us an email. We look forward to speaking with you!"
+      });
+      setShowQuote(true);
+      return;
+    }
     if (transactionType === "Sale & Purchase") {
       const saleResult = getBaseFee("Sale", value);
       const purchaseResult = getBaseFee("Purchase", value);
@@ -458,7 +466,7 @@ export default function FeeCalculator() {
 
           <div class="quote-title">
             <div>
-              <h2>Itemised Fixed Fee Quote</h2>
+              <h2>Itemised Conveyancing Quote</h2>
               <div style="font-size: 12px; color: #6b7280; margin-top: 4px;">
                 ${transactionType} (${tenureType}) | Property Value: ${formatCurrency(quoteResult.propertyValue)} | Clients: ${quoteResult.clients}
               </div>
@@ -517,7 +525,7 @@ export default function FeeCalculator() {
           </div>
 
           <div class="footer">
-            * Official indicative quote from Quality Conveyancing. All legal work covered under our 100% Fixed Fee Guarantee and No Completion No Legal Fee Promise. Regulated by the Council for Licensed Conveyancers (CLC Practice No. 11359).
+            * Official indicative quote from Quality Conveyancing. All legal work performed by our highly skilled & experienced lawyers with transparent quotes. Regulated by the Council for Licensed Conveyancers (CLC Practice No. 11359).
           </div>
 
           <script>
@@ -562,14 +570,17 @@ export default function FeeCalculator() {
               No hidden surprises. Calculate your exact conveyancing legal fees in seconds with our transparent pricing estimator.
             </p>
 
-            <ul className="space-y-4">
+            <ul className="space-y-3.5">
               {[
-                "100% Fixed Legal Fee Guarantee",
-                "No Completion, No Legal Fee Promise",
+                "*Transparent Quotes",
+                "Highly Skilled & Experienced Lawyers",
                 "Direct Solicitor Direct Dial Access",
-                "Clear Itemised Disbursements Breakdown"
+                "Clear Itemised Disbursements Breakdown",
+                "On panel of all major lenders",
+                "80% Faster Than Industry Average",
+                "5-Star Rated Service"
               ].map((item, index) => (
-                <li key={index} className="flex items-center gap-3 text-sm font-medium">
+                <li key={index} className="flex items-center gap-3 text-sm font-medium text-legalDark">
                   <div className="w-5 h-5 rounded-full bg-tealAccent/20 flex items-center justify-center shrink-0 text-legalDark">
                     <CheckCircle className="w-3.5 h-3.5 text-teal-600" />
                   </div>
@@ -617,6 +628,8 @@ export default function FeeCalculator() {
                         <option key={type} value={type} className="bg-white text-legalDark">{type}</option>
                       ))}
                       <option value="Sale & Purchase" className="bg-white text-legalDark">Sale & Purchase</option>
+                      <option value="Commercial Purchase" className="bg-white text-legalDark">Commercial Purchase</option>
+                      <option value="Commercial Sale" className="bg-white text-legalDark">Commercial Sale</option>
                     </select>
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
                       <svg className="w-4 h-4 text-legalDark/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -650,7 +663,7 @@ export default function FeeCalculator() {
                 </div>
 
                 {/* Tenure Type */}
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 md:col-span-2">
                   <label className="text-xs font-semibold text-textMuted uppercase tracking-widest">Property Tenure</label>
                   <div className="flex bg-lightBg border border-legalDark/20 rounded-lg p-1.5 relative">
                     {['Freehold', 'Leasehold'].map((type) => (
@@ -677,72 +690,12 @@ export default function FeeCalculator() {
                   </div>
                 </div>
 
-                {/* Number of Clients */}
-                <div className="flex flex-col gap-3">
-                  <label className="text-xs font-semibold text-textMuted uppercase tracking-widest">Number of Buyers</label>
-                  <div className="flex bg-lightBg border border-legalDark/20 rounded-lg p-1.5 relative">
-                    {[1, 2, 3, 4].map((num) => (
-                      <button
-                        type="button"
-                        key={num}
-                        onClick={() => setClients(num)}
-                        className={`flex-1 py-2.5 text-sm font-semibold rounded-md transition-all z-10 ${
-                          clients === num ? 'text-white' : 'text-legalDark/60 hover:text-legalDark'
-                        }`}
-                      >
-                        {num}
-                      </button>
-                    ))}
-                    <motion.div 
-                      layout
-                      className="absolute top-1.5 bottom-1.5 w-[calc(25%-6px)] bg-tealAccent rounded-md z-0 shadow-sm"
-                      animate={{ left: `calc(${(clients - 1) * 25}% + 6px)` }}
-                      transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    />
-                  </div>
-                </div>
-
                 {/* Leasehold Specific Options */}
                 {isLeasehold && (
                   <div className="md:col-span-2 flex flex-col gap-3">
                     <label className="text-xs font-semibold text-textMuted uppercase tracking-widest">Leasehold Options</label>
                     <div className="flex flex-wrap gap-3">
                       {Object.keys(ADDITIONAL_FEES.Leasehold).map((option) => (
-                        <label key={option} className="flex items-center gap-2 text-xs text-legalDark/80 hover:text-legalDark transition-colors cursor-pointer bg-lightBg px-3 py-2 rounded-lg border border-gray-200">
-                          <input
-                            type="checkbox"
-                            checked={selectedAddOns.includes(option)}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setSelectedAddOns([...selectedAddOns, option]);
-                              } else {
-                                setSelectedAddOns(selectedAddOns.filter(o => o !== option));
-                              }
-                            }}
-                            className="rounded border-legalDark/30 text-tealAccent focus:ring-tealAccent"
-                          />
-                          {option}
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Freehold Specific Options */}
-                {!isLeasehold && (
-                  <div className="md:col-span-2 flex flex-col gap-3">
-                    <label className="text-xs font-semibold text-textMuted uppercase tracking-widest">Freehold Options</label>
-                    <div className="flex flex-wrap gap-3">
-                      <label className="flex items-center gap-2 text-xs text-legalDark/80 hover:text-legalDark transition-colors cursor-pointer bg-lightBg px-3 py-2 rounded-lg border border-gray-200">
-                        <input
-                          type="checkbox"
-                          checked={hasManagementCompany}
-                          onChange={(e) => setHasManagementCompany(e.target.checked)}
-                          className="rounded border-legalDark/30 text-tealAccent focus:ring-tealAccent"
-                        />
-                        Has Management Company/Resident's Association
-                      </label>
-                      {Object.keys(ADDITIONAL_FEES.Freehold).filter(f => f !== "Resident's Association/Management Company").map((option) => (
                         <label key={option} className="flex items-center gap-2 text-xs text-legalDark/80 hover:text-legalDark transition-colors cursor-pointer bg-lightBg px-3 py-2 rounded-lg border border-gray-200">
                           <input
                             type="checkbox"
@@ -850,7 +803,27 @@ export default function FeeCalculator() {
                   <X className="w-5 h-5" />
                 </button>
 
-                {quoteResult.type === "POA" ? (
+                {quoteResult.type === "COMMERCIAL" ? (
+                  <div className="text-center py-6 px-4">
+                    <div className="inline-flex p-4 bg-teal-50 text-teal-800 rounded-full mb-6">
+                      <Building2 className="w-8 h-8 text-teal-600" />
+                    </div>
+                    <h3 className="text-2xl font-bold font-serif text-legalDark mb-4">Commercial Conveyancing Request</h3>
+                    <div className="p-6 bg-emerald-50/70 rounded-2xl border border-emerald-100 mb-8 max-w-2xl mx-auto">
+                      <p className="text-legalDark text-sm sm:text-base font-bold leading-relaxed text-left">
+                        {quoteResult.message}
+                      </p>
+                    </div>
+                    <div className="flex justify-center gap-4 flex-wrap">
+                      <a href="tel:02037636767" className="inline-flex items-center gap-2 bg-tealAccent text-legalDark font-bold px-6 py-3.5 rounded-xl hover:bg-teal-300 transition-all text-xs uppercase tracking-wider shadow-md">
+                        <Phone className="w-4 h-4" /> Call 020 3763 6767
+                      </a>
+                      <a href="mailto:info@qconveyancing.com" className="inline-flex items-center gap-2 border border-legalDark/20 px-6 py-3.5 rounded-xl hover:bg-legalDark/5 transition-all text-xs uppercase tracking-wider font-bold">
+                        <Mail className="w-4 h-4" /> Email Commercial Team
+                      </a>
+                    </div>
+                  </div>
+                ) : quoteResult.type === "POA" ? (
                   <div className="text-center py-6">
                     <div className="inline-flex p-4 bg-amber-50 rounded-full mb-6">
                       <AlertCircle className="w-8 h-8 text-amber-500" />
@@ -873,7 +846,7 @@ export default function FeeCalculator() {
                     {/* Print Header for Professional Output */}
                     <div className="hidden print:block mb-6 border-b border-gray-200 pb-4">
                       <h2 className="text-2xl font-bold font-serif text-legalDark">Quality Conveyancing</h2>
-                      <p className="text-xs text-textMuted">Official Fixed Fee Conveyancing Quote | Tel: 020 3763 6767 | info@qconveyancing.com</p>
+                      <p className="text-xs text-textMuted">Official Conveyancing Quote | Tel: 020 3763 6767 | info@qconveyancing.com</p>
                     </div>
 
                     <div className="flex flex-col md:flex-row md:items-start justify-between  gap-4 pb-6 border-b border-gray-100 pr-8">
@@ -1018,7 +991,10 @@ export default function FeeCalculator() {
                       </div>
                     </div>
 
-                    <div className="mt-8 pt-6 border-t border-gray-100">
+                    <div className="mt-8 pt-6 border-t border-gray-100 space-y-2">
+                      <p className="text-xs font-bold text-legalDark text-center leading-relaxed">
+                        * We may have seasonal discounts available for your quote. Please get in touch at 020 3763 6767 to discuss
+                      </p>
                       <p className="text-[11px] text-textMuted text-center leading-relaxed">
                         * Indicative quote for standard property transactions. Final fees may vary if your transaction becomes unusually complex or protracted. All fees subject to VAT at 20%.
                       </p>

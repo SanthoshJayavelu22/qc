@@ -1,15 +1,12 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import AboutUs from "@/components/AboutUs";
 import FeeCalculator from "@/components/FeeCalculator";
 import ValuePropositions from "@/components/ValuePropositions";
-import Commitment from "@/components/Commitment";
-import ServicesGrid from "@/components/ServicesGrid";
+import HomeBanners from "@/components/HomeBanners";
 import ProcessTimeline from "@/components/ProcessTimeline";
 import SocialProof from "@/components/SocialProof";
-import Team from "@/components/Team";
 import FAQ from "@/components/FAQ";
-import Insights from "@/components/Insights";
+import SpeakToTeam from "@/components/SpeakToTeam";
 import Footer from "@/components/Footer";
 import PageLoader from "@/components/PageLoader";
 
@@ -19,17 +16,29 @@ export default function Home() {
       <PageLoader />
       <Header />
       <main>
+        {/* 1) Hero Section */}
         <Hero />
-        <AboutUs />
+
+        {/* 2) Instant Quote Generator (Moved up directly after Hero) */}
         <FeeCalculator />
+
+        {/* 3) Trust Badges & Value Propositions */}
         <ValuePropositions />
-        <Commitment />
-        <ServicesGrid />
+
+        {/* 4) Endorsement & Referral Banners */}
+        <HomeBanners />
+
+        {/* 5) "What Happens Next" (The Process) */}
         <ProcessTimeline />
+
+        {/* 6) Reviews Section (~10 Google Reviews) */}
         <SocialProof />
-        <Team />
+
+        {/* 7) FAQs Section */}
         <FAQ />
-        <Insights />
+
+        {/* 8) Speak to Our Team Section */}
+        <SpeakToTeam />
       </main>
       <Footer />
     </>

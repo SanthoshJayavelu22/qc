@@ -11,68 +11,84 @@ import endorsementsHeroImg from "@/assets/endorsements-hero-reviews.png";
 
 const endorsementsList = [
   {
-    name: "Nicolas Pottier",
-    role: "First Time Homebuyer",
+    name: "SY H",
+    role: "Property Seller & Buyer",
     rating: 5,
-    date: "2 years ago",
-    solicitor: "Ayushi",
-    review: "We recently purchased our first house with Quality Conveyancing and have nothing but praise for the team especially Ayushi who helped us through every stage. The team responded to queries promptly and with a high degree of professionalism and attention, even with silly questions from first time buyers like ourselves. We highly recommend Quality Conveyancing to anyone looking for Conveyancing services.",
+    date: "Recent",
+    solicitor: "Chandni & Pat",
+    review: "I don't normally post reviews and I'm not usually impressed with many things but Chandni at QC blew me away. I had two properties to sell and one to purchase all of which were complex and had difficult buyers and solicitors. I have used QC for years and Chandni was exceptional. Pat was always in the background overseeing progress and available. Huge thank you to Ewa who has been brilliant over the years. QC are worth every penny!",
   },
   {
-    name: "Chandresh Kanani",
+    name: "Luc Hardy",
+    role: "Freehold Purchase",
+    rating: 5,
+    date: "Recent",
+    solicitor: "Jay Chudasama & Ewa",
+    review: "I had a fantastic experience with Quality Conveyancing in my journey to buy my freehold property. The process was expertly managed and felt smooth, professional, and supportive from start to finish. A special thanks to Jay Chudasama, who was outstanding throughout — incredibly patient, sincere and always contactable. I also want to mention Ewa Stanisz too whose additional support throughout was invaluable (and very much appreciated) and kept the conveyancing process on track.",
+  },
+  {
+    name: "Varun Sant",
     role: "Home Purchase",
     rating: 5,
-    date: "2 years ago",
-    solicitor: "Sanju",
-    review: "I recently worked with Sanju on my home purchase, and he was fantastic. He quickly initiated all necessary searches, preventing any delays. Additionally, he was always approachable and easy to communicate with. Highly recommended!",
+    date: "Recent",
+    solicitor: "Diksha",
+    review: "I had an excellent experience with the solicitor team handling my house purchase. They were highly professional, proactive, and always approachable — ensuring a smooth process from start to finish. A special mention to Diksha, who managed the deal right from its inception with great efficiency and clear communication. Her commitment and attention to detail made the entire journey effortless and stress-free.",
   },
   {
-    name: "J Unsworth",
-    role: "First Flat Purchase",
+    name: "Ethan Keating",
+    role: "First Time Homebuyer",
     rating: 5,
-    date: "2 years ago",
+    date: "Recent",
     solicitor: "Chandni",
-    review: "Recently completed on our first flat with QC and couldn't be happier with the service provided. Our solicitor (Chandni) was always available, clear with communications and just generally proactive at each step of the way. As first timers, we in particularly really appreciated the approach taken. Chandni and the team went above and beyond to make the whole process as painless and efficient as possible, so thanks again and we would highly recommend to anyone!",
+    review: "We recently used Quality Conveyancing for our first-home purchase and Chandni and the rest of the team were fantastic from start to finish. She was constantly keeping us updated and would also reply back to any questions we had within a timely fashion. You are paying a premium but you are getting a premium service for sure, would highly recommend! They made it as stress-free as possible.",
   },
   {
-    name: "Bhavik Udani",
+    name: "Dilara Sen",
     role: "Flat Sale & Home Purchase",
     rating: 5,
-    date: "2 years ago",
-    solicitor: "Manju",
-    review: "We choose QC to work on the sale of our flat. The solicitor assigned to us was Manju. She was fantastic throughout the sale. In the past I have had a bad experience working with other solicitors however QC were worth every penny. They always had my best interests at heart, reliable, answered phone calls, responded to emails, provided regular updates and only got me involved when needed. I am also using Manju and the team for our ongoing purchase. I would definitely recommend them.",
+    date: "Recent",
+    solicitor: "Ayushi",
+    review: "I've had such a great experience working with Ayushi for my conveyancing. She helped me sell my flat, and a few months later, I was so happy with her service that I came back to her when buying my new home. Ayushi is incredibly professional, efficient, and always kept me updated at every step. She made both the sale and purchase processes smooth and stress-free. I can't recommend her enough!",
   },
   {
-    name: "Zoulla Constantinou",
-    role: "Property Seller",
+    name: "Sarah Appleton",
+    role: "Home Purchase",
     rating: 5,
-    date: "2 years ago",
-    solicitor: "QC Legal Team",
-    review: "I wanted to say what a great experience we had with Quality Conveyancing. They were professional, easy to liaise with, provided the personal touch and always understanding of all our requirements. We wouldn't hesitate to recommend them. Thank you again QC.",
+    date: "Recent",
+    solicitor: "Chandni",
+    review: "It has been an absolute pleasure working with Chandni and her team. They have been consistently professional and took the time to build rapport with us. I chose QC because my sister had also raved about Chandni from her own purchase last year. My purchase was a little complicated but Chandni was unphased and knew exactly what approach to take. Would highly recommend!",
   },
   {
-    name: "Jennifer Schroeder",
-    role: "Remortgage Client",
-    rating: 5,
-    date: "2 years ago",
-    solicitor: "Sanju",
-    review: "QC came highly recommended and didn’t disappoint. Sanju made our remortgage effortless with great communication and efficiency.",
-  },
-  {
-    name: "Karnan Kamalapahan",
+    name: "Robel F",
     role: "Property Buyer",
     rating: 5,
-    date: "2 years ago",
-    solicitor: "Manju Mohan",
-    review: "Manju Mohan done very good service with my case and she did very past service and very helpful",
+    date: "Recent",
+    solicitor: "Manju",
+    review: "I cannot recommend Quality Conveyancing highly enough. From start to finish, the entire process was handled with professionalism, efficiency and excellent communication. Special thank you goes to Manju, who was outstanding throughout. She was always responsive, patient and willing to explain every stage clearly. Level of customer service exceeded my expectations!",
+  },
+  {
+    name: "Milan Sudor",
+    role: "Flat Purchase London",
+    rating: 5,
+    date: "Recent",
+    solicitor: "Chandni",
+    review: "I worked with Chandni on my flat purchase in London and I was very happy with her services. She was always professional, clear and responsive. Buying a flat can be stressful but Chandni made the process much easier for me. She worked well with deadlines and kept me updated throughout. Would definitely recommend Chandni and the team!!",
+  },
+  {
+    name: "Raya Khal",
+    role: "Home Purchase",
+    rating: 5,
+    date: "Recent",
+    solicitor: "Jayshree",
+    review: "I honestly don't think I could have gone through this whole process without Jayshree. From start to finish, she went above and beyond in ways I didn't even expect. She kept us constantly in the loop. She handled everything with such calmness and professionalism. The company is amazing and all the team feel like one big family. Thank you for everything x",
   },
   {
     name: "Yordan Stoyanov",
     role: "Property Buyer",
     rating: 5,
-    date: "2 years ago",
+    date: "Recent",
     solicitor: "Manju S Mohan",
-    review: "Manju S Mohan helped me purchase a property successfully. Although there were long waits for information from third parties, Quality Conveyancing Ltd were always easy to communicate with through email and phone. Their fees were clearly explained at the start of the process and their documents and reports easy to understand. I would recommend them and would use them again for my next property transaction. Really pleased with their services.",
+    review: "Manju S Mohan helped me purchase a property successfully. Quality Conveyancing Ltd were always easy to communicate with through email and phone. Their fees were clearly explained and documents easy to understand. I would recommend them and use them again!",
   },
 ];
 
@@ -80,7 +96,7 @@ const stats = [
   { label: "Google Rating", value: "4.8 / 5.0" },
   { label: "Completion Rate", value: "80% Faster" },
   { label: "Client Recommendation", value: "90% Repeat Clients" },
-  { label: "Fixed Fee Guarantee", value: "100% Transparent" },
+  { label: "Transparent Pricing", value: "100% Transparent" },
 ];
 
 export default function EndorsementsPage() {
@@ -106,9 +122,9 @@ export default function EndorsementsPage() {
                 <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center gap-2 bg-tealAccent text-legalDark font-bold text-xs px-6 py-3 rounded-lg hover:shadow-lg transition-all"
+                    className="inline-flex items-center gap-2 bg-white hover:bg-tealAccent text-legalDark font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition-all border border-white/20 group"
                   >
-                    Instruct Our Legal Team <ArrowRight className="w-3.5 h-3.5" />
+                    Instruct Our Legal Team <ArrowRight className="w-4 h-4 text-tealAccent group-hover:text-legalDark group-hover:translate-x-1 transition-all" />
                   </Link>
                 </div>
               </div>

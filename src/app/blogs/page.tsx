@@ -121,10 +121,10 @@ export default function BlogsPage() {
             <div className="grid lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7 text-center lg:text-left">
                 <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-tealAccent/20 text-tealAccent text-xs font-semibold uppercase tracking-widest mb-4">
-                  <Tag className="w-3.5 h-3.5" /> Conveyancing Insights & Legal News
+                  <Tag className="w-3.5 h-3.5" /> Property Update & Legal News
                 </span>
                 <h1 className="text-3xl md:text-5xl font-serif font-bold mb-4 tracking-tight leading-tight">
-                  UK Property Market & Legal Guides
+                  Property Update & Legal Guides
                 </h1>
                 <p className="text-white/80 text-sm md:text-base max-w-xl font-light leading-relaxed mb-4">
                   Expert articles, conveyancing timelines, Stamp Duty advice, and property market updates from the Quality Conveyancing legal team.

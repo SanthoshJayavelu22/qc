@@ -90,9 +90,9 @@ export default function CareersPage() {
                 <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
                   <a
                     href="mailto:careers@qconveyancing.com"
-                    className="inline-flex items-center gap-2 bg-tealAccent text-legalDark font-bold text-xs px-6 py-3 rounded-lg hover:shadow-lg transition-all"
+                    className="inline-flex items-center gap-2 bg-white hover:bg-tealAccent text-legalDark font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition-all border border-white/20 group"
                   >
-                    View Openings <ArrowRight className="w-3.5 h-3.5" />
+                    View Openings <ArrowRight className="w-4 h-4 text-tealAccent group-hover:text-legalDark group-hover:translate-x-1 transition-all" />
                   </a>
                 </div>
               </div>

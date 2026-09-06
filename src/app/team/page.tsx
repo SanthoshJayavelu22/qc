@@ -47,23 +47,23 @@ const teamMembers = [
   },
   {
     name: "Mrs Pathmajani Chandrasekaram (Pat Nathan)",
-    role: "Director",
+    role: "Director (Senior Solicitor)",
     image: patImg,
     category: "Leadership",
-    description: "Director with extensive expertise in property law, title investigation, and strategic client representation.",
+    description: "Director and Senior Solicitor with extensive expertise in property law, title investigation, and strategic client representation.",
   },
   {
     name: "Jayshree Chudasama",
-    role: "Director",
+    role: "Director (Licensed Conveyancer)",
     image: jayshreeImg,
     category: "Leadership",
-    description: "Director managing conveyancing operations and ensuring client-first standards across all property transactions.",
+    description: "Director and Licensed Conveyancer managing conveyancing operations and ensuring client-first standards across all property transactions.",
   },
   {
     name: "Vijay Chandras",
     role: "Head Of Business Development",
     image: vijayImg,
-    category: "Management & Ops",
+    category: "Business Development",
     description: "Driving strategic partnerships, broker networks, and client growth initiatives across the legal property sector.",
   },
   {
@@ -77,14 +77,14 @@ const teamMembers = [
     name: "Paul Joseph",
     role: "Head Of Operations",
     image: paulImg,
-    category: "Management & Ops",
+    category: "Business Development",
     description: "Overseeing seamless internal workflows, technology integration, and client service delivery standards.",
   },
   {
     name: "Ewa Stanisz",
     role: "PA To Conveyancers",
     image: ewaImg,
-    category: "Management & Ops",
+    category: "Business Development",
     description: "Providing essential administrative oversight and executive support to ensure cases progress smoothly.",
   },
   {
@@ -134,13 +134,13 @@ const stats = [
 export default function TeamPage() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [activeCategory, setActiveCategory] = useState<"all" | "Leadership" | "Legal Experts" | "Management & Ops">("all");
+  const [activeCategory, setActiveCategory] = useState<"all" | "Leadership" | "Legal Experts" | "Business Development">("all");
 
   const filteredMembers = teamMembers.filter((m) => {
     if (activeCategory === "all") return true;
     if (activeCategory === "Leadership") return m.category === "Leadership";
     if (activeCategory === "Legal Experts") return m.category === "Legal Experts" || m.category === "Developing Expertise";
-    if (activeCategory === "Management & Ops") return m.category === "Management & Ops";
+    if (activeCategory === "Business Development") return m.category === "Business Development";
     return true;
   });
 
@@ -211,15 +211,15 @@ export default function TeamPage() {
                 <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
                   <a
                     href="tel:02037636767"
-                    className="inline-flex items-center gap-2 bg-tealAccent text-legalDark font-bold text-xs px-6 py-3 rounded-lg hover:shadow-lg transition-all"
+                    className="inline-flex items-center gap-2 bg-white hover:bg-tealAccent text-legalDark font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition-all border border-white/20 group"
                   >
-                    <PhoneCall className="w-3.5 h-3.5" /> Direct Line: 020 3763 6767
+                    <PhoneCall className="w-4 h-4 text-tealAccent group-hover:text-legalDark transition-colors" /> Direct Line: 020 3763 6767
                   </a>
                   <Link
-                    href="/contact"
-                    className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-medium text-xs px-6 py-3 rounded-lg border border-white/15 transition-all"
+                    href="/quote"
+                    className="inline-flex items-center gap-2 bg-legalDark hover:bg-legalNavy text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl border border-white/20 transition-all shadow-md group"
                   >
-                    Get Fixed Fee Quote <ArrowRight className="w-3.5 h-3.5" />
+                    Get A Quote <ArrowRight className="w-4 h-4 text-tealAccent group-hover:translate-x-1 transition-all" />
                   </Link>
                 </div>
               </div>
@@ -234,6 +234,24 @@ export default function TeamPage() {
                   priority
                 />
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* About Us Information Section (Moved From Home Page) */}
+        <section className="py-10 px-6 lg:px-12 bg-warmGray/40">
+          <div className="container mx-auto max-w-6xl">
+            <div className="bg-white p-8 md:p-12 rounded-3xl border border-gray-100 shadow-sm">
+              <span className="text-xs font-bold uppercase tracking-widest text-tealAccent block mb-2">About Quality Conveyancing</span>
+              <h2 className="text-2xl md:text-3xl font-serif font-bold text-legalDark mb-4">
+                Specialist Conveyancing for Your Property Journey
+              </h2>
+              <p className="text-legalDark/80 text-base leading-relaxed mb-4">
+                Established in 2012, Quality Conveyancing is a premier law firm of property solicitors and conveyancers based in West London, Ealing (W5), proudly serving clients across the whole of England and Wales. We deliver swift and transparent legal services designed to make your move stress-free, achieving an 80% faster completion rate than the industry average through innovative technology.
+              </p>
+              <p className="text-legalDark/80 text-base leading-relaxed">
+                When you work with us, you are assigned one dedicated lawyer from instruction to completion, ensuring you always have direct, personal access to the person handling your case. We believe in clear communication, honest advice, and putting your needs first every step of the way.
+              </p>
             </div>
           </div>
         </section>
@@ -275,7 +293,7 @@ export default function TeamPage() {
                   { id: "all", label: "All Members" },
                   { id: "Leadership", label: "Directors" },
                   { id: "Legal Experts", label: "Conveyancers" },
-                  { id: "Management & Ops", label: "Operations & PA" },
+                  { id: "Business Development", label: "Business Development" },
                 ].map((tab) => (
                   <button
                     key={tab.id}
@@ -399,7 +417,7 @@ export default function TeamPage() {
                   </div>
                   <div className="flex items-center gap-3 text-xs text-white/90">
                     <CheckCircle2 className="w-4 h-4 text-tealAccent shrink-0" />
-                    <span>No completion, no legal fee guarantee</span>
+                    <span>Highly skilled & experienced lawyers</span>
                   </div>
                 </div>
               </div>

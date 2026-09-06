@@ -8,7 +8,7 @@ import ser from "../assets/Our Services.png"
 
 export default function ServicesGrid() {
   const services = [
-    { title: "Residential Conveyancing", desc: "Expert handling of property purchases and sales with transparent fixed fees.", icon: Home },
+    { title: "Residential Conveyancing", desc: "Expert handling of property purchases and sales with transparent pricing.", icon: Home },
     { title: "Freehold Properties", desc: "Navigating complex freehold transfers with precision and care.", icon: Map },
     { title: "Leasehold Properties", desc: "Specialist leasehold agreements and lease extension advice.", icon: Key },
     { title: "Remortgages", desc: "Fast, efficient remortgaging services for your peace of mind.", icon: RefreshCcw },

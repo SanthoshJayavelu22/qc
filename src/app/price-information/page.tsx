@@ -327,18 +327,19 @@ export default function PriceInformationPage() {
               <p className="text-white/80 text-sm md:text-base max-w-2xl mx-auto font-light leading-relaxed mb-6">
                 We have below set out the price information followed by the key stages involved in a sale, a purchase and a re-mortgage.
               </p>
-              <div className="flex flex-wrap justify-center gap-3">
+              <div className="flex flex-wrap justify-center gap-4">
                 <Link
                   href="/quote"
-                  className="inline-flex items-center gap-2 bg-tealAccent text-legalDark font-bold text-xs uppercase tracking-wider px-6 py-3.5 rounded-xl hover:bg-white transition-all shadow-md"
+                  className="inline-flex items-center gap-2 bg-white hover:bg-tealAccent text-legalDark font-bold text-xs sm:text-sm uppercase tracking-wider px-6 py-3.5 rounded-xl transition-all shadow-lg border border-white/20 group"
                 >
-                  Calculate Your Fixed-Fee Quote <ArrowRight className="w-4 h-4" />
+                  <span>Calculate Your Instant Quote</span>
+                  <ArrowRight className="w-4 h-4 text-tealAccent group-hover:text-legalDark group-hover:translate-x-1 transition-all" />
                 </Link>
                 <a
                   href="tel:02037636767"
-                  className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-medium text-xs uppercase tracking-wider px-6 py-3.5 rounded-xl border border-white/15 transition-all"
+                  className="inline-flex items-center gap-2 bg-legalDark hover:bg-legalNavy text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-6 py-3.5 rounded-xl border border-white/20 transition-all shadow-md group"
                 >
-                  <Phone className="w-4 h-4" /> Call 020 3763 6767
+                  <Phone className="w-4 h-4 text-tealAccent group-hover:text-white transition-colors" /> Call 020 3763 6767
                 </a>
               </div>
             </div>
@@ -692,7 +693,7 @@ export default function PriceInformationPage() {
 
             {/* CTA Box */}
             <div className="bg-legalDark text-white p-8 md:p-12 rounded-3xl text-center shadow-xl">
-              <h3 className="text-2xl md:text-3xl font-serif font-bold mb-3">Calculate Your Exact Fixed-Fee Quote Online</h3>
+              <h3 className="text-2xl md:text-3xl font-serif font-bold mb-3">Calculate Your Instant Conveyancing Quote</h3>
               <p className="text-white/80 text-sm max-w-lg mx-auto mb-6">
                 Use our interactive quote calculator for instant fee breakdowns or speak to our conveyancing team for a bespoke quote.
               </p>

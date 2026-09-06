@@ -173,7 +173,7 @@ export default function QuotePage() {
           "Accept": "application/json",
         },
         body: JSON.stringify({
-          _subject: `New Fixed-Fee Conveyancing Quote Request: ${formData.name}`,
+          _subject: `New Conveyancing Quote Request: ${formData.name}`,
           _template: "table",
           "Transaction Type": formData.transaction,
           "Purchase Price Value": formData.purchasePropValue || formData.purchasePropValueBoth || "N/A",
@@ -209,13 +209,13 @@ export default function QuotePage() {
     "@context": "https://schema.org",
     "@type": "LegalService",
     "name": "Quality Conveyancing Instant Quote",
-    "description": "Get an instant, transparent fixed-fee conveyancing quote for property purchase, sale, re-mortgage, or transfer of equity in London.",
+    "description": "Get an instant, transparent conveyancing quote for property purchase, sale, re-mortgage, or transfer of equity in London.",
     "telephone": "020 3763 6767",
     "areaServed": ["London", "England", "Wales", "United Kingdom"],
     "offers": {
       "@type": "Offer",
       "priceCurrency": "GBP",
-      "description": "Fixed fee conveyancing quote with No Completion No Legal Fee guarantee"
+      "description": "Transparent conveyancing quotes by highly skilled & experienced lawyers"
     }
   };
 
@@ -234,30 +234,30 @@ export default function QuotePage() {
           <div className="container mx-auto max-w-6xl relative z-10">
             <div className="max-w-3xl mx-auto text-center">
               <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-tealAccent/20 text-tealAccent text-xs font-semibold uppercase tracking-widest mb-4">
-                <Sparkles className="w-3.5 h-3.5" /> Instant Fixed-Fee Estimator
+                <Sparkles className="w-3.5 h-3.5" /> Instant Quote Estimator
               </span>
               <h1 className="text-3xl md:text-5xl font-serif font-bold mb-4 tracking-tight leading-tight">
-                Get Your Fixed-Fee Conveyancing Quote
+                Get Your Conveyancing Quote
               </h1>
               <p className="text-white/80 text-sm md:text-base max-w-2xl mx-auto font-light leading-relaxed mb-6">
-                Transparent, fixed-fee quotes with zero hidden charges. Backed by our No Completion, No Legal Fee guarantee.
+                Transparent quotes with zero hidden charges. Backed by our highly skilled & experienced lawyers.
               </p>
 
               {/* Price Information Page Link Banner */}
               <div className="mb-4">
                 <Link
                   href="/price-information"
-                  className="inline-flex items-center gap-2 bg-tealAccent text-legalDark font-bold text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl hover:bg-white transition-all shadow-md group"
+                  className="inline-flex items-center gap-2 bg-white hover:bg-tealAccent text-legalDark font-bold text-xs sm:text-sm uppercase tracking-wider px-6 py-3 rounded-xl transition-all shadow-lg border border-white/20 group"
                 >
-                  <FileText className="w-4 h-4" />
+                  <FileText className="w-4 h-4 text-tealAccent group-hover:text-legalDark transition-colors" />
                   <span>Click here for price information</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-3.5 h-3.5 text-tealAccent group-hover:text-legalDark group-hover:translate-x-1 transition-all" />
                 </Link>
               </div>
 
               {/* Special Offer Alert Banner */}
-              <div className="inline-flex flex-wrap items-center justify-center gap-3 bg-tealAccent/15 border border-tealAccent/30 text-tealAccent px-4 py-2 rounded-xl text-xs font-medium">
-                <Tag className="w-4 h-4 shrink-0" />
+              <div className="inline-flex flex-wrap items-center justify-center gap-2.5 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-4 py-2 rounded-xl text-xs font-medium shadow-sm">
+                <Tag className="w-4 h-4 text-tealAccent shrink-0" />
                 <span>Keep visiting this space for exciting offers and discounts!</span>
               </div>
             </div>
@@ -331,15 +331,28 @@ export default function QuotePage() {
                   <div className="w-16 h-16 bg-tealAccent/20 rounded-full flex items-center justify-center mx-auto mb-6 text-legalDark">
                     <CheckCircle2 className="w-10 h-10 text-teal-600" />
                   </div>
-                  <h2 className="text-3xl font-serif font-bold text-legalDark mb-3">Quote Request Submitted!</h2>
-                  <p className="text-textMuted text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-8">
-                    Thank you, <strong className="text-legalDark">{formData.name}</strong>. Our conveyancing team has received your details for a <strong>{formData.transaction}</strong> transaction and will email your itemised fixed-fee quote shortly.
-                  </p>
-                  <div className="p-6 bg-white rounded-2xl border border-gray-200 max-w-md mx-auto text-left space-y-2 mb-8 text-xs text-textMuted">
+                  {formData.transaction.startsWith("Commercial") ? (
+                    <div className="p-6 bg-emerald-50 rounded-2xl border border-emerald-200 text-left mb-8">
+                      <p className="text-legalDark text-sm sm:text-base font-bold leading-relaxed">
+                        * Thank you for requesting a commercial conveyancing quote with us. To ensure we provide the most accurate, custom-tailored pricing for your specific transaction, one of our commercial specialists will review your information and contact you. Alternatively, please call us on 020 3763 6767 and speak to one of our friendly team members right away. We look forward to speaking with you! If you have any urgent questions in the meantime, please feel free to give us a call or send us an email. We look forward to speaking with you!
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-textMuted text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-8">
+                      Thank you, <strong className="text-legalDark">{formData.name}</strong>. Our conveyancing team has received your details for a <strong>{formData.transaction}</strong> transaction and will email your itemised quote shortly.
+                    </p>
+                  )}
+
+                  <div className="p-6 bg-white rounded-2xl border border-gray-200 max-w-md mx-auto text-left space-y-2 mb-6 text-xs text-textMuted">
                     <div><strong className="text-legalDark">Selected Service:</strong> {formData.transaction}</div>
                     <div><strong className="text-legalDark">Contact Email:</strong> {formData.email}</div>
                     <div><strong className="text-legalDark">Contact Phone:</strong> {formData.phone}</div>
                   </div>
+
+                  <p className="text-xs font-bold text-legalDark text-center mb-8">
+                    * We may have seasonal discounts available for your quote. Please get in touch at 020 3763 6767 to discuss
+                  </p>
+
                   <button
                     onClick={() => {
                       setSubmitted(false);
@@ -705,7 +718,7 @@ export default function QuotePage() {
                     >
                       <div className="text-center mb-8">
                         <h2 className="text-2xl sm:text-3xl font-serif font-bold text-legalDark">
-                          Where Should We Send Your Fixed-Fee Quote?
+                          Where Should We Send Your Quote?
                         </h2>
                         <p className="text-textMuted text-xs sm:text-sm mt-1">
                           We will generate an itemized quote with disbursements and email it directly.
@@ -796,7 +809,7 @@ export default function QuotePage() {
                         </div>
 
                         <div className="pt-2 text-xs text-legalDark font-medium flex items-center justify-between border-t border-gray-200/80">
-                          <span>* Transparent fixed-fee quotes</span>
+                          <span>* Transparent legal quotes</span>
                           <a
                             href="/price-information"
                             target="_blank"
@@ -848,7 +861,7 @@ export default function QuotePage() {
                 Why Choose Quality Conveyancing?
               </span>
               <h2 className="text-3xl font-serif font-bold text-legalDark">
-                Fixed-Fee Guarantee & Direct Dial Conveyancers
+                Transparent Quotes & Direct Dial Conveyancers
               </h2>
             </div>
 
@@ -857,9 +870,9 @@ export default function QuotePage() {
                 <div className="w-10 h-10 rounded-xl bg-tealAccent/20 text-legalDark flex items-center justify-center mb-4">
                   <ShieldCheck className="w-5 h-5" />
                 </div>
-                <h3 className="font-serif font-bold text-lg text-legalDark mb-2">No Completion No Fee</h3>
+                <h3 className="font-serif font-bold text-lg text-legalDark mb-2">Highly Skilled Lawyers</h3>
                 <p className="text-textMuted text-xs leading-relaxed">
-                  If your purchase or sale falls through prior to exchange of contracts, you won't pay our legal fee.
+                  Our team of experienced solicitors and licensed conveyancers will handle your transaction with utmost care and speed.
                 </p>
               </div>
 

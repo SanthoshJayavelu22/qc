@@ -14,8 +14,8 @@ const elMessiri = El_Messiri({
 
 export const metadata: Metadata = {
   title: "Quality Conveyancing | Specialist Property Solicitors London",
-  description: "Expert property solicitors in London offering residential conveyancing, leasehold, remortgages, and more. No completion, no legal fee. Get a fixed-fee quote today.",
-  keywords: ["Conveyancing Solicitors London", "Property Solicitors Ealing", "Residential Conveyancing", "Fixed Fee Conveyancing", "Property Lawyers", "Quality Conveyancing"],
+  description: "Expert property solicitors in London offering residential conveyancing, leasehold, remortgages, and more. Highly skilled lawyers with transparent quotes. Get an instant quote today.",
+  keywords: ["Conveyancing Solicitors London", "Property Solicitors Ealing", "Residential Conveyancing", "Transparent Quotes Conveyancing", "Property Lawyers", "Quality Conveyancing"],
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Quality Conveyancing | Specialist Property Solicitors London",
-    description: "Expert property solicitors offering swift, transparent, fixed-fee conveyancing. No completion, no legal fee.",
+    description: "Expert property solicitors offering swift, transparent conveyancing by highly skilled lawyers.",
     type: "website",
     locale: "en_GB",
   },

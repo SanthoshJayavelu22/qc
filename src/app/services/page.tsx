@@ -121,31 +121,31 @@ const coreHighlights = [
   },
   {
     icon: ShieldCheck,
-    title: "100% Fixed Fee Guarantee",
-    description: "Transparent legal fee quotes from day one with zero hidden costs, backed by our No Completion, No Legal Fee promise.",
+    title: "Trusted by Our Clients",
+    description: "Transparent legal fee quotes from day one with zero hidden costs, backed by our highly skilled & experienced legal team.",
   },
 ];
 
 const testimonials = [
   {
-    name: "Yordan Stoyanov",
-    time: "2 years ago",
-    content: "Manju S Mohan helped me purchase a property successfully. Quality Conveyancing Ltd were always easy to communicate with through email and phone. Their fees were clearly explained and documents easy to understand. I would recommend them and use them again!",
+    name: "SY H",
+    time: "Recent Google Review",
+    content: "I don't normally post reviews and I'm not usually impressed with many things but Chandni at QC blew me away. I had two properties to sell and one to purchase all of which were complex. Chandni was exceptional and Pat was always in the background overseeing progress. QC are worth every penny!",
   },
   {
-    name: "Chandresh Kanani",
-    time: "2 years ago",
-    content: "I recently worked with Sanju on my home purchase, and he was fantastic. He quickly initiated all necessary searches, preventing any delays. Highly recommended!",
+    name: "Luc Hardy",
+    time: "Recent Google Review",
+    content: "I had a fantastic experience with Quality Conveyancing buying my freehold property. Special thanks to Jay Chudasama, who was outstanding throughout — incredibly patient, sincere and always contactable, along with invaluable support from Ewa Stanisz.",
   },
   {
-    name: "J Unsworth",
-    time: "2 years ago",
-    content: "Recently completed on our first flat with QC and couldn't be happier. Our solicitor (Chandni) was always available, clear with communications and proactive at each step. They went above and beyond!",
+    name: "Varun Sant",
+    time: "Recent Google Review",
+    content: "I had an excellent experience with the solicitor team handling my house purchase. Highly professional, proactive, and always approachable. Special mention to Diksha who managed the deal right from its inception with great efficiency.",
   },
   {
-    name: "Nicolas Pottier",
-    time: "2 years ago",
-    content: "We recently purchased our first house with Quality Conveyancing and have nothing but praise for Ayushi who helped us through every stage with high professionalism.",
+    name: "Dilara Sen",
+    time: "Recent Google Review",
+    content: "I've had such a great experience working with Ayushi for my conveyancing. She helped me sell my flat and buy my new home. Ayushi is incredibly professional, efficient, and made both processes smooth and stress-free!",
   },
 ];
 
@@ -183,9 +183,9 @@ export default function ServicesPage() {
                 <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
                   <a
                     href="tel:02037636767"
-                    className="inline-flex items-center gap-2 bg-tealAccent text-legalDark font-bold text-xs px-6 py-3 rounded-lg hover:shadow-lg transition-all"
+                    className="inline-flex items-center gap-2 bg-white hover:bg-tealAccent text-legalDark font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition-all border border-white/20 group"
                   >
-                    <PhoneCall className="w-3.5 h-3.5" /> Speak To Conveyancer: 020 3763 6767
+                    <PhoneCall className="w-4 h-4 text-tealAccent group-hover:text-legalDark transition-colors" /> Speak To Conveyancer: 020 3763 6767
                   </a>
                 </div>
               </div>
@@ -203,12 +203,12 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* Why We Are The Best / Core USPs */}
+        {/* Why We Are The Best / Core USPs - Shifted up to show first after Hero */}
         <section className="py-16 px-6 lg:px-12 bg-white">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center max-w-3xl mx-auto mb-12">
               <h2 className="text-3xl md:text-4xl font-serif font-bold text-legalDark mb-4">
-                We Serve The Best Conveyancing Service in the UK
+                We Provide The Best Conveyancing Service In The UK
               </h2>
               <p className="text-legalDark/80 text-sm md:text-base leading-relaxed">
                 Our focus is on making the conveyancing process of buying and selling a property as smooth, simple, and straightforward for you as possible.
@@ -331,10 +331,10 @@ export default function ServicesPage() {
                   </div>
 
                   <Link
-                    href="#"
+                    href="/quote"
                     className="inline-flex items-center gap-1.5 text-xs font-semibold text-legalDark hover:text-tealAccent transition-colors pt-3 border-t border-gray-100"
                   >
-                    Get Fixed Fee Quote <ArrowRight className="w-3.5 h-3.5" />
+                    Get A Quote <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </motion.div>
               ))}

@@ -116,9 +116,9 @@ export default function ContactPage() {
                 <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
                   <a
                     href="tel:02037636767"
-                    className="inline-flex items-center gap-2 bg-tealAccent text-legalDark font-bold text-xs px-6 py-3 rounded-lg hover:shadow-lg transition-all"
+                    className="inline-flex items-center gap-2 bg-white hover:bg-tealAccent text-legalDark font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition-all border border-white/20 group"
                   >
-                    <Phone className="w-3.5 h-3.5" /> Call Direct: 020 3763 6767
+                    <Phone className="w-4 h-4 text-tealAccent group-hover:text-legalDark transition-colors" /> Call Direct: 020 3763 6767
                   </a>
                 </div>
               </div>
@@ -203,7 +203,7 @@ export default function ContactPage() {
                   Enquire Online
                 </span>
                 <h2 className="text-2xl md:text-3xl font-serif font-bold text-legalDark mb-6">
-                  Get a Free Fixed-Fee Conveyancing Quote
+                  Get a Free Instant Conveyancing Quote
                 </h2>
 
                 {submitted ? (

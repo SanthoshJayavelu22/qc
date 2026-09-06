@@ -29,19 +29,26 @@ export default function Header() {
     setIsScrolled(latest > 50);
   });
 
-  const navLinks = [
+  // Main core header navigation links
+  const mainNavLinks = [
     { name: "Home", href: "/" },
     { name: "Our Services", href: "/services" },
     { name: "Get a Quote", href: "/quote" },
     { name: "Meet the Team", href: "/team" },
     { name: "Endorsements", href: "/endorsements" },
-    { name: "Careers", href: "/careers" },
-    { name: "Blogs", href: "/blogs" },
+    { name: "Property Update", href: "/blogs" },
     { name: "Contact Us", href: "/contact" },
   ];
 
-  // Header should be transparent only on home page when top of scroll; otherwise white background
-  const isTransparent = isHomePage && !isScrolled;
+  // Secondary top utility links
+  const topUtilityLinks = [
+    { name: "Careers", href: "/careers" },
+    { name: "Refer Work", href: "/refer-work" },
+    { name: "Community Work", href: "/community-work" },
+  ];
+
+  // Combined for mobile menu drawer
+  const allNavLinks = [...mainNavLinks.slice(0, 5), ...topUtilityLinks, ...mainNavLinks.slice(5)];
 
   return (
     <>
@@ -49,91 +56,126 @@ export default function Header() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 80, damping: 20 }}
-        className={`fixed top-0 z-[90] w-full transition-all duration-500 ${
-          isTransparent && !isMobileMenuOpen
-            ? "bg-transparent"
-            : "bg-white shadow-sm"
-        }`}
+        className="fixed top-0 z-[90] w-full"
       >
-        <div className="container mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-          {/* Logo */}
-          <Link 
-            href="/" 
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="relative h-12 w-36 sm:h-16 sm:w-48 block"
-          >
-            <Image
-              src={logoImg}
-              alt="Quality Conveyancing"
-              fill
-              className="object-contain object-left"
-              priority
-            />
-          </Link>
+        {/* Top Utility Bar (Desktop / Laptop) */}
+        <div className="hidden lg:block bg-legalDark text-white py-1.5 px-6 border-b border-white/10 text-xs">
+          <div className="w-full max-w-7xl mx-auto flex items-center justify-between">
+            <div className="flex items-center gap-6">
+              <a
+                href="tel:02037636767"
+                className="flex items-center gap-1.5 text-white/90 hover:text-tealAccent transition-colors font-medium"
+              >
+                <Phone className="w-3.5 h-3.5 text-tealAccent" />
+                <span>Call Us: 020 3763 6767</span>
+              </a>
+              <span className="text-white/20">|</span>
+              <a
+                href="https://wa.me/447843476594?text=Hello%20Quality%20Conveyancing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-white/90 hover:text-tealAccent transition-colors font-medium"
+              >
+                <span className="w-2 h-2 rounded-full bg-[#25D366] inline-block animate-pulse"></span>
+                <span>WhatsApp: 07843 476 594</span>
+              </a>
+            </div>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8">
-              {navLinks.map((link) => (
+            <div className="flex items-center gap-5">
+              {topUtilityLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
-                  onClick={() => {
-                    if (link.href === "/") {
-                      window.scrollTo({ top: 0, behavior: "instant" });
-                    }
-                  }}
-                  className={`text-[13px] font-medium tracking-wide uppercase transition-colors duration-300 hover:text-tealAccent ${
-                    isTransparent ? "text-white" : "text-legalDark"
-                  }`}
+                  className="text-white/80 hover:text-tealAccent transition-colors font-medium tracking-wide"
                 >
                   {link.name}
                 </Link>
               ))}
-          </nav>
+            </div>
+          </div>
+        </div>
 
-          {/* Phone + Mobile Toggle */}
-          <div className="flex items-center gap-4">
-            <a
-              href="tel:02037636767"
-              className={`hidden md:flex items-center gap-2 text-sm font-medium transition-colors ${
-                isTransparent && !isMobileMenuOpen ? "text-white" : "text-legalDark"
-              }`}
+        {/* Main Navigation Bar */}
+        <div className="bg-white shadow-sm border-b border-gray-100 transition-all duration-300">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-4">
+            {/* Logo */}
+            <Link 
+              href="/" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="relative h-12 w-36 sm:h-14 sm:w-44 shrink-0 block"
             >
-              <Phone className="w-4 h-4 text-tealAccent" />
-              020 3763 6767
-            </a>
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`lg:hidden p-2.5 rounded-lg transition-colors ${
-                isTransparent && !isMobileMenuOpen 
-                  ? "text-white hover:bg-white/10" 
-                  : "text-legalDark hover:bg-gray-100"
-              }`}
-              aria-label={isMobileMenuOpen ? "Close Menu" : "Open Menu"}
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6 text-legalDark" /> : <Menu className="w-6 h-6" />}
-            </button>
+              <Image
+                src={logoImg}
+                alt="Quality Conveyancing"
+                fill
+                className="object-contain object-left"
+                priority
+              />
+            </Link>
+
+            {/* Desktop Main Nav */}
+            <nav className="hidden lg:flex items-center gap-5 lg:gap-7">
+              {mainNavLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => {
+                      if (link.href === "/") {
+                        window.scrollTo({ top: 0, behavior: "instant" });
+                      }
+                    }}
+                    className={`text-[12px] lg:text-[13px] font-bold tracking-wider uppercase whitespace-nowrap py-1 transition-colors duration-200 ${
+                      isActive
+                        ? "text-tealAccent border-b-2 border-tealAccent"
+                        : "text-legalDark hover:text-tealAccent"
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Right Action Button / Mobile Menu Toggle */}
+            <div className="flex items-center gap-3 shrink-0">
+              <Link
+                href="/quote"
+                className="hidden sm:inline-flex items-center justify-center bg-legalDark hover:bg-legalNavy text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all shadow-md border border-white/10"
+              >
+                Instant Quote
+              </Link>
+
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="lg:hidden p-2.5 rounded-xl text-legalDark hover:bg-gray-100 transition-colors"
+                aria-label={isMobileMenuOpen ? "Close Menu" : "Open Menu"}
+              >
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           </div>
         </div>
       </motion.header>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile / Tablet Drawer Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 bg-white z-[85] pt-24 pb-8 overflow-y-auto lg:hidden"
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-white z-[85] pt-28 pb-8 overflow-y-auto lg:hidden"
           >
             <div className="container mx-auto px-6 flex flex-col gap-1">
-              {navLinks.map((link, i) => (
+              {allNavLinks.map((link, i) => (
                 <motion.div
                   key={link.name}
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -15 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.04 }}
+                  transition={{ delay: i * 0.03 }}
                 >
                   <Link
                     href={link.href}
@@ -143,20 +185,29 @@ export default function Header() {
                         window.scrollTo({ top: 0, behavior: "instant" });
                       }
                     }}
-                    className="text-xl sm:text-2xl font-serif font-bold text-legalDark hover:text-tealAccent flex items-center justify-between py-3.5 border-b border-gray-100"
+                    className="text-lg sm:text-xl font-serif font-bold text-legalDark hover:text-tealAccent flex items-center justify-between py-3 border-b border-gray-100"
                   >
                     <span>{link.name}</span>
                   </Link>
                 </motion.div>
               ))}
 
-              <div className="mt-8 pt-4 border-t border-gray-100">
+              <div className="mt-8 pt-4 border-t border-gray-100 space-y-3">
                 <a 
                   href="tel:02037636767" 
-                  className="flex items-center gap-3 text-legalDark text-lg font-semibold bg-warmGray/50 p-4 rounded-xl border border-gray-100"
+                  className="flex items-center gap-3 text-legalDark text-base font-bold bg-warmGray/50 p-4 rounded-xl border border-gray-100"
                 >
                   <Phone className="w-5 h-5 text-tealAccent" />
                   <span>Call 020 3763 6767</span>
+                </a>
+                <a 
+                  href="https://wa.me/447843476594" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-legalDark text-base font-bold bg-emerald-50 p-4 rounded-xl border border-emerald-100"
+                >
+                  <span className="w-3 h-3 rounded-full bg-[#25D366]"></span>
+                  <span>WhatsApp: 07843 476 594</span>
                 </a>
               </div>
             </div>
