@@ -22,7 +22,7 @@ export default function Hero() {
       </div>
 
       {/* Centered Content */}
-      <div className="relative z-20 h-full flex items-center justify-center">
+      <div className="relative z-20 h-full flex items-center justify-center pt-28 sm:pt-32 lg:pt-36 pb-12">
         <div className="text-center px-6">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
