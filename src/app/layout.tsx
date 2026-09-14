@@ -43,6 +43,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${elMessiri.variable} antialiased scroll-smooth`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var originalDefineProperty = Object.defineProperty;
+                  Object.defineProperty = function(obj, prop, descriptor) {
+                    if (obj === window && prop === 'location') {
+                      return obj;
+                    }
+                    return originalDefineProperty.apply(this, arguments);
+                  };
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-screen bg-lightBg font-sans text-legalDark" suppressHydrationWarning>
         {children}
         <CookieConsent />

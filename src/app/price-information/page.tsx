@@ -40,38 +40,53 @@ export const metadata: Metadata = {
   ],
 };
 
-// Price Tables
+// Price Tables based on Quality_Conveyancing_Fees_Schedule.docx
 const purchasePriceBrackets = [
-  { bracket: "Up to £250,000", fee: "£999" },
-  { bracket: "£251,000 to £350,000", fee: "£1,099" },
-  { bracket: "£351,000 to £500,000", fee: "£1,399" },
-  { bracket: "£501,000 to £600,000", fee: "£1,499" },
-  { bracket: "£601,000 to £750,000", fee: "£1,799" },
-  { bracket: "£751,000 to £950,000", fee: "£1,999" },
-  { bracket: "£951,000 to £1,000,000", fee: "£2,100" },
-  { bracket: "£1,001,000 to £1,500,000", fee: "£2,800" },
-  { bracket: "£1,501,000 to £2,000,000", fee: "£3,800" },
+  { bracket: "Up to £300,000", fee: "£1,099" },
+  { bracket: "£301,000 to £400,000", fee: "£1,099" },
+  { bracket: "£401,000 to £500,000", fee: "£1,299" },
+  { bracket: "£501,000 to £600,000", fee: "£1,399" },
+  { bracket: "£601,000 to £700,000", fee: "£1,499" },
+  { bracket: "£701,000 to £800,000", fee: "£1,799" },
+  { bracket: "£801,000 to £950,000", fee: "£1,999" },
+  { bracket: "£951,000 to £1,500,000", fee: "£2,500" },
+  { bracket: "£1,501,000 to £3,000,000", fee: "Price on Enquiry" },
+  { bracket: "Above £3,000,000", fee: "Price on Enquiry" },
 ];
 
 const salePriceBrackets = [
-  { bracket: "Up to £300,000", fee: "£999" },
-  { bracket: "£301,000 to £500,000", fee: "£1,299" },
+  { bracket: "Up to £300,000", fee: "£1,099" },
+  { bracket: "£301,000 to £400,000", fee: "£1,099" },
+  { bracket: "£401,000 to £500,000", fee: "£1,299" },
   { bracket: "£501,000 to £600,000", fee: "£1,399" },
-  { bracket: "£601,000 to £700,000", fee: "£1,599" },
-  { bracket: "£701,000 to £800,000", fee: "£1,899" },
-  { bracket: "£801,000 to £950,000", fee: "£2,099" },
+  { bracket: "£601,000 to £700,000", fee: "£1,499" },
+  { bracket: "£701,000 to £800,000", fee: "£1,799" },
+  { bracket: "£801,000 to £950,000", fee: "£1,999" },
   { bracket: "Above £951,000", fee: "Price on Enquiry" },
 ];
 
 const remortgagePriceBrackets = [
-  { bracket: "Up to £500,000", fee: "£699" },
+  { bracket: "Up to £500,000", fee: "£999" },
   { bracket: "£501,000 to £700,000", fee: "£999" },
-  { bracket: "£701,000 to £900,000", fee: "£1,099" },
-  { bracket: "Above £901,000", fee: "Price on Enquiry" },
+  { bracket: "Above £701,000", fee: "Price on Enquiry" },
 ];
 
-// Purchase Disbursements
+// Summary Table: Mandatory Charges on Every File (Quality_Conveyancing_Fees_Schedule.docx)
+const mandatoryChargesSummary = [
+  { item: "Core legal fee (see tables above)", amount: "£999 – £3,800 + VAT" },
+  { item: "Non-refundable admin fee (sale/remortgage only)", amount: "£100 + VAT" },
+  { item: "Telegraphic transfer (TT) fee", amount: "£45 per transfer" },
+  { item: "Mortgagee/lender fee (where mortgage present)", amount: "£350 – £400 + VAT (usually £375)" },
+  { item: "Electronic ID check (per client)", amount: "£90 per person" },
+  { item: "Source of funds checks (per client)", amount: "£95 per person" },
+];
+
+// Purchase Disbursements (Quality_Conveyancing_Fees_Schedule.docx & Additional Fees- Amended .docx)
 const purchaseDisbursements = [
+  { 
+    name: "Search Pack Related Fees - Managing, Analysing & Reporting", 
+    description: "£485.00" 
+  },
   { 
     name: "Stamp Duty Land Tax (SDLT)", 
     description: "Calculated on the purchase price. Use HMRC's website for England or Welsh Revenue Authority for Wales.",
@@ -80,41 +95,53 @@ const purchaseDisbursements = [
   },
   { 
     name: "Land Registry Registration Fee", 
-    description: "Based on purchase price. Fee ranges from £20.00 to £910.00.",
+    description: "Based on purchase price. Scale fees set by HM Land Registry.",
     link: "https://www.gov.uk/guidance/hm-land-registry-registration-services-fees",
     linkText: "View Fees"
   },
   { 
-    name: "Land Registry Search Fees", 
-    description: "£3.00 per search" 
+    name: "Land Registry Pre-completion Priority Search", 
+    description: "£7.00 per title" 
   },
   { 
     name: "Land Charges Search", 
-    description: "£2.00 per name" 
+    description: "£7.00 per name" 
   },
   { 
-    name: "Electronic ID Check", 
-    description: "£95.00 per name" 
+    name: "Bankruptcy Searches", 
+    description: "£6.00 per person" 
   },
   { 
-    name: "Notice of Transfer Fee (Leasehold)", 
-    description: "Set out in the Lease. Typically £50.00 - £300.00" 
+    name: "Electronic ID Check (Mandatory)", 
+    description: "£90.00 per person (Required for each client under AML regulations)" 
   },
   { 
-    name: "Notice of Charge Fee (Leasehold)", 
-    description: "Set out in the Lease. Typically £50.00 - £300.00" 
+    name: "Source of Funds Checks (Mandatory)", 
+    description: "£95.00 per person (Mandatory on every transaction to comply with AML obligations)" 
+  },
+  { 
+    name: "Telegraphic Transfer (TT / CHAPS) Fee", 
+    description: "£45.00 per transfer" 
+  },
+  { 
+    name: "Notice of Assignment (Leasehold - prepare & serve)", 
+    description: "£150.00 (purchase only)" 
+  },
+  { 
+    name: "Notice of Charge (Leasehold - prepare & serve)", 
+    description: "£150.00 (purchase only)" 
   },
   { 
     name: "Deed of Covenant Fee (Leasehold)", 
-    description: "Provided by management company. Typically £200.00 - £300.00" 
+    description: "£275.00" 
   },
   { 
-    name: "Certificate of Compliance Fee (Leasehold)", 
-    description: "Confirmed upon receipt of Lease. Ranges from £100.00 - £300.00" 
+    name: "Service Deed / Compliance Certificate (Leasehold / Freehold)", 
+    description: "£275.00 (purchase only)" 
   },
   { 
     name: "Indemnity Insurance Policy (if required)", 
-    description: "Premium depends on risk and property price" 
+    description: "Handling fee £225.00 + insurance premium depending on risk and property price" 
   },
 ];
 
@@ -122,138 +149,183 @@ const purchaseDisbursements = [
 const saleDisbursements = [
   { 
     name: "Land Registry Copy Title Documents", 
-    description: "Dependent on number of documents. £6.00 - £24.00" 
+    description: "£7.00 per title search" 
   },
   { 
-    name: "Managing Agent's/Landlord's Management Pack", 
-    description: "Provided by managing agents/landlord. Typically £200.00 - £600.00" 
+    name: "Non-Refundable Admin Fee (Mandatory on Sales)", 
+    description: "£100.00 + VAT (charged at outset, non-refundable)" 
   },
   { 
-    name: "Deed of Covenant Fee", 
-    description: "Provided by management company. Typically £200.00 - £300.00" 
+    name: "Electronic ID Check (Mandatory)", 
+    description: "£90.00 per person" 
   },
   { 
-    name: "Indemnity Insurance Policy (if required)", 
-    description: "Premium depends on risk and property price" 
+    name: "Source of Funds Checks (Mandatory)", 
+    description: "£95.00 per person" 
   },
   { 
-    name: "Electronic ID Check", 
-    description: "£95.00 per name" 
+    name: "Telegraphic Transfer (TT / CHAPS) Fee", 
+    description: "£45.00 per transfer (for mortgage redemption, surplus funds payout)" 
+  },
+  { 
+    name: "Acting for Lender in Redeeming Mortgage", 
+    description: "£350.00 (where existing charge is redeemed on completion)" 
+  },
+  { 
+    name: "Managing Agent's / Landlord's Management Pack (if Leasehold)", 
+    description: "Disbursement payable to freeholder / managing agents (typically £200.00 - £600.00)" 
+  },
+  { 
+    name: "Indemnity Insurance Handling (if required)", 
+    description: "£225.00 + premium" 
   },
 ];
 
 // Re-Mortgage Disbursements
 const remortgageDisbursements = [
   { 
+    name: "Non-Refundable Admin Fee (Mandatory on Remortgages)", 
+    description: "£100.00 + VAT (charged at outset, non-refundable)" 
+  },
+  { 
     name: "Land Registry Registration Fee", 
-    description: "Based on re-mortgage sum. £20.00 - £550.00" 
+    description: "Scale fee based on re-mortgage sum" 
   },
   { 
     name: "Land Registry Pre-completion Searches", 
-    description: "Priority search: £3.00 per title. Bankruptcy search: £2.00 per person" 
+    description: "Priority search: £7.00 per title. Bankruptcy search: £6.00 per person" 
   },
   { 
-    name: "Notice of Transfer Fee (Leasehold)", 
-    description: "Set out in the Lease. Typically £50.00 - £300.00" 
+    name: "Electronic ID Check (Mandatory)", 
+    description: "£90.00 per person" 
   },
   { 
-    name: "Notice of Charge Fee (Leasehold)", 
-    description: "Set out in the Lease. Typically £50.00 - £300.00" 
+    name: "Source of Funds Checks (Mandatory)", 
+    description: "£95.00 per person" 
   },
   { 
-    name: "Deed of Covenant Fee (Leasehold)", 
-    description: "Provided by management company. Typically £200.00 - £300.00" 
+    name: "Telegraphic Transfer (TT / CHAPS) Fee", 
+    description: "£45.00 per transfer" 
   },
   { 
-    name: "Indemnity Insurance Policy (if required)", 
-    description: "Premium depends on risk and property price" 
+    name: "Acting on Behalf of Lender", 
+    description: "£350.00 – £400.00 + VAT (usually £375.00)" 
   },
   { 
-    name: "Electronic ID Check", 
-    description: "£95.00 per name" 
+    name: "Deed of Covenant Fee (if Leasehold)", 
+    description: "£275.00" 
+  },
+  { 
+    name: "Indemnity Insurance Handling (if required)", 
+    description: "£225.00 + premium" 
   },
 ];
 
-// Leasehold Additional Fees
+// 8 Complete Additional Fee Categories from "Additional Fees- Amended .docx"
+const searchPackRelatedFees = [
+  { name: "Search Pack Related Fees - Managing, Analysing & Reporting", fee: "£485" },
+  { name: "Land Registry Search Fees", fee: "£7" },
+  { name: "Land Charges Search – per name", fee: "£7" },
+  { name: "Land Registry Pre-completion Priority Search (per title)", fee: "£7" },
+  { name: "Bankruptcy Searches (per person)", fee: "£6" },
+];
+
 const leaseholdAddOns = [
-  { name: "Search Pack Related Fees - Managing, Analysing & Reporting", fee: "£450" },
   { name: "Extension of lease term (deed of surrender and re-grant)", fee: "£1,500" },
-  { name: "Deed of Variation (estimated)", fee: "£1,500" },
+  { name: "If Client is doing sale with Lease extension (for lease extension)", fee: "£750" },
+  { name: "Deed of variation (estimate)", fee: "£1,500" },
   { name: "Deed of Covenant", fee: "£275" },
   { name: "Grant of a new lease", fee: "£750" },
-  { name: "Purchasing/selling Share of Freehold", fee: "£375" },
-  { name: "Leasehold Fee", fee: "£375" },
-  { name: "License to assign", fee: "£375" },
-  { name: "Investigating neighbouring lease (purchase only)", fee: "£250" },
-  { name: "Cross over leases (purchase only)", fee: "£250" },
-  { name: "Prepare and service of notice of assignment (purchase only)", fee: "£150" },
-  { name: "Prepare and service of notice of charge (purchase only)", fee: "£150" },
-  { name: "Service deed / Compliance certificate", fee: "£275" },
+  { name: "Purchasing/selling share of freehold", fee: "£100 additional to leasehold fee" },
+  { name: "Leasehold fee (may already be included in quote)", fee: "£275" },
+  { name: "Licence to assign", fee: "£375" },
+  { name: "Investigating neighbouring lease (maisonette – purchase only)", fee: "£250" },
+  { name: "Cross-over leases (purchase only)", fee: "£250" },
+  { name: "Shared ownership leases", fee: "£450" },
+  { name: "Obtaining a share in a management company", fee: "£275" },
   { name: "Administering service charge retentions", fee: "£499" },
-  { name: "Shared Ownership Leases", fee: "£450" },
-  { name: "Dealing with obtaining a share in a Management Company", fee: "£275" },
+  { name: "Service deed / Compliance certificate", fee: "£275" },
+  { name: "Notice of assignment (prepare & serve – purchase only)", fee: "£150" },
+  { name: "Notice of charge (prepare & serve – purchase only)", fee: "£150" },
+  { name: "In-person meeting (per 30 minutes)", fee: "£50" },
 ];
 
-// Freehold Additional Fees
 const freeholdAddOns = [
-  { name: "Dealing with Resident's Association/Management Company", fee: "£350" },
+  { name: "Dealing with management company/residents’ association", fee: "£350" },
   { name: "Service deed / Compliance certificate (purchase only)", fee: "£275" },
-  { name: "Prepare and service of notice of assignment (purchase only)", fee: "£150" },
-  { name: "Prepare and service of notice of charge (purchase only)", fee: "£150" },
+  { name: "Notice of assignment (prepare & serve – purchase only)", fee: "£150" },
+  { name: "Notice of charge (prepare & serve – purchase only)", fee: "£150" },
 ];
 
-// General Additional Fees
-const generalAddOns = [
-  { name: "Acting on behalf of Lender", fee: "£350 – £400" },
-  { name: "Dealing with Lender's Solicitors", fee: "£350" },
-  { name: "Acting for Lender in Redeeming the mortgage", fee: "£355" },
-  { name: "Non Refundable Admin", fee: "£150" },
-  { name: "International AML checks for foreign clients", fee: "£450" },
-  { name: "Transfer of Equity", fee: "£699" },
-  { name: "Dealing with Bankruptcy entries against client's name (purchase only)", fee: "£175" },
-  { name: "Declaration of Solvency", fee: "£275" },
+const lenderFinancialFees = [
+  { name: "Acting on behalf of lender", fee: "£350–£400 (usually £375)" },
+  { name: "Dealing with lender’s solicitors", fee: "£350" },
+  { name: "Acting for lender in redeeming mortgage", fee: "£350" },
+  { name: "Buy-to-let mortgage (additional to lender fee)", fee: "£150" },
+  { name: "Bridging loans", fee: "£1,850" },
+  { name: "Transfer of equity", fee: "£375 extra to Remortgage quote, if by itself £999" },
+  { name: "Further advance (unsecured)", fee: "£200" },
+  { name: "Registering a second charge", fee: "£275" },
+  { name: "Porting/flexible mortgage", fee: "£250–£550" },
+  { name: "Repossession lender enquiries (sale/remortgage)", fee: "£350" },
+  { name: "Additional charge redemption (per charge)", fee: "£350" },
+];
+
+const amlComplianceAdminFees = [
+  { name: "International AML checks", fee: "£450" },
+  { name: "Restriction on title (estimate)", fee: "£350" },
+  { name: "Non-refundable admin fee", fee: "£100" },
+  { name: "Telegraphic Transfer (CHAPS)", fee: "£45" },
+  { name: "International transfer", fee: "£150" },
+  { name: "Service of notices (leasehold/freehold)", fee: "See relevant categories" },
+  { name: "Checking homebuyer’s valuation report", fee: "£500" },
+  { name: "Deposit account (monthly fee)", fee: "£150" },
+  { name: "Dealing with third party per call/letter", fee: "£15" },
+  { name: "Resending contracts / title deeds", fee: "£475" },
+  { name: "SDLT submission fee", fee: "£50" },
+];
+
+const titleLandStructureFees = [
+  { name: "Unregistered land", fee: "£850" },
+  { name: "Defective title", fee: "£400" },
+  { name: "Indemnity insurance handling", fee: "£225" },
+  { name: "Upgrading title", fee: "£300" },
+  { name: "Merging titles", fee: "£2,500–£3,500" },
+  { name: "Splitting title/land", fee: "£2,500" },
+  { name: "Purchase of additional land (per piece)", fee: "£850–£1,500" },
+  { name: "Deed of easement (estimate)", fee: "£500" },
+  { name: "Assignment of agreement for sale", fee: "£500" },
+  { name: "Deed of postponement", fee: "£500" },
+  { name: "Landlord’s Certificate – Building Safety Act 2022 (Purchase)", fee: "£750" },
+  { name: "Landlord’s Certificate – Building Safety Act 2022 (Sale or Remortgage)", fee: "£450" },
+];
+
+const declarationsTrustsFees = [
+  { name: "Declaration of trust", fee: "£750–£1,000" },
+  { name: "Declaration of solvency", fee: "£350" },
+  { name: "Statutory declarations / disclaimers (estimate)", fee: "£250–£500" },
   { name: "Deed of gift", fee: "£350" },
-  { name: "Dealing with a restriction on your property", fee: "£350" },
-  { name: "Dealing with Lender's solicitors regarding repossession", fee: "£350" },
-  { name: "Per additional charge registered against property", fee: "£350" },
-  { name: "SDLT advice", fee: "£750" },
-  { name: "Unregistered Land", fee: "£850" },
-  { name: "Assignment of an agreement for sale", fee: "£500" },
-  { name: "Deed of Postponement of a charge", fee: "£250" },
-  { name: "Deed of postponement/consent re adult occupier", fee: "£50" },
-  { name: "To deal with late completions", fee: "£350" },
-  { name: "To deal with Islamic Mortgages", fee: "£850 – £1,500" },
-  { name: "To deal with defective title", fee: "£400" },
-  { name: "To deal with indemnity insurance", fee: "£225" },
-  { name: "To deal with declaration of trust", fee: "£750 – £1,000" },
-  { name: "Property being sold by a mortgagee", fee: "£375" },
-  { name: "To deal with unsecured borrowing on further advance", fee: "£200" },
-  { name: "Dealing with matrimonial issues", fee: "£450 – £950" },
-  { name: "Bridging loans", fee: "£850 – £1,500" },
-  { name: "Statutory declaration and any disclaimer/waivers", fee: "£250 - £500" },
-  { name: "Dealing via power of attorney", fee: "£350 – £550" },
-  { name: "Drafting/approving Tenancy Agreement (BUY TO LET)", fee: "£150" },
-  { name: "Deed of easement", fee: "£500" },
-  { name: "Cheque stopped at customers request", fee: "£40" },
-  { name: "Cheque returned unpaid", fee: "£40" },
-  { name: "Auction purchase", fee: "£500 – £1,500" },
-  { name: "Purchase/Sale via PR / administrator / company", fee: "£350 – £950" },
-  { name: "Expedition fees (less than 10 working days between exchange and completion)", fee: "£525" },
-  { name: "Newly built property/plot", fee: "£450 – £950" },
-  { name: "Retirement Property", fee: "£500" },
-  { name: "Right to buy property", fee: "£450" },
-  { name: "Dealing with porting a mortgage/flexible mortgage", fee: "£250 – £550" },
-  { name: "SDLT fee", fee: "£50" },
-  { name: "Dealing with Local Authority Charges", fee: "£175" },
-  { name: "Adding or Removing a party to the transaction", fee: "£175" },
-  { name: "Resending Contracts & Title Deeds", fee: "£250" },
-  { name: "Buy to Let Mortgage (in addition to mortgagee fee)", fee: "£150" },
-  { name: "Checking Home Buyer's Valuation Report", fee: "£500" },
-  { name: "Upgrading Title", fee: "£300" },
-  { name: "Help to Buy", fee: "£550" },
-  { name: "Splitting Title/Land", fee: "£2,500 – £3,500" },
-  { name: "Additional piece of land purchase", fee: "£850 – £1,500" },
-  { name: "Dealing with landlord under Building Safety Act 2022", fee: "£750" },
+  { name: "Power of attorney", fee: "£350" },
+  { name: "Assent", fee: "£750" },
+  { name: "Matrimonial issues (estimate)", fee: "£450–£950" },
+];
+
+const specialPropertyFees = [
+  { name: "Auction purchase", fee: "£2,500 + VAT (if Leasehold add £275 extra)" },
+  { name: "PR/administrator/company sale or purchase", fee: "£350–£950" },
+  { name: "Newly built property/plot", fee: "£450–£950 (usually £475, then LH additionally)" },
+  { name: "Retirement property", fee: "£500" },
+  { name: "Right to buy", fee: "Do not charge extra, only Leasehold fee (£275) if applicable" },
+  { name: "Islamic mortgages", fee: "£850–£1,500" },
+  { name: "Sale by mortgagee", fee: "£375" },
+];
+
+const transactionSpecificFees = [
+  { name: "Late completion handling", fee: "£350" },
+  { name: "Contract race", fee: "£350" },
+  { name: "Adding/removing a party", fee: "£175" },
+  { name: "Sending funds to a third party", fee: "£75" },
+  { name: "Post-completion queries", fee: "£150" },
 ];
 
 // Purchase Key Stages
@@ -363,8 +435,8 @@ export default function PriceInformationPage() {
                 <p className="text-textMuted text-xs leading-relaxed">
                   There are also <strong>disbursements</strong> payable to third parties; examples include searches, stamp duty and Land Registry fees.
                 </p>
-                <div className="text-xs text-legalDark font-semibold bg-tealAccent/10 p-3 rounded-xl border border-tealAccent/20">
-                  * All conveyancing legal fees subject to 20% VAT + non-refundable admin fee of £150 + VAT.
+                <div className="text-xs text-legalDark font-semibold bg-tealAccent/10 p-3.5 rounded-xl border border-tealAccent/20">
+                  * All conveyancing legal fees subject to 20% VAT. Non-refundable admin fee of £100 + VAT applies to sales &amp; remortgages.
                 </div>
               </div>
 
@@ -386,6 +458,39 @@ export default function PriceInformationPage() {
                     <span><strong>Re-Mortgages:</strong> The average process is approximately 4-8 weeks.</span>
                   </li>
                 </ul>
+              </div>
+            </div>
+
+            {/* MANDATORY CHARGES SUMMARY TABLE (Schedule Table 4) */}
+            <div className="bg-white p-8 rounded-3xl border border-gray-200/80 shadow-sm space-y-4">
+              <div className="flex items-center gap-3">
+                <ShieldCheck className="w-6 h-6 text-tealAccent" />
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-widest text-tealAccent block">Mandatory Schedule</span>
+                  <h3 className="text-xl md:text-2xl font-serif font-bold text-legalDark">Mandatory Charges on Every File</h3>
+                </div>
+              </div>
+              <p className="text-textMuted text-xs leading-relaxed">
+                These charges apply across all standard transactions in accordance with regulatory anti-money laundering requirements and completion fund security.
+              </p>
+
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="bg-legalDark text-white font-serif uppercase tracking-wider">
+                      <th className="p-3 rounded-tl-xl">Fee / Disbursement Item</th>
+                      <th className="p-3 rounded-tr-xl text-right">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {mandatoryChargesSummary.map((item, idx) => (
+                      <tr key={idx} className="hover:bg-warmGray/20 transition-colors">
+                        <td className="p-3 font-medium text-legalDark">{item.item}</td>
+                        <td className="p-3 font-bold text-right text-legalDark">{item.amount}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
 
@@ -418,7 +523,7 @@ export default function PriceInformationPage() {
                 </li>
               </ul>
               <div className="text-xs text-legalDark font-medium bg-amber-50 p-3 rounded-xl border border-amber-200">
-                ⚠️ Please note: If it transpires your transaction is not standard and becomes unexpectedly complex or protracted then <strong>additional fees may become applicable</strong>. You will find a non-exhaustive list of additional fees below.
+                ⚠️ Please note: If it transpires your transaction is not standard and becomes unexpectedly complex or protracted then <strong>additional fees may become applicable</strong>. You will find a full, comprehensive list of additional fees below.
               </div>
             </div>
 
@@ -427,14 +532,14 @@ export default function PriceInformationPage() {
               <div>
                 <span className="text-xs font-bold uppercase tracking-widest text-tealAccent block mb-1">Purchase Legal Fees</span>
                 <h3 className="text-2xl font-serif font-bold text-legalDark">Purchase – Price &amp; Services Information</h3>
-                <p className="text-textMuted text-xs mt-1">* Non-refundable admin fee of £150 + VAT applies to all transactions.</p>
+                <p className="text-textMuted text-xs mt-1">* Mandatory disbursements apply (ID verification, source of funds check &amp; search pack).</p>
               </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
                     <tr className="bg-legalDark text-white font-serif uppercase tracking-wider">
-                      <th className="p-3.5 rounded-tl-xl">Purchase Price</th>
+                      <th className="p-3.5 rounded-tl-xl">Purchase Price Band</th>
                       <th className="p-3.5 rounded-tr-xl text-right">Legal Fee (£ + VAT)</th>
                     </tr>
                   </thead>
@@ -452,12 +557,12 @@ export default function PriceInformationPage() {
               </div>
 
               <div className="text-xs text-textMuted bg-warmGray/30 p-3 rounded-xl">
-                * Subject to VAT at 20%
+                * All legal fees subject to VAT at 20%
               </div>
 
               {/* Purchase Disbursements */}
               <div className="pt-4 border-t border-gray-100">
-                <h4 className="font-serif font-bold text-lg text-legalDark mb-3">Purchase Disbursements (Payable to Third Parties)</h4>
+                <h4 className="font-serif font-bold text-lg text-legalDark mb-3">Purchase Disbursements &amp; Mandatory Fees</h4>
                 <div className="grid sm:grid-cols-2 gap-3 text-xs">
                   {purchaseDisbursements.map((item, idx) => (
                     <div key={idx} className="p-4 bg-warmGray/20 rounded-xl border border-gray-100">
@@ -500,14 +605,14 @@ export default function PriceInformationPage() {
               <div>
                 <span className="text-xs font-bold uppercase tracking-widest text-tealAccent block mb-1">Sale Legal Fees</span>
                 <h3 className="text-2xl font-serif font-bold text-legalDark">Sale – Price &amp; Services Information</h3>
-                <p className="text-textMuted text-xs mt-1">* Non-refundable admin fee of £150 + VAT applies to all transactions.</p>
+                <p className="text-textMuted text-xs mt-1">* Non-refundable admin fee of £100 + VAT applies to all sale transactions.</p>
               </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
                     <tr className="bg-legalDark text-white font-serif uppercase tracking-wider">
-                      <th className="p-3.5 rounded-tl-xl">Sale Price</th>
+                      <th className="p-3.5 rounded-tl-xl">Sale Price Band</th>
                       <th className="p-3.5 rounded-tr-xl text-right">Legal Fee (£ + VAT)</th>
                     </tr>
                   </thead>
@@ -525,12 +630,12 @@ export default function PriceInformationPage() {
               </div>
 
               <div className="text-xs text-textMuted bg-warmGray/30 p-3 rounded-xl">
-                * Subject to VAT at 20%
+                * All legal fees subject to VAT at 20%
               </div>
 
               {/* Sale Disbursements */}
               <div className="pt-4 border-t border-gray-100">
-                <h4 className="font-serif font-bold text-lg text-legalDark mb-3">Sale Disbursements (Payable to Third Parties)</h4>
+                <h4 className="font-serif font-bold text-lg text-legalDark mb-3">Sale Disbursements &amp; Mandatory Fees</h4>
                 <div className="grid sm:grid-cols-2 gap-3 text-xs">
                   {saleDisbursements.map((item, idx) => (
                     <div key={idx} className="p-4 bg-warmGray/20 rounded-xl border border-gray-100">
@@ -563,14 +668,14 @@ export default function PriceInformationPage() {
               <div>
                 <span className="text-xs font-bold uppercase tracking-widest text-tealAccent block mb-1">Re-Mortgage Legal Fees</span>
                 <h3 className="text-2xl font-serif font-bold text-legalDark">Re-Mortgage – Price &amp; Services Information</h3>
-                <p className="text-textMuted text-xs mt-1">* Non-refundable admin fee of £150 + VAT applies to all transactions.</p>
+                <p className="text-textMuted text-xs mt-1">* Non-refundable admin fee of £100 + VAT applies to all remortgage transactions.</p>
               </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
                     <tr className="bg-legalDark text-white font-serif uppercase tracking-wider">
-                      <th className="p-3.5 rounded-tl-xl">Re-Mortgage Value</th>
+                      <th className="p-3.5 rounded-tl-xl">Property Value Band</th>
                       <th className="p-3.5 rounded-tr-xl text-right">Legal Fee (£ + VAT)</th>
                     </tr>
                   </thead>
@@ -588,12 +693,12 @@ export default function PriceInformationPage() {
               </div>
 
               <div className="text-xs text-textMuted bg-warmGray/30 p-3 rounded-xl">
-                * Subject to VAT at 20%
+                * All legal fees subject to VAT at 20%
               </div>
 
               {/* Re-Mortgage Disbursements */}
               <div className="pt-4 border-t border-gray-100">
-                <h4 className="font-serif font-bold text-lg text-legalDark mb-3">Re-Mortgage Disbursements (Payable to Third Parties)</h4>
+                <h4 className="font-serif font-bold text-lg text-legalDark mb-3">Re-Mortgage Disbursements &amp; Mandatory Fees</h4>
                 <div className="grid sm:grid-cols-2 gap-3 text-xs">
                   {remortgageDisbursements.map((item, idx) => (
                     <div key={idx} className="p-4 bg-warmGray/20 rounded-xl border border-gray-100">
@@ -621,26 +726,40 @@ export default function PriceInformationPage() {
               </div>
             </div>
 
-            {/* ADDITIONAL FEES SECTION */}
+            {/* FULL ADDITIONAL FEES SECTION (8 Complete Categories from Additional Fees- Amended .docx) */}
             <div className="bg-warmGray/30 p-8 rounded-3xl border border-gray-200/80 space-y-8">
               <div>
-                <span className="text-xs font-bold uppercase tracking-widest text-tealAccent block mb-1">Non-Standard Transactions</span>
-                <h3 className="text-2xl font-serif font-bold text-legalDark">Additional Fees – If Applicable</h3>
-                <p className="text-textMuted text-xs mt-1">
-                  Please note below are the list of additional fees that may become chargeable depending on the nature of your case. 
-                  The ones highlighted below are the more frequently incurred additional fees.
+                <span className="text-xs font-bold uppercase tracking-widest text-tealAccent block mb-1">Non-Standard &amp; Additional Services</span>
+                <h3 className="text-2xl md:text-3xl font-serif font-bold text-legalDark">Additional Fees Schedule (Amended)</h3>
+                <p className="text-textMuted text-xs sm:text-sm mt-1 max-w-3xl">
+                  This complete schedule reflects all supplementary fees for property-specific, lender-required, or complex transactions. All applicable fees will be confirmed in advance.
                 </p>
               </div>
 
-              <div className="grid lg:grid-cols-3 gap-8">
-                {/* Leasehold Add-ons */}
-                <div>
-                  <h4 className="font-serif font-bold text-base text-legalDark mb-3 pb-2 border-b border-gray-200 flex items-center gap-2">
-                    <Building className="w-4 h-4 text-tealAccent" /> Leasehold Properties
+              <div className="grid lg:grid-cols-2 gap-8">
+                {/* 1. Search Pack Related Fees */}
+                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs">
+                  <h4 className="font-serif font-bold text-base text-legalDark mb-3 pb-2 border-b border-gray-100 flex items-center gap-2">
+                    <Search className="w-4 h-4 text-tealAccent" /> 1. Search Pack Related Fees
                   </h4>
-                  <div className="space-y-1.5 text-xs max-h-[500px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300">
+                  <div className="space-y-2 text-xs">
+                    {searchPackRelatedFees.map((item, idx) => (
+                      <div key={idx} className="flex justify-between py-1 border-b border-gray-50">
+                        <span className="text-textMuted">{item.name}</span>
+                        <strong className="text-legalDark shrink-0 ml-4">{item.fee}</strong>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 2. Leasehold Fees */}
+                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs">
+                  <h4 className="font-serif font-bold text-base text-legalDark mb-3 pb-2 border-b border-gray-100 flex items-center gap-2">
+                    <Building className="w-4 h-4 text-tealAccent" /> 2. Leasehold Fees (Lease Extensions, Variations &amp; Specifics)
+                  </h4>
+                  <div className="space-y-2 text-xs max-h-80 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300">
                     {leaseholdAddOns.map((item, idx) => (
-                      <div key={idx} className="flex justify-between py-1.5 border-b border-gray-100">
+                      <div key={idx} className="flex justify-between py-1 border-b border-gray-50">
                         <span className="text-textMuted">{item.name}</span>
                         <strong className="text-legalDark shrink-0 ml-4">{item.fee}</strong>
                       </div>
@@ -648,17 +767,14 @@ export default function PriceInformationPage() {
                   </div>
                 </div>
 
-                {/* Freehold Add-ons */}
-                <div>
-                  <h4 className="font-serif font-bold text-base text-legalDark mb-3 pb-2 border-b border-gray-200 flex items-center gap-2">
-                    <Home className="w-4 h-4 text-tealAccent" /> Freehold Properties
+                {/* 3. Freehold Fees */}
+                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs">
+                  <h4 className="font-serif font-bold text-base text-legalDark mb-3 pb-2 border-b border-gray-100 flex items-center gap-2">
+                    <Home className="w-4 h-4 text-tealAccent" /> 3. Freehold Fees (Management Co / Residents’ Association)
                   </h4>
-                  <p className="text-xs text-textMuted mb-3">
-                    The following charges are likely to apply if there is a management company or resident's association that deal with common areas such as maintenance of a private road.
-                  </p>
-                  <div className="space-y-1.5 text-xs">
+                  <div className="space-y-2 text-xs">
                     {freeholdAddOns.map((item, idx) => (
-                      <div key={idx} className="flex justify-between py-1.5 border-b border-gray-100">
+                      <div key={idx} className="flex justify-between py-1 border-b border-gray-50">
                         <span className="text-textMuted">{item.name}</span>
                         <strong className="text-legalDark shrink-0 ml-4">{item.fee}</strong>
                       </div>
@@ -666,19 +782,91 @@ export default function PriceInformationPage() {
                   </div>
                 </div>
 
-                {/* General Add-ons */}
-                <div>
-                  <h4 className="font-serif font-bold text-base text-legalDark mb-3 pb-2 border-b border-gray-200 flex items-center gap-2">
-                    <Gavel className="w-4 h-4 text-tealAccent" /> General (Any Transaction)
+                {/* 4. Lender & Financial Handling Fees */}
+                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs">
+                  <h4 className="font-serif font-bold text-base text-legalDark mb-3 pb-2 border-b border-gray-100 flex items-center gap-2">
+                    <Landmark className="w-4 h-4 text-tealAccent" /> 4. Lender &amp; Financial Handling Fees
                   </h4>
-                  <p className="text-xs text-textMuted mb-3">
-                    These additional fees may become chargeable irrespective of whether or not the property is leasehold or freehold.
-                  </p>
-                  <div className="space-y-1.5 text-xs max-h-[500px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300">
-                    {generalAddOns.map((item, idx) => (
-                      <div key={idx} className="flex justify-between py-1.5 border-b border-gray-100">
+                  <div className="space-y-2 text-xs max-h-80 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300">
+                    {lenderFinancialFees.map((item, idx) => (
+                      <div key={idx} className="flex justify-between py-1 border-b border-gray-50">
                         <span className="text-textMuted">{item.name}</span>
                         <strong className="text-legalDark shrink-0 ml-4">{item.fee}</strong>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 5. AML, Compliance & Administration Fees */}
+                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs">
+                  <h4 className="font-serif font-bold text-base text-legalDark mb-3 pb-2 border-b border-gray-100 flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-tealAccent" /> 5. AML, Compliance &amp; Administration Fees
+                  </h4>
+                  <div className="space-y-2 text-xs max-h-80 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300">
+                    {amlComplianceAdminFees.map((item, idx) => (
+                      <div key={idx} className="flex justify-between py-1 border-b border-gray-50">
+                        <span className="text-textMuted">{item.name}</span>
+                        <strong className="text-legalDark shrink-0 ml-4">{item.fee}</strong>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 6. Title, Land & Property Structure Fees */}
+                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs">
+                  <h4 className="font-serif font-bold text-base text-legalDark mb-3 pb-2 border-b border-gray-100 flex items-center gap-2">
+                    <FileSignature className="w-4 h-4 text-tealAccent" /> 6. Title, Land &amp; Property Structure Fees
+                  </h4>
+                  <div className="space-y-2 text-xs max-h-80 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300">
+                    {titleLandStructureFees.map((item, idx) => (
+                      <div key={idx} className="flex justify-between py-1 border-b border-gray-50">
+                        <span className="text-textMuted">{item.name}</span>
+                        <strong className="text-legalDark shrink-0 ml-4">{item.fee}</strong>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 7. Declarations, Trusts & Personal Status */}
+                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs">
+                  <h4 className="font-serif font-bold text-base text-legalDark mb-3 pb-2 border-b border-gray-100 flex items-center gap-2">
+                    <Users className="w-4 h-4 text-tealAccent" /> 7. Declarations, Trusts &amp; Personal Status
+                  </h4>
+                  <div className="space-y-2 text-xs">
+                    {declarationsTrustsFees.map((item, idx) => (
+                      <div key={idx} className="flex justify-between py-1 border-b border-gray-50">
+                        <span className="text-textMuted">{item.name}</span>
+                        <strong className="text-legalDark shrink-0 ml-4">{item.fee}</strong>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 8. Special Property Types & Scenarios */}
+                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs">
+                  <h4 className="font-serif font-bold text-base text-legalDark mb-3 pb-2 border-b border-gray-100 flex items-center gap-2">
+                    <Key className="w-4 h-4 text-tealAccent" /> 8. Special Property Types &amp; Scenarios
+                  </h4>
+                  <div className="space-y-2 text-xs">
+                    {specialPropertyFees.map((item, idx) => (
+                      <div key={idx} className="flex justify-between py-1 border-b border-gray-50">
+                        <span className="text-textMuted">{item.name}</span>
+                        <strong className="text-legalDark shrink-0 ml-4">{item.fee}</strong>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Transaction-Specific Fees */}
+                <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-xs lg:col-span-2">
+                  <h4 className="font-serif font-bold text-base text-legalDark mb-3 pb-2 border-b border-gray-100 flex items-center gap-2">
+                    <PenTool className="w-4 h-4 text-tealAccent" /> Transaction-Specific Fees
+                  </h4>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs">
+                    {transactionSpecificFees.map((item, idx) => (
+                      <div key={idx} className="p-3 bg-warmGray/20 rounded-xl border border-gray-100 flex justify-between items-center">
+                        <span className="text-textMuted">{item.name}</span>
+                        <strong className="text-legalDark ml-2">{item.fee}</strong>
                       </div>
                     ))}
                   </div>
@@ -686,8 +874,7 @@ export default function PriceInformationPage() {
               </div>
 
               <div className="text-xs text-textMuted bg-white/60 p-4 rounded-xl border border-gray-200">
-                <strong className="text-legalDark">Note:</strong> The above list is a non-exhaustive list and if there are any additional fees we feel that you may incur we will inform you in advance. 
-                In addition to our legal fees for some of the items above you may incur additional disbursement(s) such as Land Registry fees. However, we will inform you accordingly.
+                <strong className="text-legalDark">Note:</strong> All legal fees quoted are subject to VAT at the prevailing rate (currently 20%). Disbursements are payments made to third parties (e.g. Land Registry, search providers, management companies) and are charged at cost without VAT unless the third party charges VAT. If a transaction becomes unexpectedly complex or protracted, additional fees may apply and you will be informed in advance.
               </div>
             </div>
 

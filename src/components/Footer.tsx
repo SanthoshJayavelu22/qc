@@ -133,7 +133,6 @@ export default function Footer() {
                   { name: "Get a Quote", href: "/quote" },
                   { name: "Meet the Team", href: "/team" },
                   { name: "Endorsements", href: "/endorsements" },
-                  { name: "Careers Page", href: "/careers" },
                   { name: "Refer Work", href: "/refer-work" },
                   { name: "Community Work", href: "/community-work" },
                   { name: "Property Update", href: "/blogs" },

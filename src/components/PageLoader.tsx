@@ -54,6 +54,7 @@ export default function PageLoader() {
                 src={logoImg}
                 alt="Quality Conveyancing Logo"
                 fill
+                sizes="(max-width: 640px) 208px, 208px"
                 priority
                 className="object-contain"
               />

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import Image from "next/image";
 
-import happyClientImg from "@/assets/services-hero-legal.webp";
+import happyClientImg from "@/assets/couple-unboxing.png";
 
 export default function SocialProof() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -102,6 +102,7 @@ export default function SocialProof() {
               src={happyClientImg}
               alt="Happy Homebuyer Client Review - Quality Conveyancing"
               fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover object-center"
               priority
             />

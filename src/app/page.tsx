@@ -1,7 +1,6 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import FeeCalculator from "@/components/FeeCalculator";
-import ValuePropositions from "@/components/ValuePropositions";
 import HomeBanners from "@/components/HomeBanners";
 import ProcessTimeline from "@/components/ProcessTimeline";
 import SocialProof from "@/components/SocialProof";
@@ -22,10 +21,7 @@ export default function Home() {
         {/* 2) Instant Quote Generator (Moved up directly after Hero) */}
         <FeeCalculator />
 
-        {/* 3) Trust Badges & Value Propositions */}
-        <ValuePropositions />
-
-        {/* 4) Endorsement & Referral Banners */}
+        {/* 3) Endorsement & Referral Banners */}
         <HomeBanners />
 
         {/* 5) "What Happens Next" (The Process) */}

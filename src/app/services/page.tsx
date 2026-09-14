@@ -1,6 +1,7 @@
 "use client";
 
 import Header from "@/components/Header";
+import ValuePropositions from "@/components/ValuePropositions";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
@@ -203,91 +204,7 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* Why We Are The Best / Core USPs - Shifted up to show first after Hero */}
-        <section className="py-16 px-6 lg:px-12 bg-white">
-          <div className="container mx-auto max-w-6xl">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl font-serif font-bold text-legalDark mb-4">
-                We Provide The Best Conveyancing Service In The UK
-              </h2>
-              <p className="text-legalDark/80 text-sm md:text-base leading-relaxed">
-                Our focus is on making the conveyancing process of buying and selling a property as smooth, simple, and straightforward for you as possible.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {coreHighlights.map((item, idx) => (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="p-6 bg-warmGray/50 border border-gray-100 rounded-2xl flex flex-col justify-between hover:shadow-md transition-all"
-                >
-                  <div>
-                    <div className="w-12 h-12 bg-tealAccent/20 rounded-xl flex items-center justify-center text-legalDark mb-5">
-                      <item.icon className="w-6 h-6 text-legalDark" />
-                    </div>
-                    <h3 className="text-lg font-bold font-serif text-legalDark mb-2">
-                      {item.title}
-                    </h3>
-                    <p className="text-legalDark/75 text-xs leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Detailed Value Proposition Section */}
-        <section className="py-16 px-6 lg:px-12 bg-warmGray/30 border-y border-gray-100">
-          <div className="container mx-auto max-w-6xl">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-tealAccent mb-2 block">
-                  Proactive & Direct Legal Access
-                </span>
-                <h2 className="text-3xl md:text-4xl font-serif font-bold text-legalDark mb-6 leading-tight">
-                  Direct Line To Your Personal Conveyancer—No Call Centres
-                </h2>
-                <div className="space-y-4 text-legalDark/80 text-sm leading-relaxed">
-                  <p>
-                    <strong className="text-legalDark">Fast & Efficient Service:</strong> Our innovative use of technology has taken us to greater heights with an 80% faster completion rate than the UK industry average. From the moment we are instructed, we waste no time in dealing with your case to keep property chains from collapsing.
-                  </p>
-                  <p>
-                    <strong className="text-legalDark">Proactive Conveyancers:</strong> In our line of trade, being proactive is a necessity. Every day spent waiting for responses is a waste of time. We strictly enforce internal time limits so our conveyancers take the initiative to speed up transactions. You will never have to chase us.
-                  </p>
-                  <p>
-                    <strong className="text-legalDark">Stress-Free & Digital:</strong> No need to take time off work. We handle transactions seamlessly via telephone, secure portal, and email. By leveraging electronic signatures, digital ID verification, and swift search ordering, your transaction completes up to 40% faster.
-                  </p>
-                </div>
-
-                <div className="mt-8 flex gap-4">
-                  <a
-                    href="tel:02037636767"
-                    className="inline-flex items-center gap-2 bg-legalDark text-white font-semibold text-sm px-6 py-3 rounded-lg hover:bg-legalNavy transition-colors"
-                  >
-                    <PhoneCall className="w-4 h-4 text-tealAccent" /> Speak Directly: 020 3763 6767
-                  </a>
-                </div>
-              </div>
-
-              <div className="relative h-96 lg:h-[450px] rounded-2xl overflow-hidden shadow-xl border border-gray-100">
-                <Image
-                  src={servicesDirectImg}
-                  alt="Quality Conveyancing Dedicated Solicitor Consultation"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Services We Offer Grid */}
+        {/* 1) Services We Offer Grid (Moved up directly after Hero as requested) */}
         <section className="py-20 px-6 lg:px-12 bg-white">
           <div className="container mx-auto max-w-6xl">
             <div className="text-center max-w-3xl mx-auto mb-14">
@@ -338,6 +255,54 @@ export default function ServicesPage() {
                   </Link>
                 </motion.div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 2) Why Choose Quality Conveyancing? (Value Propositions moved here) */}
+        <ValuePropositions />
+
+        {/* 3) Detailed Value Proposition Section */}
+        <section className="py-16 px-6 lg:px-12 bg-warmGray/30 border-y border-gray-100">
+          <div className="container mx-auto max-w-6xl">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-tealAccent mb-2 block">
+                  Proactive & Direct Legal Access
+                </span>
+                <h2 className="text-3xl md:text-4xl font-serif font-bold text-legalDark mb-6 leading-tight">
+                  Direct Line To Your Personal Conveyancer—No Call Centres
+                </h2>
+                <div className="space-y-4 text-legalDark/80 text-sm leading-relaxed">
+                  <p>
+                    <strong className="text-legalDark">Fast & Efficient Service:</strong> Our innovative use of technology has taken us to greater heights with an 80% faster completion rate than the UK industry average. From the moment we are instructed, we waste no time in dealing with your case to keep property chains from collapsing.
+                  </p>
+                  <p>
+                    <strong className="text-legalDark">Proactive Conveyancers:</strong> In our line of trade, being proactive is a necessity. Every day spent waiting for responses is a waste of time. We strictly enforce internal time limits so our conveyancers take the initiative to speed up transactions. You will never have to chase us.
+                  </p>
+                  <p>
+                    <strong className="text-legalDark">Stress-Free & Digital:</strong> No need to take time off work. We handle transactions seamlessly via telephone, secure portal, and email. By leveraging electronic signatures, digital ID verification, and swift search ordering, your transaction completes up to 40% faster.
+                  </p>
+                </div>
+
+                <div className="mt-8 flex gap-4">
+                  <a
+                    href="tel:02037636767"
+                    className="inline-flex items-center gap-2 bg-legalDark text-white font-semibold text-sm px-6 py-3 rounded-lg hover:bg-legalNavy transition-colors"
+                  >
+                    <PhoneCall className="w-4 h-4 text-tealAccent" /> Speak Directly: 020 3763 6767
+                  </a>
+                </div>
+              </div>
+
+              <div className="relative h-96 lg:h-[450px] rounded-2xl overflow-hidden shadow-xl border border-gray-100">
+                <Image
+                  src={servicesDirectImg}
+                  alt="Quality Conveyancing Dedicated Solicitor Consultation"
+                  fill
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
         </section>

@@ -26,27 +26,39 @@ export default function FAQ() {
     },
     { 
       q: "What Happens at Exchange of Contracts?", 
-      a: "The exchange of contracts is a crucial stage in a property transaction where both parties become legally bound. Once contracts are exchanged, the sale becomes legally binding, and a deposit is usually paid." 
+      a: "The exchange of contracts is a crucial stage in a property transaction where both parties become legally bound. Once the buyer pays the deposit and contracts are exchanged, the sale becomes legally binding." 
     },
     { 
       q: "How Does Your Company Ensure Transparency in Pricing?", 
       a: "Our free instant quote generator offers a clear itemised breakdown of costs, eliminating ambiguity in pricing. We believe in complete transparency, ensuring our clients are well-informed about all expenses involved in their property transactions from day one." 
     },
     { 
+      q: "What Happens on Completion Day?", 
+      a: "Completion day is when the property officially changes ownership. The remaining balance of funds is transferred via CHAPS, and the estate agent releases the keys, marking the successful completion of the transaction." 
+    },
+    { 
       q: "What is Stamp Duty?", 
       a: "Stamp Duty Land Tax (SDLT) is a tax levied on property transactions above a certain value. The amount payable varies based on the property’s price, lease structure, and whether it’s your primary residence or an additional property." 
+    },
+    { 
+      q: "How much deposit do I need to pay on exchange?", 
+      a: "Typically, a 10% deposit of the total purchase price is paid to your conveyancer upon exchange of contracts. In some cases, sellers may agree to a reduced 5% deposit, particularly if you are using a high loan-to-value mortgage or selling a property simultaneously in a chain." 
     },
     { 
       q: "Can Conveyancing be Done Remotely?", 
       a: "Yes, conveyancing can be conducted 100% remotely. Technological advancements, secure digital identity checks, electronic signatures, and online communication allow buyers and sellers to complete transactions seamlessly from anywhere without visiting our offices." 
     },
     { 
+      q: "Do you handle auction properties?", 
+      a: "Yes, we do! Our experienced conveyancing team regularly handles auction sales and purchases, ensuring your legal pack is checked and contracts are completed within the strict auction deadlines." 
+    },
+    { 
       q: "What Sets Your Conveyancing Support Apart from Others?", 
       a: "Our team comprises seasoned specialists dedicated to guiding you through every step of the process. From initial queries to finalising contracts, we offer direct solicitor contact without call centres, ensuring your peace of mind and complete satisfaction." 
     },
     { 
-      q: "What Happens on Completion Day?", 
-      a: "Completion day is when the property officially changes ownership. The remaining balance of funds is transferred via CHAPS, and the estate agent releases the keys, marking the successful completion of the transaction." 
+      q: "Can you act for both the buyer and the seller?", 
+      a: "Yes, we can. As a practice regulated by the Council for Licensed Conveyancers (CLC), we are permitted to act for both parties in a transaction under strict regulatory safeguards. To ensure total fairness and protect your interests, separate independent conveyancers within our firm will handle each side, maintaining complete confidentiality and avoiding any conflict of interest." 
     },
     { 
       q: "How Does Your Company Guarantee a Stress-Free Conveyancing Journey?", 

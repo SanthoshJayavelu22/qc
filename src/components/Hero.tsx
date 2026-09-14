@@ -57,7 +57,7 @@ export default function Hero() {
           >
             <a
               href="/quote"
-              className="px-8 py-3.5 bg-tealAccent text-legalDark font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-white transition-all shadow-lg hover:shadow-tealAccent/20"
+              className="px-8 py-3.5 bg-tealAccent text-white font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-white hover:text-legalDark transition-all shadow-lg hover:shadow-tealAccent/20"
             >
               Get Instant Quote
             </a>
