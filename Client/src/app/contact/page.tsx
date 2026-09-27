@@ -64,6 +64,20 @@ export default function ContactPage() {
     setLoading(true);
 
     try {
+      // 1. Submit to local Express MongoDB backend
+      let backendSuccess = false;
+      try {
+        const backendRes = await fetch("http://localhost:5000/api/inquiries/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+        if (backendRes.ok) backendSuccess = true;
+      } catch (beErr) {
+        console.warn("Backend contact API unreachable, using FormSubmit fallback:", beErr);
+      }
+
+      // 2. Email transmission via FormSubmit
       const response = await fetch("https://formsubmit.co/ajax/santhoshjayavelu57@gmail.com", {
         method: "POST",
         headers: {
@@ -81,13 +95,13 @@ export default function ContactPage() {
         }),
       });
 
-      if (response.ok) {
+      if (response.ok || backendSuccess) {
         setSubmitted(true);
       } else {
         setSubmitError("Failed to transmit enquiry. Please call us directly on 020 3763 6767.");
       }
     } catch (err) {
-      console.error("FormSubmit submission error:", err);
+      console.error("Submission error:", err);
       setSubmitted(true);
     } finally {
       setLoading(false);

@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 };
 
 import CookieConsent from "@/components/CookieConsent";
-import TawkToChat from "@/components/TawkToChat";
+import LiveChatWidget from "@/components/LiveChatWidget";
 
 export default function RootLayout({
   children,
@@ -65,7 +65,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-lightBg font-sans text-legalDark" suppressHydrationWarning>
         {children}
         <CookieConsent />
-        <TawkToChat />
+        <LiveChatWidget />
       </body>
     </html>
   );
