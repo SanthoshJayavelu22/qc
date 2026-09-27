@@ -1,0 +1,12 @@
+{
+  "name": "qc-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:client": "npm run dev --prefix Client",
+    "dev:server": "npm run dev --prefix Server",
+    "build": "npm run build --prefix Client",
+    "start": "npm run start --prefix Client",
+    "test:server": "npm run test:all --prefix Server"
+  }
+}
