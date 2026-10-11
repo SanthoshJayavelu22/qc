@@ -48,19 +48,19 @@ export default function BlogDetailPage() {
     <div className="min-h-screen bg-lightBg flex flex-col">
       <Header />
 
-      <main className="flex-grow pt-24 pb-20">
-        <div className="container mx-auto px-6 max-w-4xl">
+      <main className="flex-grow pt-20 pb-16">
+        <div className={`container mx-auto px-3 sm:px-6 ${blog?.gammaUrl ? "max-w-6xl" : "max-w-4xl"}`}>
           {/* Back button */}
           <Link
             href="/blogs"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-gray-600 hover:text-legalDark transition mb-8 group"
+            className="inline-flex items-center gap-2 text-xs font-semibold text-gray-600 hover:text-legalDark transition mb-6 group"
           >
             <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
             Back to All Articles
           </Link>
 
           {loading ? (
-            <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-gray-100 animate-pulse space-y-6">
+            <div className="bg-white rounded-3xl p-6 sm:p-12 shadow-sm border border-gray-100 animate-pulse space-y-6">
               <div className="h-6 bg-gray-200 rounded w-24"></div>
               <div className="h-10 bg-gray-200 rounded w-3/4"></div>
               <div className="h-4 bg-gray-200 rounded w-1/2"></div>
@@ -83,9 +83,9 @@ export default function BlogDetailPage() {
               </Link>
             </div>
           ) : (
-            <article className="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-gray-100">
+            <article className={`bg-white rounded-3xl shadow-sm border border-gray-100 ${blog.gammaUrl ? "p-4 sm:p-8" : "p-8 sm:p-12"}`}>
               {/* Category & Meta */}
-              <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-4 sm:mb-6">
                 <span className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-wider uppercase px-3 py-1 bg-blue-50 text-[#1b75bb] rounded-full">
                   <Tag className="w-3.5 h-3.5" />
                   {blog.category}
@@ -108,12 +108,12 @@ export default function BlogDetailPage() {
               </div>
 
               {/* Title */}
-              <h1 className="text-2xl sm:text-4xl font-serif font-bold text-legalDark mb-6 leading-tight">
+              <h1 className="text-2xl sm:text-4xl font-serif font-bold text-legalDark mb-4 leading-tight">
                 {blog.title}
               </h1>
 
               {/* Author & Timestamp */}
-              <div className="flex flex-wrap items-center gap-6 text-xs text-gray-500 border-y border-gray-100 py-3.5 mb-8">
+              <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-gray-500 border-y border-gray-100 py-3 mb-6">
                 <span className="flex items-center gap-1.5 font-medium text-gray-700">
                   <User className="w-4 h-4 text-[#1b75bb]" />
                   {blog.author}
@@ -135,12 +135,14 @@ export default function BlogDetailPage() {
               </div>
 
               {/* Excerpt Lead */}
-              <div className="bg-slate-50 border-l-4 border-[#1b75bb] p-4 rounded-r-xl mb-8 text-gray-700 font-serif italic text-base leading-relaxed">
-                {blog.excerpt}
-              </div>
+              {blog.excerpt && (
+                <div className="bg-slate-50 border-l-4 border-[#1b75bb] p-3.5 sm:p-4 rounded-r-xl mb-6 text-gray-700 font-serif italic text-sm sm:text-base leading-relaxed">
+                  {blog.excerpt}
+                </div>
+              )}
 
-              {/* Cover Image if present */}
-              {blog.coverImage && (
+              {/* Cover Image if present (hidden if gamma presentation is used to avoid duplicate hero banners) */}
+              {blog.coverImage && !blog.gammaUrl && (
                 <div className="relative h-72 sm:h-96 w-full rounded-2xl overflow-hidden mb-8 shadow-sm">
                   <img
                     src={blog.coverImage}
@@ -150,7 +152,7 @@ export default function BlogDetailPage() {
                 </div>
               )}
 
-              {/* Gamma Interactive Presentation / Document Embed */}
+              {/* Gamma Interactive Presentation / Document Embed - Wide & Immersive */}
               {blog.gammaUrl && (() => {
                 // Ensure URL points to embed mode: /docs/ or /presentation/ -> /embed/
                 let embedSrc = blog.gammaUrl.trim();
@@ -159,7 +161,6 @@ export default function BlogDetailPage() {
                 } else if (embedSrc.includes("gamma.app/presentation/")) {
                   embedSrc = embedSrc.replace("gamma.app/presentation/", "gamma.app/embed/");
                 } else if (!embedSrc.includes("/embed/")) {
-                  // If it's a short URL like gamma.app/xyz
                   const match = embedSrc.match(/gamma\.app\/([a-zA-Z0-9_-]+)/);
                   if (match && match[1] && match[1] !== "embed" && match[1] !== "docs") {
                     embedSrc = `https://gamma.app/embed/${match[1]}`;
@@ -167,8 +168,8 @@ export default function BlogDetailPage() {
                 }
 
                 return (
-                  <div className="mb-10 space-y-3">
-                    <div className="relative w-full rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-black aspect-[16/10] sm:aspect-[16/9] min-h-[420px] sm:min-h-[560px]">
+                  <div className="mb-6 space-y-2">
+                    <div className="relative w-full rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-[#121212] h-[75vh] min-h-[580px] max-h-[920px]">
                       <iframe
                         src={embedSrc}
                         title={blog.title}
@@ -177,14 +178,17 @@ export default function BlogDetailPage() {
                         className="w-full h-full border-0"
                       />
                     </div>
-                    <div className="flex justify-end">
+                    <div className="flex justify-between items-center px-1">
+                      <span className="text-[11px] text-textMuted font-medium">
+                        Interactive Gamma Presentation • Click slides or scroll to navigate
+                      </span>
                       <a
                         href={blog.gammaUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs text-textMuted hover:text-legalDark transition font-medium"
+                        className="inline-flex items-center gap-1.5 text-xs text-textMuted hover:text-legalDark transition font-semibold"
                       >
-                        <span>Open in Gamma Presentation</span>
+                        <span>Open Full Screen in Gamma</span>
                         <Share2 className="w-3.5 h-3.5" />
                       </a>
                     </div>
