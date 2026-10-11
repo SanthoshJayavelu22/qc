@@ -44,13 +44,13 @@ export default function QuotePage() {
           <div className="container mx-auto max-w-6xl relative z-10">
             <div className="max-w-3xl mx-auto text-center">
               <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-tealAccent/20 text-tealAccent text-xs font-semibold uppercase tracking-widest mb-4">
-                <Sparkles className="w-3.5 h-3.5" /> Conveyancing Quote Enquiry
+                <Sparkles className="w-3.5 h-3.5" /> Instant Conveyancing Quote
               </span>
               <h1 className="text-3xl md:text-5xl font-serif font-bold mb-4 tracking-tight leading-tight">
-                Get Your Conveyancing Quote
+                Get Your Instant Conveyancing Quote
               </h1>
               <p className="text-white/80 text-sm md:text-base max-w-2xl mx-auto font-light leading-relaxed mb-6">
-                Tell us about your property transaction and our specialist conveyancing lawyers will prepare a transparent, tailored quote for you.
+                Calculate your exact conveyancing legal fees online instantly with our itemised fee generator and receive an official copy sent directly to your inbox.
               </p>
 
               {/* Price Information Page Link Banner */}
@@ -89,8 +89,8 @@ export default function QuotePage() {
           </div>
         </section>
 
-        {/* Interactive Conveyancing Quote Enquiry Form (Lead Only - receives leads data) */}
-        <FeeCalculator leadOnly={true} />
+        {/* Interactive Instant Conveyancing Quote Generator (Instant Popup, Email & Admin Capture) */}
+        <FeeCalculator />
 
         {/* SEO / AEO / GEO Key Highlights Section */}
         <section className="py-16 px-6 lg:px-12 bg-white border-t border-gray-200">

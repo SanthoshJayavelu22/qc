@@ -2,15 +2,20 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Heart, Users, ExternalLink, Globe, Sparkles } from "lucide-react";
+import { Heart, Users, ExternalLink, Globe, Sparkles, BookOpen, GraduationCap } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-// Local image imports from assets/teams/
+// Local image imports from assets/
 import londonCharityImg from "@/assets/teams/london.png";
 import fhWhistlersImg1 from "@/assets/teams/FH Whistlers FC.png";
 import fhWhistlersImg2 from "@/assets/teams/FH Whistlers FC -2.png";
-import fhWhistlersImg3 from "@/assets/teams/FH Whistlers FC -3.png";
+import fhWhistlersImg3 from "@/assets/teams/FH Whistlers FC -3.jpeg";
+import abayamDonateImg from "@/assets/abayam-donate.jpg";
+import vakariImg1 from "@/assets/vakari-1.jpg";
+import vakariImg2 from "@/assets/vakari-2.jpg";
+import vakariImg3 from "@/assets/vakari-3.jpg";
+import vakariImg4 from "@/assets/vakari-4.jpg";
 
 export default function CommunityWorkPage() {
   return (
@@ -25,7 +30,7 @@ export default function CommunityWorkPage() {
               <Heart className="w-3.5 h-3.5" /> Giving Back & Social Impact
             </span>
             <h1 className="text-3xl md:text-5xl font-serif font-bold mb-6">
-              Our Community Work & Corporate Responsibility
+              Our Community/Charity Work & Corporate Responsibility
             </h1>
             <p className="text-white/80 text-base md:text-lg max-w-3xl mx-auto leading-relaxed font-light">
               At Quality Conveyancing, we believe that true business success goes hand in hand with giving back. Our commitment to legal excellence is matched only by our dedication to supporting both local and global communities.
@@ -68,6 +73,7 @@ export default function CommunityWorkPage() {
                   src={londonCharityImg}
                   alt="Shooting Star Children's Hospices West London Care Support"
                   fill
+                  sizes="(max-width: 768px) 100vw, 40vw"
                   className="object-cover object-center"
                 />
               </div>
@@ -113,6 +119,7 @@ export default function CommunityWorkPage() {
                     src={fhWhistlersImg1}
                     alt="FH Whistlers FC Youth Team Kit Sponsorship"
                     fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover object-top"
                   />
                 </div>
@@ -122,6 +129,7 @@ export default function CommunityWorkPage() {
                     src={fhWhistlersImg2}
                     alt="FH Whistlers FC Squad Training & Mentorship"
                     fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover object-top"
                   />
                 </div>
@@ -132,6 +140,7 @@ export default function CommunityWorkPage() {
                     src={fhWhistlersImg3}
                     alt="FH Whistlers FC Matchday Community Support"
                     fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover object-top brightness-105 contrast-[1.05] saturate-[1.1]"
                   />
                 </div>
@@ -140,20 +149,190 @@ export default function CommunityWorkPage() {
 
             {/* 3) Global Outreach - Abayam Sri Lanka */}
             <div className="bg-purple-50/50 p-8 md:p-12 rounded-3xl border border-purple-100 shadow-sm grid md:grid-cols-12 gap-8 items-center">
-              <div className="md:col-span-8">
-                <span className="text-xs font-bold uppercase tracking-widest text-purple-700 block mb-2">GLOBAL OUTREACH & CHARITY</span>
-                <h3 className="text-2xl md:text-3xl font-serif font-bold text-legalDark mb-4">
-                  Supporting Abayam (Sri Lanka Healthcare & Education)
+              <div className="md:col-span-7 space-y-4">
+                <span className="text-xs font-bold uppercase tracking-widest text-purple-700 block">
+                  GLOBAL OUTREACH &amp; CHARITY
+                </span>
+                <h3 className="text-2xl md:text-3xl font-serif font-bold text-legalDark">
+                  Supporting Abayam (Sri Lanka Healthcare &amp; Education)
                 </h3>
                 <p className="text-legalDark/85 text-sm md:text-base leading-relaxed">
                   Beyond our local community, we actively support charities like <strong className="text-legalDark">Abayam</strong>, helping to transform healthcare, medical facilities, and educational infrastructure for underprivileged and war-torn communities in Sri Lanka.
                 </p>
+                <div className="pt-2">
+                  <a
+                    href="https://justgiving.com/campaign/abayam"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-[#7a127a] hover:bg-[#600e60] text-white text-xs sm:text-sm font-bold px-6 py-3.5 rounded-xl shadow-md transition-all group"
+                  >
+                    <span>Donate via JustGiving</span>
+                    <ExternalLink className="w-4 h-4 text-white/90 group-hover:translate-x-0.5 transition-transform" />
+                  </a>
+                </div>
               </div>
 
-              <div className="md:col-span-4 bg-white p-6 rounded-2xl border border-purple-200 text-center shadow-sm">
-                <Globe className="w-10 h-10 text-purple-700 mx-auto mb-3" />
-                <h4 className="font-bold text-legalDark text-base mb-1">Global Philanthropy</h4>
-                <p className="text-xs text-legalDark/70">Investing in sustainable healthcare & education worldwide.</p>
+              <div className="md:col-span-5 relative aspect-[3/4] max-w-sm mx-auto w-full rounded-2xl overflow-hidden shadow-lg border border-purple-200 bg-white">
+                <Image
+                  src={abayamDonateImg}
+                  alt="Make a Soul Smile - Donate Now to Abayam Sri Lanka"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 384px"
+                  className="object-cover object-center"
+                />
+              </div>
+            </div>
+
+            {/* 4) Abayam Free Education Centre Opens in Palchenai (Article) */}
+            <div className="bg-white p-8 md:p-12 rounded-3xl border border-gray-100 shadow-sm space-y-8">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-100 pb-6">
+                <div>
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <span className="text-xs font-bold uppercase tracking-widest text-tealAccent">
+                      A Project Funded by Quality Conveyancing
+                    </span>
+                    <span className="text-gray-300">•</span>
+                    <span className="text-xs text-textMuted font-medium">
+                      Vakarai &amp; Batticaloa districts, Sri Lanka • 27 June 2026
+                    </span>
+                  </div>
+                  <h3 className="text-2xl md:text-4xl font-serif font-bold text-legalDark">
+                    Abayam Free Education Centre Opens in Palchenai
+                  </h3>
+                </div>
+
+                <a
+                  href="https://justgiving.com/campaign/abayam"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-legalDark hover:bg-legalNavy text-white text-xs font-bold px-5 py-3 rounded-xl transition-all shadow-md shrink-0 border border-white/10 group"
+                >
+                  <span>Support Projects on JustGiving</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-tealAccent group-hover:translate-x-0.5 transition-transform" />
+                </a>
+              </div>
+
+              {/* Lead Story */}
+              <div className="grid md:grid-cols-12 gap-8 items-center">
+                <div className="md:col-span-7 space-y-4 text-legalDark/85 text-sm md:text-base leading-relaxed">
+                  <p className="font-medium text-legalDark text-base md:text-lg">
+                    On 27th June 2026, we celebrated the opening of the Abayam Free Education Centre in Palchenai, serving communities across the Vakarai and Batticaloa districts of Sri Lanka.
+                  </p>
+                  <p>
+                    The building was fully funded by our firm, <strong className="text-legalDark">Quality Conveyancing</strong>, through Pat &amp; Vijay Chandrasekaram, and is dedicated in loving memory of Vijay’s mother, Valliyammah — a tribute to her wish to see children given a path forward through education. The centre is run in partnership with the Rural Development Society, Palchenai.
+                  </p>
+                  <p>
+                    The opening day began with a ribbon-cutting and the unveiling of the centre’s nameboard, followed by prayers and blessings. Villagers, parents, students, the village leader, the village women’s leader, and principals from surrounding schools all came out to celebrate — along with refreshments for the children.
+                  </p>
+                </div>
+
+                <div className="md:col-span-5 relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg border border-gray-200 bg-warmGray">
+                  <Image
+                    src={vakariImg1}
+                    alt="Opening day ribbon cutting, 27 June 2026 - Abayam Free Education Centre"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 40vw"
+                    className="object-cover object-center"
+                  />
+                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-3 text-white text-xs text-center font-medium">
+                    Opening day ribbon cutting ceremony, 27 June 2026
+                  </div>
+                </div>
+              </div>
+
+              {/* Article Photo Gallery */}
+              <div className="grid sm:grid-cols-3 gap-6 pt-2">
+                <div className="space-y-2">
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-gray-200 bg-warmGray">
+                    <Image
+                      src={vakariImg2}
+                      alt="The centre's nameboard, dedicated in memory of Valliyammah"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover object-center"
+                    />
+                  </div>
+                  <p className="text-xs text-textMuted text-center">
+                    The centre&apos;s nameboard, dedicated in memory of Valliyammah
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-gray-200 bg-warmGray">
+                    <Image
+                      src={vakariImg3}
+                      alt="Villagers, parents and students on opening day"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover object-center"
+                    />
+                  </div>
+                  <p className="text-xs text-textMuted text-center">
+                    Villagers, parents and students on opening day
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-gray-200 bg-warmGray">
+                    <Image
+                      src={vakariImg4}
+                      alt="The finished centre, ready to welcome its first students"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover object-center"
+                    />
+                  </div>
+                  <p className="text-xs text-textMuted text-center">
+                    The finished centre, ready to welcome its first students
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* 4) Supporting Sanctuary and Sustainability at Bhaktivedanta Manor */}
+            <div className="bg-amber-50/40 p-8 md:p-12 rounded-3xl border border-amber-200/60 shadow-sm grid md:grid-cols-12 gap-8 lg:gap-12 items-center">
+              {/* Left Column: Information & Link */}
+              <div className="md:col-span-7 space-y-5">
+                <span className="text-xs font-bold uppercase tracking-widest text-amber-800 block">
+                  SANCTUARY &amp; SUSTAINABILITY
+                </span>
+                <h3 className="text-2xl md:text-3xl font-serif font-bold text-legalDark leading-tight">
+                  Supporting Sanctuary and Sustainability at Bhaktivedanta Manor
+                </h3>
+                <p className="text-legalDark/85 text-sm md:text-base leading-relaxed">
+                  Every month, Quality Conveyancing makes a dedicated donation to support the sanctuary at Bhaktivedanta Manor. As shown in the video during feeding time, these contributions go directly toward providing high-quality feed, daily care, and medical support for over 60 resident cows and bulls.
+                </p>
+                <div className="p-4 bg-white/80 rounded-2xl border border-amber-200/80 shadow-xs space-y-3">
+                  <p className="text-legalDark/80 text-xs sm:text-sm font-medium">
+                    Anyone interested in making donations to this cause can do so via this link:
+                  </p>
+                  <div>
+                    <a
+                      href="https://www.krishnatemple.com/manor/godaan/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-legalDark hover:bg-legalNavy text-white text-xs sm:text-sm font-bold px-5 py-3 rounded-xl shadow-md transition-all border border-white/10 group"
+                    >
+                      <span>Donate to Bhaktivedanta Manor (Go Seva / Godaan)</span>
+                      <ExternalLink className="w-4 h-4 text-tealAccent group-hover:translate-x-0.5 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Portrait Video Player (9:16) */}
+              <div className="md:col-span-5 flex justify-center">
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-200/80 bg-black w-full max-w-[280px] sm:max-w-[310px] aspect-[9/16]">
+                  <video
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="w-full h-full object-cover"
+                  >
+                    <source src="/bhaktivedanta-manor-cows.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
               </div>
             </div>
 

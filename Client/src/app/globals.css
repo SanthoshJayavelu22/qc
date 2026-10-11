@@ -3,7 +3,7 @@
 @theme inline {
   --color-legalDark: #1c3327;
   --color-legalNavy: #2d4a3c;
-  --color-tealAccent: #4a7c59;
+  --color-tealAccent: #74c69d;
   --color-sage1: #8fae98;
   --color-sage2: #6b8f75;
   --color-lightBg: #f7faf7;
@@ -25,8 +25,8 @@
   }
 
   ::selection {
-    background-color: #43e8d840;
-    color: #3a4a58;
+    background-color: #74c69d40;
+    color: #1c3327;
   }
 }
 

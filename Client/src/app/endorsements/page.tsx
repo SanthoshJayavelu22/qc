@@ -11,6 +11,14 @@ import endorsementsHeroImg from "@/assets/endorsements-hero-reviews.png";
 
 const endorsementsList = [
   {
+    name: "Nush K",
+    role: "Property Purchase",
+    rating: 5,
+    date: "4 weeks ago",
+    solicitor: "Sanju Mohanan & Pat",
+    review: "I had a fantastic experience with Sanju Mohanan and the entire team at Quality Conveyancing throughout the purchase of my property. Sanju was professional, patient and incredibly helpful from start to finish. He kept me updated throughout the process, answered my questions clearly and was always willing to help whenever I needed clarification or reassurance. His support was hugely appreciated, particularly during the more complicated stages of the purchase. I’d also like to thank everyone at the Quality Conveyancing office who assisted me when I came in to sign documents. The whole team was welcoming, organised and made everything very straightforward. A special mention also has to go to the senior leadership team including Pat. Whenever I needed additional support or had something that needed attention, they were available and willing to step in, which gave me a lot of confidence throughout the process. Buying a property can be stressful, but having a team that is accessible, responsive and genuinely committed to getting things completed makes a massive difference. A huge thank you to Sanju and everyone at Quality Conveyancing for helping me get my purchase over the line, I would happily recommend them to anyone buying a property.",
+  },
+  {
     name: "SY H",
     role: "Property Seller & Buyer",
     rating: 5,

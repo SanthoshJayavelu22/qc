@@ -40,11 +40,10 @@ export default function Header() {
     { name: "Contact Us", href: "/contact" },
   ];
 
-  // Secondary top utility links
+  // Secondary top utility links (Admin Portal removed from header)
   const topUtilityLinks = [
     { name: "Refer Work", href: "/refer-work" },
-    { name: "Community Work", href: "/community-work" },
-    { name: "Admin Portal", href: "/admin" },
+    { name: "Community/Charity Work", href: "/community-work" },
   ];
 
   // Combined for mobile menu drawer
@@ -58,35 +57,35 @@ export default function Header() {
         transition={{ type: "spring", stiffness: 80, damping: 20 }}
         className="fixed top-0 z-[90] w-full"
       >
-        {/* Top Utility Bar (Desktop / Laptop) */}
-        <div className="hidden lg:block bg-[#071311] text-white py-1.5 px-6 border-b border-white/10 text-xs">
+        {/* Top Utility Bar (Black background with crisp white text) */}
+        <div className="hidden lg:block bg-black text-white py-2 px-6 border-b border-white/10 text-xs">
           <div className="w-full max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-6">
               <a
                 href="tel:02037636767"
-                className="flex items-center gap-1.5 text-white/90 hover:text-tealAccent transition-colors font-medium"
+                className="flex items-center gap-1.5 text-white hover:text-tealAccent transition-colors font-medium"
               >
                 <Phone className="w-3.5 h-3.5 text-tealAccent" />
                 <span>Call Us: 020 3763 6767</span>
               </a>
-              <span className="text-white/20">|</span>
+              <span className="text-white/30">|</span>
               <a
                 href="https://wa.me/447843476594?text=Hello%20Quality%20Conveyancing"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-white/90 hover:text-tealAccent transition-colors font-medium"
+                className="flex items-center gap-1.5 text-white hover:text-tealAccent transition-colors font-medium"
               >
                 <span className="w-2 h-2 rounded-full bg-[#25D366] inline-block animate-pulse"></span>
                 <span>WhatsApp: 07843 476 594</span>
               </a>
             </div>
 
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-6">
               {topUtilityLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-white/80 hover:text-tealAccent transition-colors font-medium tracking-wide"
+                  className="text-white hover:text-tealAccent transition-colors font-medium tracking-wide"
                 >
                   {link.name}
                 </Link>
@@ -95,8 +94,8 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Main Navigation Bar - Sage Dark Theme */}
-        <div className="bg-[#0A1E1B] border-b border-white/15 transition-all duration-300">
+        {/* Main Navigation Bar - Dark Green Brand Color (#1c3327 / bg-legalDark) */}
+        <div className="bg-legalDark border-b border-white/15 transition-all duration-300">
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-4">
             {/* Logo */}
             <Link 

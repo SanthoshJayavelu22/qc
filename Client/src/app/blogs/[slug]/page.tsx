@@ -150,11 +150,55 @@ export default function BlogDetailPage() {
                 </div>
               )}
 
+              {/* Gamma Interactive Presentation / Document Embed */}
+              {blog.gammaUrl && (() => {
+                // Ensure URL points to embed mode: /docs/ or /presentation/ -> /embed/
+                let embedSrc = blog.gammaUrl.trim();
+                if (embedSrc.includes("gamma.app/docs/")) {
+                  embedSrc = embedSrc.replace("gamma.app/docs/", "gamma.app/embed/");
+                } else if (embedSrc.includes("gamma.app/presentation/")) {
+                  embedSrc = embedSrc.replace("gamma.app/presentation/", "gamma.app/embed/");
+                } else if (!embedSrc.includes("/embed/")) {
+                  // If it's a short URL like gamma.app/xyz
+                  const match = embedSrc.match(/gamma\.app\/([a-zA-Z0-9_-]+)/);
+                  if (match && match[1] && match[1] !== "embed" && match[1] !== "docs") {
+                    embedSrc = `https://gamma.app/embed/${match[1]}`;
+                  }
+                }
+
+                return (
+                  <div className="mb-10 space-y-3">
+                    <div className="relative w-full rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-black aspect-[16/10] sm:aspect-[16/9] min-h-[420px] sm:min-h-[560px]">
+                      <iframe
+                        src={embedSrc}
+                        title={blog.title}
+                        allowFullScreen
+                        allow="fullscreen; autoplay"
+                        className="w-full h-full border-0"
+                      />
+                    </div>
+                    <div className="flex justify-end">
+                      <a
+                        href={blog.gammaUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs text-textMuted hover:text-legalDark transition font-medium"
+                      >
+                        <span>Open in Gamma Presentation</span>
+                        <Share2 className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                  </div>
+                );
+              })()}
+
               {/* Main Content (HTML support) */}
-              <div
-                className="prose prose-slate max-w-none text-gray-800 text-sm sm:text-base leading-relaxed space-y-4"
-                dangerouslySetInnerHTML={{ __html: blog.content }}
-              />
+              {blog.content && (
+                <div
+                  className="prose prose-slate max-w-none text-gray-800 text-sm sm:text-base leading-relaxed space-y-4"
+                  dangerouslySetInnerHTML={{ __html: blog.content }}
+                />
+              )}
 
               {/* Tags */}
               {blog.tags && blog.tags.length > 0 && (

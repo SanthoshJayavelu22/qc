@@ -9,6 +9,7 @@ export interface IBlog extends Document {
   author: string;
   readTime: string;
   coverImage?: string;
+  gammaUrl?: string;
   tags?: string[];
   isPublished: boolean;
   createdAt: Date;
@@ -20,11 +21,12 @@ const BlogSchema = new Schema<IBlog>(
     title: { type: String, required: true, trim: true },
     slug: { type: String, required: true, unique: true, trim: true, lowercase: true },
     excerpt: { type: String, required: true, trim: true },
-    content: { type: String, required: true },
+    content: { type: String, default: "" },
     category: { type: String, required: true, default: "Conveyancing" },
     author: { type: String, required: true, default: "Quality Conveyancing Team" },
     readTime: { type: String, default: "5 min read" },
     coverImage: { type: String, default: "" },
+    gammaUrl: { type: String, default: "", trim: true },
     tags: [{ type: String, trim: true }],
     isPublished: { type: Boolean, default: true },
   },

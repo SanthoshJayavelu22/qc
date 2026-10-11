@@ -244,7 +244,7 @@ export default function SpeakToTeam() {
                   <div>
                     <h4 className="font-serif font-bold text-base text-white mb-1.5">Telephone Opening Hours</h4>
                     <div className="space-y-1 text-xs text-white/85 leading-relaxed">
-                      <p>Monday to Friday: 9:00am – 5:00pm</p>
+                      <p>Monday to Friday: 9:00am – 5:30pm</p>
                       <p className="text-tealAccent font-medium">Closed Weekends &amp; Bank Holidays</p>
                     </div>
                   </div>
@@ -276,8 +276,7 @@ export default function SpeakToTeam() {
                   <div>
                     <h4 className="font-serif font-bold text-base text-legalDark mb-1.5">Office Opening Hours</h4>
                     <div className="space-y-1 text-xs text-legalDark/80 leading-relaxed">
-                      <p>Monday to Thursday: 9:00am – 5:30pm</p>
-                      <p>Friday: 9:00am – 5:00pm</p>
+                      <p>Monday to Friday: 9:00am – 5:30pm</p>
                       <p className="text-textMuted">Closed Saturday, Sunday &amp; Bank Holidays</p>
                     </div>
                   </div>

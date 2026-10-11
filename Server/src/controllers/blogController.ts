@@ -53,12 +53,12 @@ export const getBlogBySlugOrId = async (req: Request, res: Response) => {
 // Create a new blog post
 export const createBlog = async (req: Request, res: Response) => {
   try {
-    const { title, slug, excerpt, content, category, author, readTime, coverImage, tags, isPublished } = req.body;
+    const { title, slug, excerpt, content, category, author, readTime, coverImage, gammaUrl, tags, isPublished } = req.body;
 
-    if (!title || !excerpt || !content) {
+    if (!title || !excerpt || (!content && !gammaUrl)) {
       return res.status(400).json({
         success: false,
-        error: "Title, excerpt, and content are required fields.",
+        error: "Title, excerpt, and either content or a Gamma presentation link are required.",
       });
     }
 
@@ -84,11 +84,12 @@ export const createBlog = async (req: Request, res: Response) => {
       title,
       slug: calculatedSlug,
       excerpt,
-      content,
+      content: content || "",
       category: category || "Conveyancing",
       author: author || "Quality Conveyancing Team",
       readTime: readTime || "5 min read",
       coverImage: coverImage || "",
+      gammaUrl: gammaUrl ? gammaUrl.trim() : "",
       tags: Array.isArray(tags) ? tags : typeof tags === "string" ? tags.split(",").map((t: string) => t.trim()) : [],
       isPublished: isPublished !== undefined ? isPublished : true,
     });

@@ -35,7 +35,6 @@ import sanjuImg from "@/assets/teams/Sanju Mohanan - Conveyancing Fee Earner.web
 import dikshaImg from "@/assets/teams/Diksha Jambhulkar - Conveyancing Fee Earner.webp";
 import manjuImg from "@/assets/teams/Manju Mohan - Conveyancing Fee Earner.webp";
 import deepakImg from "@/assets/teams/Deepak Nagar - Conveyancing Fee Earner.webp";
-import groupTeamImg from "@/assets/teams/group-team.jpg";
 
 const teamMembers = [
   {
@@ -194,46 +193,31 @@ export default function TeamPage() {
       <Header />
 
       <main className="flex-grow pt-20">
-        {/* Standard Site Hero Banner (Matching Services / Endorsements / Careers Page Banner) */}
+        {/* Standard Site Hero Banner */}
         <section className="bg-legalDark text-white py-16 px-6 lg:px-12">
-          <div className="container mx-auto max-w-6xl">
-            <div className="grid lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-6 text-center lg:text-left">
-                <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-tealAccent/20 text-tealAccent text-xs font-semibold uppercase tracking-widest mb-4">
-                  <Users className="w-3.5 h-3.5" /> Specialist Legal Team
-                </span>
-                <h1 className="text-3xl md:text-5xl font-serif font-bold mb-4 tracking-tight leading-tight">
-                  Meet the Team Behind Your Move
-                </h1>
-                <p className="text-white/80 text-sm md:text-base max-w-2xl font-light leading-relaxed mb-6">
-                  Quality Conveyancing is built on strong family values. Meet the dedicated conveyancing solicitors, directors, and operational experts guiding your transaction every step of the way.
-                </p>
-                <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
-                  <a
-                    href="tel:02037636767"
-                    className="inline-flex items-center gap-2 bg-white hover:bg-tealAccent text-legalDark font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition-all border border-white/20 group"
-                  >
-                    <PhoneCall className="w-4 h-4 text-tealAccent group-hover:text-legalDark transition-colors" /> Direct Line: 020 3763 6767
-                  </a>
-                  <Link
-                    href="/quote"
-                    className="inline-flex items-center gap-2 bg-legalDark hover:bg-legalNavy text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl border border-white/20 transition-all shadow-md group"
-                  >
-                    Get A Quote <ArrowRight className="w-4 h-4 text-tealAccent group-hover:translate-x-1 transition-all" />
-                  </Link>
-                </div>
-              </div>
-
-              {/* Right Side Group Team Photo */}
-              <div className="lg:col-span-6 relative h-64 md:h-72 lg:h-[350px] rounded-2xl overflow-hidden shadow-xl border border-white/10">
-                <Image
-                  src={groupTeamImg}
-                  alt="Quality Conveyancing Group Team London Property Lawyers"
-                  fill
-                  className="object-cover object-center hover:scale-105 transition-transform duration-700"
-                  priority
-                />
-              </div>
+          <div className="container mx-auto max-w-4xl text-center">
+            <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-tealAccent/20 text-tealAccent text-xs font-semibold uppercase tracking-widest mb-4">
+              <Users className="w-3.5 h-3.5" /> Specialist Legal Team
+            </span>
+            <h1 className="text-3xl md:text-5xl font-serif font-bold mb-4 tracking-tight leading-tight">
+              Meet the Team Behind Your Move
+            </h1>
+            <p className="text-white/80 text-sm md:text-base max-w-2xl mx-auto font-light leading-relaxed mb-6">
+              Quality Conveyancing is built on strong family values. Meet the dedicated conveyancing solicitors, directors, and operational experts guiding your transaction every step of the way.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <a
+                href="tel:02037636767"
+                className="inline-flex items-center gap-2 bg-white hover:bg-tealAccent text-legalDark font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition-all border border-white/20 group"
+              >
+                <PhoneCall className="w-4 h-4 text-tealAccent group-hover:text-legalDark transition-colors" /> Direct Line: 020 3763 6767
+              </a>
+              <Link
+                href="/quote"
+                className="inline-flex items-center gap-2 bg-legalDark hover:bg-legalNavy text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-xl border border-white/20 transition-all shadow-md group"
+              >
+                Get A Quote <ArrowRight className="w-4 h-4 text-tealAccent group-hover:translate-x-1 transition-all" />
+              </Link>
             </div>
           </div>
         </section>

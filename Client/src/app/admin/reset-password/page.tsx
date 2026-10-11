@@ -58,8 +58,8 @@ function ResetPasswordForm() {
   };
 
   return (
-    <div className="w-full max-w-md bg-white border border-[#4a7c59]/20 rounded-3xl p-8 sm:p-10 shadow-xl relative overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#1c3327] via-[#4a7c59] to-[#8fae98]"></div>
+    <div className="w-full max-w-md bg-white border border-tealAccent/30 rounded-3xl p-8 sm:p-10 shadow-xl relative overflow-hidden">
+      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-legalDark via-tealAccent to-sage1"></div>
 
       <div className="text-center mb-8">
         <div className="relative h-12 w-44 mx-auto mb-4">

@@ -11,6 +11,7 @@ export interface BlogItem {
   author: string;
   readTime: string;
   coverImage?: string;
+  gammaUrl?: string;
   tags?: string[];
   isPublished?: boolean;
   createdAt?: string;

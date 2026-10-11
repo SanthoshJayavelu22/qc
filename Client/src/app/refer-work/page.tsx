@@ -29,15 +29,15 @@ export default function ReferWorkPage() {
     },
     {
       q: "What is the referral reward?",
-      a: "You will earn a £100 reward upon completion of their transaction. Furthermore, to welcome your friend, we will also apply a £100 discount to their final invoice!"
+      a: "For client referrals, you will earn a £100 reward upon completion of their transaction and your friend receives a £100 discount on their legal fee. For registered Professional Introducers, you earn £200 per completed referral!"
     },
     {
       q: "Who is eligible for this referral scheme?",
-      a: "This referral scheme is exclusive to current and past Quality Conveyancing clients as well as registered professional introducer partners."
+      a: "This referral scheme is open to current and past Quality Conveyancing clients (earning £100) as well as estate agents, mortgage brokers, and professional introducer partners (earning £200 per completion)."
     },
     {
-      q: "How fast do I receive the £100 reward?",
-      a: "Because Quality Conveyancing completes transactions 80% faster than the national UK average, your £100 referral reward is triggered and disbursed promptly upon completion."
+      q: "How fast do I receive the referral reward?",
+      a: "Because Quality Conveyancing completes transactions 80% faster than the national UK average, your referral reward (£100 for clients or £200 for professional introducers) is triggered and disbursed promptly upon completion."
     }
   ];
 
@@ -112,9 +112,9 @@ export default function ReferWorkPage() {
                   <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-emerald-700 mb-6 shadow-sm">
                     <Handshake className="w-6 h-6" />
                   </div>
-                  <h3 className="text-xl font-serif font-bold text-legalDark mb-3">£100 Reward For You</h3>
+                  <h3 className="text-xl font-serif font-bold text-legalDark mb-3">Earn Up To £200</h3>
                   <p className="text-legalDark/75 text-sm leading-relaxed">
-                    Earn a cash reward of £100 directly into your bank account as soon as your referred client's transaction completes.
+                    Earn a cash reward of £100 for referring friends/family, or £200 per completed case for registered Professional Introducers.
                   </p>
                 </div>
               </div>
@@ -284,7 +284,9 @@ export default function ReferWorkPage() {
                   {modalType === "partner" ? "Become a Partner / Introducer" : "Refer a Friend / Family"}
                 </h2>
                 <p className="text-legalDark/70 text-xs">
-                  Register to join our introducer network and earn £100 referral fee upon completion.
+                  {modalType === "partner"
+                    ? "Register to join our introducer network and earn £200 referral fee upon completion."
+                    : "Register to refer your friend or family and earn £100 referral fee upon completion."}
                 </p>
               </div>
 
@@ -382,7 +384,26 @@ export default function ReferWorkPage() {
         )}
       </AnimatePresence>
 
-      <Footer />
+      <Footer
+        ctaTitle="Ready To Make Your First Referral?"
+        ctaSubtitle="Introduce a client or partner with us today. Earn £100 for friend referrals or £200 for professional introducers upon completion."
+        ctaContent={
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button
+              onClick={() => openModal("friend")}
+              className="w-full sm:w-auto px-8 py-4 bg-[#4a7c59] hover:bg-[#3d6749] text-white font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-md active:scale-95"
+            >
+              REFER A FRIEND / FAMILY NOW
+            </button>
+            <button
+              onClick={() => openModal("partner")}
+              className="w-full sm:w-auto px-8 py-4 bg-legalDark hover:bg-black text-white font-bold text-xs uppercase tracking-widest rounded-xl border border-white/30 transition-all shadow-sm active:scale-95"
+            >
+              PROFESSIONAL INTRODUCERS
+            </button>
+          </div>
+        }
+      />
     </div>
   );
 }

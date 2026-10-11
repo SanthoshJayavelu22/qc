@@ -284,37 +284,6 @@ export default function FeeCalculator({
       };
     }
 
-    // Handle Lead-Only Mode (e.g. on /quote page: receive leads data, no instant pricing popup)
-    if (leadOnly) {
-      const emailPayload = {
-        clientName,
-        clientEmail,
-        clientPhone,
-        transactionType,
-        propertyValue: formatCurrency(val),
-        tenureType: transactionType === "Sale" ? saleTenure : purchaseTenure,
-        totalIncVat: "Quote Requested via Lead Form",
-        subtotal: "Pending Solicitor Review",
-        vatAmount: "N/A",
-        questionnaireAnswers,
-        seasonalDiscountNote: "* We may have seasonal discounts available for your quote. Please get in touch at 020 3763 6767 to discuss"
-      };
-
-      try {
-        await fetch("/api/quote/send", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(emailPayload)
-        });
-      } catch (err) {
-        console.error("Email API failed, silent fallback:", err);
-      }
-
-      setIsSubmitting(false);
-      setLeadSubmitted(true);
-      return;
-    }
-
     // Handle Commercial Quotes
     if (transactionType.startsWith("Commercial")) {
       const emailPayload = {
@@ -591,15 +560,13 @@ export default function FeeCalculator({
             </div>
             
             <p className="text-tealAccent text-sm font-semibold tracking-[0.2em] uppercase mb-4">
-              {leadOnly ? "Bespoke Conveyancing" : "Transparent Pricing"}
+              Transparent Pricing
             </p>
             <h2 className="text-3xl md:text-5xl font-bold font-serif leading-[1.15] mb-6">
-              {leadOnly ? "Request Your Conveyancing Quote" : "Instant Conveyancing Fee Calculator"}
+              Instant Conveyancing Fee Calculator
             </h2>
             <p className="text-textMuted text-base md:text-lg leading-relaxed font-light mb-8">
-              {leadOnly
-                ? "Complete our brief questionnaire and our specialist property lawyers will review your details and prepare a tailored, transparent fee quote."
-                : "No hidden surprises. Complete our brief questionnaire to calculate your exact legal fees and have an itemised quote emailed instantly."}
+              No hidden surprises. Complete our brief questionnaire to calculate your exact legal fees and have an itemised quote emailed instantly.
             </p>
 
             <ul className="space-y-3.5">
@@ -644,9 +611,7 @@ export default function FeeCalculator({
                 <Info className="w-5 h-5 text-tealAccent mt-0.5 shrink-0" />
                 <p className="text-xs text-legalDark/80 leading-relaxed">
                   <span className="font-semibold text-legalDark">Prompt Response:</span>{" "}
-                  {leadOnly
-                    ? "Our property team will examine your transaction requirements and contact you with a bespoke quote."
-                    : "Full itemised quote is shown online immediately and emailed directly to your inbox."}
+                  Full itemised quote is shown online immediately and emailed directly to your inbox.
                 </p>
               </div>
             </div>
@@ -1052,12 +1017,10 @@ export default function FeeCalculator({
                 <form onSubmit={handleFinalSubmit} className="space-y-5">
                   <div>
                     <h3 className="text-xl sm:text-2xl font-bold font-serif text-legalDark mb-1">
-                      {leadOnly ? "Where Should We Send Your Quote?" : "Where Should We Send Your Quote?"}
+                      Where Should We Send Your Quote?
                     </h3>
                     <p className="text-textMuted text-xs sm:text-sm">
-                      {leadOnly
-                        ? "Please provide your contact details so our legal team can review your requirements and provide you with a tailored quote."
-                        : "Please enter your contact details. Your instant quote will display on screen immediately and an itemised copy will be sent to your email."}
+                      Please enter your contact details. Your instant quote will display on screen immediately and an itemised copy will be sent to your email.
                     </p>
                   </div>
 
@@ -1147,9 +1110,7 @@ export default function FeeCalculator({
                     >
                       <span>
                         {isSubmitting
-                          ? "Submitting..."
-                          : leadOnly
-                          ? "Request A Quote"
+                          ? "Calculating & Sending..."
                           : "Calculate & Email Instant Quote"}
                       </span>
                       <ArrowRight className="w-4 h-4 text-tealAccent" />
@@ -1266,7 +1227,7 @@ export default function FeeCalculator({
                       </div>
                       <h3 className="text-xl sm:text-2xl font-bold font-serif mb-3">Price on Application</h3>
                       <p className="text-textMuted text-sm max-w-2xl mx-auto mb-6">
-                        For bespoke or ultra high value properties over £5,000,000, our senior partner will contact you directly at {quoteResult.clientEmail} to provide custom pricing.
+                        For bespoke or high value transactions ({formatCurrency(quoteResult.propertyValue)}), our specialist conveyancing team has received your enquiry and an itemised quote will be provided directly to <strong>{quoteResult.clientEmail}</strong>.
                       </p>
 
                       <div className="mb-6 p-4 bg-emerald-50 border border-emerald-300 rounded-2xl text-center max-w-2xl mx-auto">

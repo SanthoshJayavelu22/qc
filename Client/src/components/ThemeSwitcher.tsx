@@ -8,14 +8,14 @@ const themes = [
   {
     name: 'Vibrant Sage',
     colors: {
-      '--theme-dark': '#2e4a3d',
-      '--theme-navy': '#3b5c4d',
-      '--theme-accent': '#A0D684',
-      '--theme-bg': '#f5fbf5',
-      '--theme-gray': '#eaf5eb',
-      '--theme-muted': '#8abf8a',
-      '--theme-sage1': '#A0D684',
-      '--theme-sage2': '#AAF001',
+      '--theme-dark': '#1c3327',
+      '--theme-navy': '#2d4a3c',
+      '--theme-accent': '#74C69D',
+      '--theme-bg': '#f7faf7',
+      '--theme-gray': '#ebf2ec',
+      '--theme-muted': '#5c7065',
+      '--theme-sage1': '#8fae98',
+      '--theme-sage2': '#74C69D',
     }
   },
   {

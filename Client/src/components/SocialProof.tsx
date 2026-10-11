@@ -12,6 +12,12 @@ export default function SocialProof() {
 
   const testimonials = [
     {
+      name: "Nush K",
+      title: "Fantastic Property Purchase Experience",
+      source: "Google Review",
+      text: "I had a fantastic experience with Sanju Mohanan and the entire team at Quality Conveyancing throughout the purchase of my property. Sanju was professional, patient and incredibly helpful from start to finish. He kept me updated throughout the process, answered my questions clearly and was always willing to help whenever I needed clarification or reassurance. His support was hugely appreciated, particularly during the more complicated stages of the purchase. A special mention also has to go to the senior leadership team including Pat. Whenever I needed additional support, they were available and willing to step in. A huge thank you to Sanju and everyone at Quality Conveyancing!",
+    },
+    {
       name: "SY H",
       title: "A 5-Star Rated Service",
       source: "Google Review",

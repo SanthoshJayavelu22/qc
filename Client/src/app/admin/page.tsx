@@ -99,6 +99,7 @@ export default function AdminPortalPage() {
     author: "",
     readTime: "5 min read",
     coverImage: "",
+    gammaUrl: "",
     tags: "",
     isPublished: true,
   });
@@ -484,6 +485,7 @@ export default function AdminPortalPage() {
       author: currentUser?.name || "Quality Conveyancing Team",
       readTime: "5 min read",
       coverImage: "",
+      gammaUrl: "",
       tags: "",
       isPublished: true,
     });
@@ -496,11 +498,12 @@ export default function AdminPortalPage() {
       title: blog.title,
       slug: blog.slug,
       excerpt: blog.excerpt,
-      content: blog.content,
+      content: blog.content || "",
       category: blog.category,
       author: blog.author,
       readTime: blog.readTime,
       coverImage: blog.coverImage || "",
+      gammaUrl: blog.gammaUrl || "",
       tags: blog.tags ? blog.tags.join(", ") : "",
       isPublished: blog.isPublished !== undefined ? blog.isPublished : true,
     });
@@ -523,8 +526,8 @@ export default function AdminPortalPage() {
   if (!currentUser) {
     return (
       <div className="min-h-screen bg-lightBg text-legalDark flex items-center justify-center p-6 font-sans">
-        <div className="w-full max-w-md bg-white border border-[#4a7c59]/20 rounded-3xl p-8 sm:p-10 shadow-xl relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#1c3327] via-[#4a7c59] to-[#8fae98]"></div>
+        <div className="w-full max-w-md bg-white border border-tealAccent/30 rounded-3xl p-8 sm:p-10 shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-legalDark via-tealAccent to-sage1"></div>
 
           <div className="text-center mb-8">
             <div className="relative h-14 w-48 mx-auto mb-3">
@@ -860,7 +863,7 @@ export default function AdminPortalPage() {
 
               {/* Metric Cards (Brand Warm Palette) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                <div className="bg-white border border-[#4a7c59]/20 rounded-2xl p-5 shadow-xs">
+                <div className="bg-white border border-tealAccent/20 rounded-2xl p-5 shadow-xs">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-bold text-textMuted uppercase tracking-wider">
                       Live Inquiries
@@ -875,7 +878,7 @@ export default function AdminPortalPage() {
                   </span>
                 </div>
 
-                <div className="bg-white border border-[#4a7c59]/20 rounded-2xl p-5 shadow-xs">
+                <div className="bg-white border border-tealAccent/20 rounded-2xl p-5 shadow-xs">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-bold text-textMuted uppercase tracking-wider">
                       Instant Quotes
@@ -890,7 +893,7 @@ export default function AdminPortalPage() {
                   </span>
                 </div>
 
-                <div className="bg-white border border-[#4a7c59]/20 rounded-2xl p-5 shadow-xs">
+                <div className="bg-white border border-tealAccent/20 rounded-2xl p-5 shadow-xs">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-bold text-textMuted uppercase tracking-wider">
                       Contact Inquiries
@@ -905,7 +908,7 @@ export default function AdminPortalPage() {
                   </span>
                 </div>
 
-                <div className="bg-white border border-[#4a7c59]/20 rounded-2xl p-5 shadow-xs">
+                <div className="bg-white border border-tealAccent/20 rounded-2xl p-5 shadow-xs">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-bold text-textMuted uppercase tracking-wider">
                       Published Blogs
@@ -1920,13 +1923,42 @@ export default function AdminPortalPage() {
                   />
                 </div>
 
+                {/* Gamma Embed Link Section */}
+                <div className="p-4 bg-gradient-to-r from-purple-50 to-indigo-50/50 rounded-2xl border border-purple-200/80 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-bold text-purple-900 uppercase tracking-wider">
+                      Gamma Presentation / Doc Link (Optional Embed)
+                    </label>
+                    <span className="text-[11px] font-semibold text-purple-700 bg-purple-100/80 px-2.5 py-0.5 rounded-full">
+                      Interactive AI Presentation
+                    </span>
+                  </div>
+                  <input
+                    type="url"
+                    value={blogFormData.gammaUrl}
+                    onChange={(e) => setBlogFormData({ ...blogFormData, gammaUrl: e.target.value })}
+                    placeholder="https://gamma.app/docs/... or https://gamma.app/embed/..."
+                    className="w-full bg-white border border-purple-200 rounded-xl px-4 py-2.5 text-sm text-legalDark focus:outline-none focus:border-purple-500 shadow-2xs font-mono text-xs"
+                  />
+                  <p className="text-[11px] text-purple-800/80 leading-relaxed">
+                    Paste any public Gamma link (presentation, doc, or webpage). When provided, the article page will render the rich interactive Gamma deck directly inside the post.
+                  </p>
+                </div>
+
                 <div>
-                  <label className="block text-xs font-bold text-legalDark uppercase tracking-wider mb-2">
-                    Content (HTML formatting supported) *
-                  </label>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-xs font-bold text-legalDark uppercase tracking-wider">
+                      Content (HTML formatting supported) {blogFormData.gammaUrl ? "(Optional if Gamma link provided)" : "*"}
+                    </label>
+                    {blogFormData.gammaUrl && (
+                      <span className="text-xs text-textMuted font-medium">
+                        Optional: Additional notes or text shown alongside Gamma embed
+                      </span>
+                    )}
+                  </div>
                   <textarea
-                    rows={10}
-                    required
+                    rows={8}
+                    required={!blogFormData.gammaUrl}
                     value={blogFormData.content}
                     onChange={(e) => setBlogFormData({ ...blogFormData, content: e.target.value })}
                     placeholder="<h2>Key Legal Insights</h2><p>Full article paragraphs...</p>"

@@ -16,7 +16,7 @@ import {
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-import officeImg from "@/assets/contact-office-ealing.png";
+import contactHeroImg from "@/assets/BA_2.webp";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -139,7 +139,7 @@ export default function ContactPage() {
 
               <div className="lg:col-span-5 relative h-64 md:h-72 lg:h-[320px] rounded-2xl overflow-hidden shadow-xl border border-white/10">
                 <Image
-                  src={officeImg}
+                  src={contactHeroImg}
                   alt="Quality Conveyancing Ealing Cross London Office"
                   fill
                   className="object-cover object-center"

@@ -129,6 +129,11 @@ const coreHighlights = [
 
 const testimonials = [
   {
+    name: "Nush K",
+    time: "Recent Google Review",
+    content: "I had a fantastic experience with Sanju Mohanan and the entire team at Quality Conveyancing throughout my property purchase. Sanju was professional, patient and helpful from start to finish. Special mention to Pat and the senior leadership team who gave me great confidence throughout.",
+  },
+  {
     name: "SY H",
     time: "Recent Google Review",
     content: "I don't normally post reviews and I'm not usually impressed with many things but Chandni at QC blew me away. I had two properties to sell and one to purchase all of which were complex. Chandni was exceptional and Pat was always in the background overseeing progress. QC are worth every penny!",

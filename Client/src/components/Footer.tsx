@@ -1,6 +1,6 @@
 "use client";
 
-import { MapPin, Phone, Mail, ArrowRight, MessageCircle, MessageSquareText, ArrowUp, ShieldCheck } from "lucide-react";
+import { MapPin, Phone, Mail, ArrowRight, MessageCircle, ArrowUp, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
@@ -10,7 +10,17 @@ import legalEyeBadge from "@/assets/legal-eye-aml.jpg";
 import clcBadge from "@/assets/clc-security-badge.png";
 import clcRegulatedBadge from "@/assets/clc-regulated-badge.png";
 
-export default function Footer() {
+export default function Footer({
+  showCta = true,
+  ctaTitle = "Ready to Make Your Move?",
+  ctaSubtitle = "Experience modern, swift, and transparent conveyancing. Calculate your instant quote or instruct our legal team today.",
+  ctaContent,
+}: {
+  showCta?: boolean;
+  ctaTitle?: string;
+  ctaSubtitle?: string;
+  ctaContent?: React.ReactNode;
+}) {
   const { scrollY } = useScroll();
   const [showScroll, setShowScroll] = useState(false);
 
@@ -29,39 +39,45 @@ export default function Footer() {
   return (
     <>
       {/* CTA Banner */}
-      <section className="py-24 bg-emerald-50/60 border-t border-emerald-100/80">
-        <div className="container mx-auto px-6 lg:px-12 max-w-4xl text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <span className="text-xs font-bold uppercase tracking-widest text-tealAccent mb-3 block">Start Your Journey</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-legalDark font-serif mb-6 leading-tight">
-              Ready to Make Your Move?
-            </h2>
-            <p className="text-legalDark/80 text-base md:text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
-              Experience modern, swift, and transparent conveyancing. Calculate your instant quote or instruct our legal team today.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link
-                href="/quote"
-                className="inline-flex items-center justify-center gap-2 bg-legalDark text-white font-bold text-sm uppercase tracking-wider px-8 py-4 rounded-xl shadow-md hover:bg-legalNavy hover:shadow-xl transition-all duration-300 group"
-              >
-                <span>Get A Quote</span>
-                <ArrowRight className="w-4 h-4 text-tealAccent group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center bg-white text-legalDark font-bold text-sm uppercase tracking-wider px-8 py-4 rounded-xl border border-legalDark/20 shadow-sm hover:bg-gray-50 hover:border-legalDark transition-all duration-300"
-              >
-                Instruct Us Online
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      {showCta && (
+        <section className="py-24 bg-emerald-50/60 border-t border-emerald-100/80">
+          <div className="container mx-auto px-6 lg:px-12 max-w-4xl text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <span className="text-xs font-bold uppercase tracking-widest text-tealAccent mb-3 block">Start Your Journey</span>
+              <h2 className="text-4xl md:text-5xl font-bold text-legalDark font-serif mb-6 leading-tight">
+                {ctaTitle}
+              </h2>
+              <p className="text-legalDark/80 text-base md:text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
+                {ctaSubtitle}
+              </p>
+              {ctaContent ? (
+                ctaContent
+              ) : (
+                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                  <Link
+                    href="/quote"
+                    className="inline-flex items-center justify-center gap-2 bg-legalDark text-white font-bold text-sm uppercase tracking-wider px-8 py-4 rounded-xl shadow-md hover:bg-legalNavy hover:shadow-xl transition-all duration-300 group"
+                  >
+                    <span>Get A Quote</span>
+                    <ArrowRight className="w-4 h-4 text-tealAccent group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center justify-center bg-white text-legalDark font-bold text-sm uppercase tracking-wider px-8 py-4 rounded-xl border border-legalDark/20 shadow-sm hover:bg-gray-50 hover:border-legalDark transition-all duration-300"
+                  >
+                    Instruct Us Online
+                  </Link>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* Top Contact Strip (Matching Reference Image) */}
       <section className="bg-legalDark text-white py-8 px-6 lg:px-12 border-b border-white/10">
@@ -134,7 +150,7 @@ export default function Footer() {
                   { name: "Meet the Team", href: "/team" },
                   { name: "Endorsements", href: "/endorsements" },
                   { name: "Refer Work", href: "/refer-work" },
-                  { name: "Community Work", href: "/community-work" },
+                  { name: "Community/Charity Work", href: "/community-work" },
                   { name: "Property Update", href: "/blogs" },
                   { name: "Contact Us", href: "/contact" },
                 ].map((link) => (
@@ -264,7 +280,7 @@ export default function Footer() {
       </footer>
 
       {/* Floating Action Buttons */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 items-end">
+      <div className="fixed bottom-24 right-6 z-[85] flex flex-col gap-3 items-end pointer-events-auto">
         <AnimatePresence>
           {showScroll && (
             <motion.button
@@ -297,19 +313,6 @@ export default function Footer() {
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.99c-.002 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662a11.834 11.834 0 005.707 1.464h.005c6.554 0 11.89-5.335 11.893-11.893 0-3.176-1.236-6.163-3.483-8.411" />
           </svg>
         </a>
-
-        {/* Live Chat Launcher Button */}
-        <button
-          onClick={() => {
-            const btn = document.getElementById("live-chat-toggle-btn");
-            if (btn) btn.click();
-          }}
-          className="w-13 h-13 p-3 bg-legalDark text-tealAccent rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform duration-300 border border-tealAccent/30"
-          aria-label="Open Live Chat"
-          title="Live Chat Support"
-        >
-          <MessageSquareText className="w-6 h-6" />
-        </button>
       </div>
     </>
   );
