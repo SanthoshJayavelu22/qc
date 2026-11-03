@@ -4,6 +4,7 @@ export interface BlogItem {
   _id?: string;
   id?: string;
   title: string;
+  metaTitle?: string;
   slug: string;
   excerpt: string;
   content: string;

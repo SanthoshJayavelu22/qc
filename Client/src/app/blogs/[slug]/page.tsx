@@ -36,6 +36,13 @@ export default function BlogDetailPage() {
     fetchBlog();
   }, [slug]);
 
+  useEffect(() => {
+    if (blog) {
+      const pageTitle = blog.metaTitle || `${blog.title} | Quality Conveyancing`;
+      document.title = pageTitle;
+    }
+  }, [blog]);
+
   const handleShare = () => {
     if (typeof window !== "undefined") {
       navigator.clipboard.writeText(window.location.href);

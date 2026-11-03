@@ -543,10 +543,10 @@ export default function PrivacyPage() {
                 <p className="font-bold text-legalDark">
                   Quality Conveyancing
                 </p>
-                <p>Ealing Cross</p>
-                <p>1st Floor, 85 Uxbridge Road</p>
-                <p>London</p>
-                <p>W5 5BW</p>
+                <p>Aurora House</p>
+                <p>71–75 Uxbridge Road</p>
+                <p>Ealing, London</p>
+                <p>W5 5SL</p>
                 <p className="mt-2">
                   <strong>Telephone:</strong> 0203 763 6767
                 </p>

@@ -52,6 +52,7 @@ import {
   AdminRole,
 } from "@/lib/api";
 import logoImg from "@/assets/qc-logo.png";
+import RichBlogEditor from "@/components/RichBlogEditor";
 
 type TabType = "dashboard" | "chat" | "blogs" | "new_blog" | "quotes" | "contacts" | "team_roles";
 
@@ -92,6 +93,7 @@ export default function AdminPortalPage() {
   const [editingBlogId, setEditingBlogId] = useState<string | null>(null);
   const [blogFormData, setBlogFormData] = useState({
     title: "",
+    metaTitle: "",
     slug: "",
     excerpt: "",
     content: "",
@@ -440,6 +442,23 @@ export default function AdminPortalPage() {
     }
   };
 
+  const uploadInlineBlogImage = async (file: File): Promise<string | null> => {
+    const formData = new FormData();
+    formData.append("image", file);
+    try {
+      const res = await fetch(`${API_URL}/api/blogs/upload`, { method: "POST", body: formData });
+      const data = await res.json();
+      if (data.success && data.url) {
+        return data.url;
+      }
+      alert(data.error || "Failed to upload image");
+      return null;
+    } catch (err) {
+      alert("Error uploading image");
+      return null;
+    }
+  };
+
   const handleSaveBlog = async (e: React.FormEvent) => {
     e.preventDefault();
     setBlogSaveStatus("Saving...");
@@ -478,6 +497,7 @@ export default function AdminPortalPage() {
     setEditingBlogId(null);
     setBlogFormData({
       title: "",
+      metaTitle: "",
       slug: "",
       excerpt: "",
       content: "",
@@ -496,6 +516,7 @@ export default function AdminPortalPage() {
     setEditingBlogId(blog._id || blog.id || null);
     setBlogFormData({
       title: blog.title,
+      metaTitle: blog.metaTitle || "",
       slug: blog.slug,
       excerpt: blog.excerpt,
       content: blog.content || "",
@@ -1807,7 +1828,11 @@ export default function AdminPortalPage() {
               )}
 
               <form onSubmit={handleSaveBlog} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4">
+                  <h3 className="text-sm font-bold uppercase tracking-wider text-tealAccent">
+                    1. Article Basics & Author Details
+                  </h3>
+
                   <div>
                     <label className="block text-xs font-bold text-legalDark uppercase tracking-wider mb-2">
                       Article Title *
@@ -1816,121 +1841,114 @@ export default function AdminPortalPage() {
                       type="text"
                       required
                       value={blogFormData.title}
-                      onChange={(e) => setBlogFormData({ ...blogFormData, title: e.target.value })}
-                      placeholder="e.g. Navigating 2026 Stamp Duty Thresholds"
-                      className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-legalDark focus:outline-none focus:border-tealAccent"
+                      onChange={(e) => {
+                        const newTitle = e.target.value;
+                        setBlogFormData((prev) => ({
+                          ...prev,
+                          title: newTitle,
+                          slug: prev.slug || newTitle.toLowerCase().replace(/[^\w\s-]/g, "").replace(/[\s_-]+/g, "-").replace(/^-+|-+$/g, ""),
+                        }));
+                      }}
+                      placeholder="e.g. Navigating 2026 Stamp Duty Thresholds: First-Time Buyer & Moving Home Rules"
+                      className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-legalDark font-medium focus:outline-none focus:border-tealAccent"
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-bold text-legalDark uppercase tracking-wider mb-2">
-                      URL Slug
-                    </label>
-                    <input
-                      type="text"
-                      value={blogFormData.slug}
-                      onChange={(e) => setBlogFormData({ ...blogFormData, slug: e.target.value })}
-                      placeholder="e.g. stamp-duty-thresholds-guide"
-                      className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-legalDark focus:outline-none focus:border-tealAccent"
-                    />
-                  </div>
-                </div>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-legalDark uppercase tracking-wider mb-2">
+                        Category
+                      </label>
+                      <select
+                        value={blogFormData.category}
+                        onChange={(e) => setBlogFormData({ ...blogFormData, category: e.target.value })}
+                        className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-legalDark focus:outline-none focus:border-tealAccent"
+                      >
+                        <option value="Conveyancing">Conveyancing</option>
+                        <option value="Property Law">Property Law</option>
+                        <option value="Stamp Duty & SDLT">Stamp Duty & SDLT</option>
+                        <option value="Leasehold">Leasehold</option>
+                        <option value="First Time Buyers">First Time Buyers</option>
+                        <option value="Guides">Guides</option>
+                        <option value="Remortgage">Remortgage</option>
+                        <option value="New Build">New Build</option>
+                      </select>
+                    </div>
 
-                <div className="grid md:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-legalDark uppercase tracking-wider mb-2">
-                      Category
-                    </label>
-                    <select
-                      value={blogFormData.category}
-                      onChange={(e) => setBlogFormData({ ...blogFormData, category: e.target.value })}
-                      className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-legalDark focus:outline-none focus:border-tealAccent"
-                    >
-                      <option value="Conveyancing">Conveyancing</option>
-                      <option value="Property Law">Property Law</option>
-                      <option value="Leasehold">Leasehold</option>
-                      <option value="Guides">Guides</option>
-                      <option value="Remortgage">Remortgage</option>
-                      <option value="New Build">New Build</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-legalDark uppercase tracking-wider mb-2">
-                      Author Name
-                    </label>
-                    <input
-                      type="text"
-                      value={blogFormData.author}
-                      onChange={(e) => setBlogFormData({ ...blogFormData, author: e.target.value })}
-                      placeholder={currentUser.name}
-                      className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-legalDark focus:outline-none focus:border-tealAccent"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-legalDark uppercase tracking-wider mb-2">
-                      Read Duration
-                    </label>
-                    <input
-                      type="text"
-                      value={blogFormData.readTime}
-                      onChange={(e) => setBlogFormData({ ...blogFormData, readTime: e.target.value })}
-                      placeholder="5 min read"
-                      className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-legalDark focus:outline-none focus:border-tealAccent"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-legalDark uppercase tracking-wider mb-2">
-                    Cover Image
-                  </label>
-                  <div className="flex flex-col sm:flex-row gap-4 items-center">
-                    <input
-                      type="text"
-                      value={blogFormData.coverImage}
-                      onChange={(e) => setBlogFormData({ ...blogFormData, coverImage: e.target.value })}
-                      placeholder="Image URL or upload from disk..."
-                      className="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-legalDark focus:outline-none focus:border-tealAccent"
-                    />
-
-                    <label className="cursor-pointer bg-legalDark hover:bg-legalNavy text-white text-xs px-4 py-2.5 rounded-xl font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-xs">
-                      <ImageIcon className="w-4 h-4 text-tealAccent" />
-                      <span>{uploadingImage ? "Uploading..." : "Upload File"}</span>
+                    <div>
+                      <label className="block text-xs font-bold text-legalDark uppercase tracking-wider mb-2">
+                        Author Byline
+                      </label>
                       <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        disabled={uploadingImage}
-                        className="hidden"
-                      />
-                    </label>
-                  </div>
-                </div>
+                        type="text"
+                        value={blogFormData.author}
+                        onChange={(e) => setBlogFormData({ ...blogFormData, author: e.target.value })}
+                        placeholder={currentUser.name}
+                        className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-legalDark focus:outline-none focus:border-tealAccent"
+                      >
+                      </input>
+                    </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-legalDark uppercase tracking-wider mb-2">
-                    Summary / Excerpt *
-                  </label>
-                  <textarea
-                    rows={2}
-                    required
-                    value={blogFormData.excerpt}
-                    onChange={(e) => setBlogFormData({ ...blogFormData, excerpt: e.target.value })}
-                    placeholder="Short summary displayed on cards..."
-                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-legalDark focus:outline-none focus:border-tealAccent"
-                  />
+                    <div>
+                      <label className="block text-xs font-bold text-legalDark uppercase tracking-wider mb-2">
+                        Read Duration
+                      </label>
+                      <input
+                        type="text"
+                        value={blogFormData.readTime}
+                        onChange={(e) => setBlogFormData({ ...blogFormData, readTime: e.target.value })}
+                        placeholder="5 min read"
+                        className="w-full bg-slate-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-legalDark focus:outline-none focus:border-tealAccent"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-legalDark uppercase tracking-wider mb-2">
+                      Featured Cover Image (Hero Banner)
+                    </label>
+                    <div className="flex flex-col sm:flex-row gap-4 items-center">
+                      <input
+                        type="text"
+                        value={blogFormData.coverImage}
+                        onChange={(e) => setBlogFormData({ ...blogFormData, coverImage: e.target.value })}
+                        placeholder="Image URL or upload a file from your computer..."
+                        className="flex-1 bg-slate-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-legalDark focus:outline-none focus:border-tealAccent"
+                      />
+
+                      <label className="cursor-pointer bg-legalDark hover:bg-legalNavy text-white text-xs px-4 py-2.5 rounded-xl font-bold uppercase tracking-wider transition flex items-center gap-2 shadow-xs shrink-0">
+                        <ImageIcon className="w-4 h-4 text-tealAccent" />
+                        <span>{uploadingImage ? "Uploading..." : "Upload Cover File"}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          disabled={uploadingImage}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+                    {blogFormData.coverImage && (
+                      <div className="mt-2.5 flex items-center gap-3">
+                        <img
+                          src={blogFormData.coverImage}
+                          alt="Cover preview"
+                          className="h-14 w-24 object-cover rounded-lg border border-gray-200"
+                        />
+                        <span className="text-xs text-textMuted">Cover image loaded and ready.</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Gamma Embed Link Section */}
                 <div className="p-4 bg-gradient-to-r from-purple-50 to-indigo-50/50 rounded-2xl border border-purple-200/80 space-y-2">
                   <div className="flex items-center justify-between">
                     <label className="block text-xs font-bold text-purple-900 uppercase tracking-wider">
-                      Gamma Presentation / Doc Link (Optional Embed)
+                      Gamma Presentation / Doc Link (Optional Interactive Deck)
                     </label>
                     <span className="text-[11px] font-semibold text-purple-700 bg-purple-100/80 px-2.5 py-0.5 rounded-full">
-                      Interactive AI Presentation
+                      AI Interactive Slides
                     </span>
                   </div>
                   <input
@@ -1941,32 +1959,38 @@ export default function AdminPortalPage() {
                     className="w-full bg-white border border-purple-200 rounded-xl px-4 py-2.5 text-sm text-legalDark focus:outline-none focus:border-purple-500 shadow-2xs font-mono text-xs"
                   />
                   <p className="text-[11px] text-purple-800/80 leading-relaxed">
-                    Paste any public Gamma link (presentation, doc, or webpage). When provided, the article page will render the rich interactive Gamma deck directly inside the post.
+                    Paste any public Gamma link. The article detail page will render the interactive slides directly into the post.
                   </p>
                 </div>
 
-                <div>
-                  <div className="flex items-center justify-between mb-2">
+                {/* 2. RICH VISUAL WYSIWYG EDITOR & SEO SUITE */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
                     <label className="block text-xs font-bold text-legalDark uppercase tracking-wider">
-                      Content (HTML formatting supported) {blogFormData.gammaUrl ? "(Optional if Gamma link provided)" : "*"}
+                      2. Article Content & Pre-built Sections *
                     </label>
-                    {blogFormData.gammaUrl && (
-                      <span className="text-xs text-textMuted font-medium">
-                        Optional: Additional notes or text shown alongside Gamma embed
-                      </span>
-                    )}
+                    <span className="text-xs text-textMuted">
+                      Full WYSIWYG toolbar: Headings, Bullet Lists, Callout Boxes, FAQs & Quote Banners
+                    </span>
                   </div>
-                  <textarea
-                    rows={8}
-                    required={!blogFormData.gammaUrl}
-                    value={blogFormData.content}
-                    onChange={(e) => setBlogFormData({ ...blogFormData, content: e.target.value })}
-                    placeholder="<h2>Key Legal Insights</h2><p>Full article paragraphs...</p>"
-                    className="w-full font-mono bg-[#f7faf7] border border-gray-200 rounded-xl p-4 text-xs text-legalDark focus:outline-none focus:border-tealAccent leading-relaxed"
+
+                  <RichBlogEditor
+                    content={blogFormData.content}
+                    onChange={(newHtml) => setBlogFormData((prev) => ({ ...prev, content: newHtml }))}
+                    title={blogFormData.title}
+                    metaTitle={blogFormData.metaTitle}
+                    onMetaTitleChange={(newMetaTitle) => setBlogFormData((prev) => ({ ...prev, metaTitle: newMetaTitle }))}
+                    slug={blogFormData.slug}
+                    onSlugChange={(newSlug) => setBlogFormData((prev) => ({ ...prev, slug: newSlug }))}
+                    excerpt={blogFormData.excerpt}
+                    onExcerptChange={(newExcerpt) => setBlogFormData((prev) => ({ ...prev, excerpt: newExcerpt }))}
+                    tags={blogFormData.tags}
+                    onTagsChange={(newTags) => setBlogFormData((prev) => ({ ...prev, tags: newTags }))}
+                    onImageUpload={uploadInlineBlogImage}
                   />
                 </div>
 
-                <div className="pt-2 flex items-center justify-between">
+                <div className="pt-4 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <input
                       type="checkbox"
@@ -1982,13 +2006,14 @@ export default function AdminPortalPage() {
 
                   <button
                     type="submit"
-                    className="bg-legalDark hover:bg-legalNavy text-white px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition shadow-md flex items-center gap-2"
+                    className="w-full sm:w-auto bg-legalDark hover:bg-legalNavy text-white px-8 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition shadow-md flex items-center justify-center gap-2"
                   >
                     <CheckCircle className="w-4 h-4 text-tealAccent" />
                     {editingBlogId ? "Save Article Updates" : "Publish Article"}
                   </button>
                 </div>
               </form>
+
             </div>
           )}
 

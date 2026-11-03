@@ -19,9 +19,20 @@ import {
   Key,
   RefreshCw,
   HelpCircle,
-  AlertCircle
+  AlertCircle,
+  Receipt,
+  FileCheck2,
+  Percent
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  calculateSDLT,
+  calculateEstimatedDisbursements,
+  calculateLandRegistryFee,
+  formatGBP,
+  EstimatedDisbursementsResult,
+  SDLTResult
+} from "@/lib/calculatorRates";
 
 // Reusable Selection Box Component (matching user's design)
 function SelectionGroup({
@@ -88,7 +99,8 @@ export default function FeeCalculator({
   const [transactionType, setTransactionType] = useState<string>("Purchase");
   const [propertyValue, setPropertyValue] = useState<string>("");
 
-  // Step 2A: Purchase Specific Enquiries (from user's image 1)
+  // Step 2A: Purchase Specific Enquiries (from user's image 1 & Paul's SDLT sections)
+  const [purchaseBuyerCategory, setPurchaseBuyerCategory] = useState<"First Time Buyer" | "Moving Home" | "Additional Property">("Moving Home");
   const [purchaseTenure, setPurchaseTenure] = useState<string>("Freehold");
   const [purchaseNewBuild, setPurchaseNewBuild] = useState<string>("No");
   const [purchaseFirstTimeBuyer, setPurchaseFirstTimeBuyer] = useState<string>("No");
@@ -433,10 +445,37 @@ export default function FeeCalculator({
       addOnsTotal += 375;
     }
 
-    // Subtotal, VAT, Total
+    // Subtotal, VAT, Total of Legal Fees
     const subtotal = baseFee + adminFee + idCheckTotal + sourceOfFundsTotal + ttFee + tenureFees + addOnsTotal;
     const vatAmount = subtotal * VAT_RATE;
     const totalIncVat = subtotal + vatAmount;
+
+    // Calculate SDLT Breakdown
+    const isFirstTime = purchaseBuyerCategory === "First Time Buyer" || purchaseFirstTimeBuyer === "Yes";
+    const isAdditional = purchaseBuyerCategory === "Additional Property" || purchaseSecondHome === "Yes";
+    const sdltBuyerCategory: "firstTimeBuyer" | "movingHome" | "additionalProperty" =
+      purchaseBuyerCategory === "First Time Buyer"
+        ? "firstTimeBuyer"
+        : purchaseBuyerCategory === "Additional Property"
+        ? "additionalProperty"
+        : "movingHome";
+
+    const sdltCalculation: SDLTResult = calculateSDLT(val, sdltBuyerCategory);
+
+    // Calculate Estimated Disbursements
+    const disbursementsData: EstimatedDisbursementsResult = calculateEstimatedDisbursements({
+      transactionType,
+      propertyValue: val,
+      tenure: activeTenure,
+      isNewBuild: purchaseNewBuild === "Yes",
+      clientCount,
+      isFirstTimeBuyer: isFirstTime,
+      isSecondHome: isAdditional,
+      sdltBuyerType: sdltBuyerCategory,
+    });
+
+    // Grand Total: Legal Fees (Inc VAT) + Estimated Disbursements
+    const grandTotal = totalIncVat + disbursementsData.totalDisbursements;
 
     // Build breakdown payload
     const breakdown = {
@@ -485,7 +524,7 @@ export default function FeeCalculator({
         amount: vatAmount
       },
       total: {
-        label: "Total (Inc. VAT)",
+        label: "Total Legal Fees (Inc. VAT)",
         amount: totalIncVat
       }
     };
@@ -505,6 +544,15 @@ export default function FeeCalculator({
           subtotal: formatCurrency(subtotal),
           vatAmount: formatCurrency(vatAmount),
           totalIncVat: formatCurrency(totalIncVat),
+          sdltAmount: formatCurrency(disbursementsData.sdltAmount),
+          totalDisbursements: formatCurrency(disbursementsData.totalDisbursements),
+          grandTotal: formatCurrency(grandTotal),
+          disbursements: disbursementsData.items.map((d) => ({
+            name: d.name,
+            amount: formatCurrency(d.amount),
+            description: d.description,
+          })),
+          sdltBreakdown: sdltCalculation,
           questionnaireAnswers,
           seasonalDiscountNote: "* We may have seasonal discounts available for your quote. Please get in touch at 020 3763 6767 to discuss"
         })
@@ -517,6 +565,9 @@ export default function FeeCalculator({
       subtotal,
       vatAmount,
       totalIncVat,
+      disbursements: disbursementsData,
+      sdlt: sdltCalculation,
+      grandTotal,
       transactionType,
       propertyValue: val,
       tenureType: activeTenure,
@@ -793,6 +844,28 @@ export default function FeeCalculator({
                           To ensure the quote we provide is accurate, please answer these purchase enquiries.
                         </p>
                       </div>
+
+                      {/* Buyer Type for Stamp Duty Land Tax (SDLT) - Per Paul's 3 sections */}
+                      <SelectionGroup
+                        label="Stamp Duty Land Tax (SDLT) Status"
+                        tooltip="Select whether you are a First Time Buyer, Moving Home, or purchasing an Additional Property/Buy to Let"
+                        options={["First Time Buyer", "Moving Home", "Additional Property"]}
+                        value={purchaseBuyerCategory}
+                        onChange={(val: string) => {
+                          const cat = val as "First Time Buyer" | "Moving Home" | "Additional Property";
+                          setPurchaseBuyerCategory(cat);
+                          if (cat === "First Time Buyer") {
+                            setPurchaseFirstTimeBuyer("Yes");
+                            setPurchaseSecondHome("No");
+                          } else if (cat === "Additional Property") {
+                            setPurchaseFirstTimeBuyer("No");
+                            setPurchaseSecondHome("Yes");
+                          } else {
+                            setPurchaseFirstTimeBuyer("No");
+                            setPurchaseSecondHome("No");
+                          }
+                        }}
+                      />
 
                       {/* 1. Freehold or Leasehold */}
                       <SelectionGroup
@@ -1172,8 +1245,12 @@ export default function FeeCalculator({
                   <div className="flex items-center gap-3 shrink-0">
                     {quoteResult.type !== "COMMERCIAL" && quoteResult.type !== "POA" && (
                       <div className="text-right hidden sm:block bg-warmGray/60 px-3.5 py-1.5 rounded-xl border border-gray-100">
-                        <span className="text-[10px] text-textMuted uppercase font-semibold block leading-none">Total (Inc. VAT)</span>
-                        <span className="text-base sm:text-lg font-serif font-bold text-legalDark">{formatCurrency(quoteResult.totalIncVat)}</span>
+                        <span className="text-[10px] text-textMuted uppercase font-semibold block leading-none">
+                          Grand Total (Inc. Disbursements)
+                        </span>
+                        <span className="text-base sm:text-lg font-serif font-bold text-legalDark">
+                          {formatCurrency(quoteResult.grandTotal || quoteResult.totalIncVat)}
+                        </span>
                       </div>
                     )}
                     <button
@@ -1271,9 +1348,14 @@ export default function FeeCalculator({
                       </div>
 
                       <div className="grid md:grid-cols-2 gap-6 my-2">
-                        {/* Left Column - Fee Breakdown */}
-                        <div className="space-y-3">
-                          <h4 className="font-semibold font-serif text-base sm:text-lg text-legalDark mb-2">Itemised Fee Breakdown</h4>
+                        {/* Left Column - Legal Fees Breakdown */}
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-2 pb-1 border-b border-gray-100">
+                            <Receipt className="w-4 h-4 text-tealAccent" />
+                            <h4 className="font-semibold font-serif text-base sm:text-lg text-legalDark">
+                              1. Legal Fees Breakdown
+                            </h4>
+                          </div>
                           
                           {/* Base Fee */}
                           <div className="flex justify-between items-start py-2 border-b border-gray-100 text-xs">
@@ -1371,44 +1453,139 @@ export default function FeeCalculator({
                               <span className="font-bold text-legalDark">{formatCurrency(quoteResult.breakdown.addOns.amount)}</span>
                             </div>
                           )}
-                        </div>
 
-                        {/* Right Column - Summary & Included services */}
-                        <div className="space-y-3">
-                          <h4 className="font-semibold font-serif text-base sm:text-lg text-legalDark mb-2">Quote Summary</h4>
-                          
-                          <div className="bg-warmGray/50 rounded-2xl p-4 sm:p-5 space-y-2.5 border border-gray-100">
-                            <div className="flex justify-between text-xs text-textMuted">
-                              <span>Subtotal (Excl. VAT)</span>
+                          {/* Legal Fee Subtotals Box */}
+                          <div className="bg-warmGray/40 rounded-xl p-3 border border-gray-100 space-y-1 text-xs">
+                            <div className="flex justify-between text-textMuted">
+                              <span>Legal Subtotal (Excl. VAT)</span>
                               <span className="font-semibold text-legalDark">{formatCurrency(quoteResult.subtotal)}</span>
                             </div>
-                            <div className="flex justify-between text-xs text-textMuted">
+                            <div className="flex justify-between text-textMuted">
                               <span>VAT (20%)</span>
                               <span className="font-semibold text-legalDark">{formatCurrency(quoteResult.vatAmount)}</span>
                             </div>
-                            <div className="h-[1px] bg-gray-200 my-1.5"></div>
-                            <div className="flex justify-between text-base font-serif font-bold text-legalDark">
-                              <span>Total (Inc. VAT)</span>
-                              <span className="text-legalDark">{formatCurrency(quoteResult.totalIncVat)}</span>
+                            <div className="h-[1px] bg-gray-200 my-1"></div>
+                            <div className="flex justify-between font-bold text-legalDark">
+                              <span>Total Legal Fees (Inc. VAT)</span>
+                              <span className="text-tealAccent font-serif">{formatCurrency(quoteResult.totalIncVat)}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Right Column - Estimated Disbursements & Stamp Duty */}
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-2 pb-1 border-b border-gray-100">
+                            <FileCheck2 className="w-4 h-4 text-tealAccent" />
+                            <h4 className="font-semibold font-serif text-base sm:text-lg text-legalDark">
+                              2. Estimated Disbursements
+                            </h4>
+                          </div>
+
+                          {/* Disbursements List */}
+                          <div className="space-y-2 text-xs">
+                            {quoteResult.disbursements?.items?.map((item: any, idx: number) => (
+                              <div
+                                key={idx}
+                                className="flex justify-between items-start py-1.5 border-b border-gray-100"
+                              >
+                                <div className="pr-2">
+                                  <span className="font-semibold text-legalDark block">{item.name}</span>
+                                  <span className="text-[11px] text-textMuted block leading-tight">{item.description}</span>
+                                </div>
+                                <span className="font-bold text-legalDark shrink-0">
+                                  {formatCurrency(item.amount)}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* SDLT Details Card (For Purchase Transactions) */}
+                          {quoteResult.sdlt && (quoteResult.transactionType === "Purchase" || quoteResult.transactionType === "Sale & Purchase") && (
+                            <div className="p-3 bg-tealAccent/5 rounded-xl border border-tealAccent/20 space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span className="text-xs font-bold text-legalDark flex items-center gap-1.5">
+                                  <Percent className="w-3.5 h-3.5 text-tealAccent" />
+                                  SDLT Category: {quoteResult.sdlt.category}
+                                </span>
+                                <span className="text-xs font-extrabold text-legalDark">
+                                  {formatCurrency(quoteResult.sdlt.totalSDLT)}
+                                </span>
+                              </div>
+
+                              {quoteResult.sdlt.reliefNote && (
+                                <p className="text-[11px] text-teal-800 bg-teal-50/80 p-2 rounded border border-teal-100">
+                                  {quoteResult.sdlt.reliefNote}
+                                </p>
+                              )}
+
+                              {/* SDLT Slices / Bands */}
+                              {quoteResult.sdlt.bands && quoteResult.sdlt.bands.length > 0 && (
+                                <div className="text-[11px] space-y-1 pt-1 border-t border-tealAccent/10">
+                                  <span className="text-[10px] font-semibold text-textMuted uppercase tracking-wider block">
+                                    Stamp Duty Slabs Applied:
+                                  </span>
+                                  {quoteResult.sdlt.bands.map((band: any, i: number) => (
+                                    <div key={i} className="flex justify-between text-textMuted">
+                                      <span>
+                                        {band.range} ({band.rate}% on {formatCurrency(band.taxableAmount)})
+                                      </span>
+                                      <span className="font-medium text-legalDark">{formatCurrency(band.taxDue)}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+
+                              <div className="pt-1.5 border-t border-tealAccent/10 flex items-center justify-between text-[10px] text-textMuted">
+                                <span>Calculated based on HMRC rates</span>
+                                <a
+                                  href="https://www.stampdutycalculator.org.uk/"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-tealAccent hover:underline font-semibold"
+                                >
+                                  Verify on Stamp Duty Calculator ↗
+                                </a>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Disbursements Subtotal Box */}
+                          <div className="bg-warmGray/40 rounded-xl p-3 border border-gray-100 space-y-1 text-xs">
+                            <div className="flex justify-between font-bold text-legalDark">
+                              <span>Total Estimated Disbursements</span>
+                              <span className="font-serif text-legalDark">
+                                {formatCurrency(quoteResult.disbursements?.totalDisbursements || 0)}
+                              </span>
+                            </div>
+                            <p className="text-[10px] text-textMuted">
+                              * Disbursements are standard statutory/third-party fees paid on your behalf with zero markup.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Complete Overall Quote Summary Box (Legal Fees + Disbursements) */}
+                      <div className="my-5 p-5 bg-legalDark text-white rounded-2xl shadow-md border border-white/10">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                          <div>
+                            <span className="text-[10px] uppercase tracking-widest text-tealAccent font-bold block mb-1">
+                              Estimated Grand Total (Completion Funds Required)
+                            </span>
+                            <div className="text-xs text-white/80 space-y-0.5">
+                              <div>
+                                Legal Fees (Inc. VAT): <strong className="text-white">{formatCurrency(quoteResult.totalIncVat)}</strong>
+                              </div>
+                              <div>
+                                Estimated Disbursements: <strong className="text-white">{formatCurrency(quoteResult.disbursements?.totalDisbursements || 0)}</strong>
+                              </div>
                             </div>
                           </div>
 
-                          <div className="p-3.5 bg-tealAccent/10 rounded-2xl border border-tealAccent/20 text-xs text-legalDark space-y-1">
-                            <p className="font-bold">Included in Your Legal Quote:</p>
-                            <ul className="list-disc list-inside text-textMuted space-y-0.5 text-[11px]">
-                              <li>Full legal work for your {transactionType.toLowerCase()}</li>
-                              <li>Land Registry registration & SDLT submission</li>
-                              <li>Mortgage lender compliance & deed drafting</li>
-                            </ul>
-                          </div>
-
-                          <div className="flex gap-3 pt-1">
-                            <a
-                              href="tel:02037636767"
-                              className="flex-1 inline-flex items-center justify-center gap-2 bg-legalDark text-white px-4 py-3 rounded-xl hover:bg-legalNavy transition-all text-xs font-bold uppercase tracking-wider shadow-sm"
-                            >
-                              <Phone className="w-3.5 h-3.5 text-tealAccent" /> Speak to Lawyer
-                            </a>
+                          <div className="text-left sm:text-right shrink-0">
+                            <span className="text-[11px] text-white/70 block uppercase font-medium">Grand Total</span>
+                            <span className="text-2xl sm:text-3xl font-serif font-bold text-white tracking-tight">
+                              {formatCurrency(quoteResult.grandTotal || quoteResult.totalIncVat)}
+                            </span>
                           </div>
                         </div>
                       </div>

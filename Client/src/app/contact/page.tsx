@@ -140,7 +140,7 @@ export default function ContactPage() {
               <div className="lg:col-span-5 relative h-64 md:h-72 lg:h-[320px] rounded-2xl overflow-hidden shadow-xl border border-white/10">
                 <Image
                   src={contactHeroImg}
-                  alt="Quality Conveyancing Ealing Cross London Office"
+                  alt="Quality Conveyancing Aurora House London Office"
                   fill
                   className="object-cover object-center"
                   priority
@@ -162,23 +162,31 @@ export default function ContactPage() {
                     Our London Office
                   </span>
                   <h2 className="text-2xl md:text-3xl font-serif font-bold text-legalDark mb-3">
-                    Ealing Cross Office Location
+                    Aurora House Office Location
                   </h2>
                   <p className="text-textMuted text-xs md:text-sm leading-relaxed">
-                    Conveniently located in Ealing Broadway, West London, serving clients across London, England, and internationally.
+                    Conveniently located in Ealing, West London, serving clients across London, England, Wales, and internationally.
                   </p>
                 </div>
 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-1 gap-3 text-sm text-textMuted">
-                  <div className="flex items-start gap-3.5 p-4 bg-warmGray/40 rounded-xl border border-gray-100">
-                    <MapPin className="w-5 h-5 text-tealAccent shrink-0 mt-0.5" />
+                  <a
+                    href="https://www.google.com/maps/place/Quality+Conveyancing/@51.5117979,-0.3141504,17z/data=!3m2!4b1!5s0x4877a7ce628da303:0x57dec0479ff76f4f!4m16!1m9!4m8!1m0!1m6!1m2!1s0x4876121738b39a03:0x8f33eea903500bf6!2sQuality+Conveyancing+1st+floor,+Ealing+Cross,+85+Uxbridge+Rd+London+W5+5BW+United+Kingdom!2m2!1d-0.3115755!2d51.5117946!3m5!1s0x4876121738b39a03:0x8f33eea903500bf6!8m2!3d51.5117946!4d-0.3115755!16s%2Fg%2F11bw5m9ct4?entry=ttu&g_ep=EgoyMDI0MDkwOC4wIKXMDSoASAFQAw%3D%3D"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-start gap-3.5 p-4 bg-warmGray/40 hover:bg-warmGray/70 transition-colors rounded-xl border border-gray-100 group"
+                  >
+                    <MapPin className="w-5 h-5 text-tealAccent shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                     <div>
-                      <strong className="text-legalDark block mb-0.5">Address</strong>
+                      <strong className="text-legalDark block mb-0.5 flex items-center gap-1.5">
+                        <span>Office Address</span>
+                        <span className="text-[10px] text-tealAccent font-normal uppercase">(Open in Google Maps ↗)</span>
+                      </strong>
                       Quality Conveyancing<br />
-                      Ealing Cross, 1st Floor<br />
-                      85 Uxbridge Road, London W5 5BW
+                      Aurora House, 71–75 Uxbridge Road<br />
+                      Ealing, London W5 5SL
                     </div>
-                  </div>
+                  </a>
 
                   <div className="flex items-start gap-3.5 p-4 bg-warmGray/40 rounded-xl border border-gray-100">
                     <Phone className="w-5 h-5 text-tealAccent shrink-0 mt-0.5" />

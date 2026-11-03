@@ -2,7 +2,17 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { HelpCircle, Mail, Scale, ShieldCheck, Clock, FileText, CheckCircle2, Building, AlertTriangle } from "lucide-react";
+import {
+  HelpCircle,
+  Mail,
+  Scale,
+  ShieldCheck,
+  Clock,
+  FileText,
+  AlertTriangle,
+  Database,
+  Building,
+} from "lucide-react";
 
 export default function ComplaintsPage() {
   return (
@@ -80,11 +90,11 @@ export default function ComplaintsPage() {
               </h2>
 
               <div className="space-y-4 text-textMuted text-xs">
-                <div className="p-4 bg-warmGray/30 rounded-xl border border-gray-100">
-                  <p className="mb-2">We will acknowledge the complaint within <strong>7 days</strong> of receipt which allows for any postal delays and notify you who will be handling your complaint.</p>
-                  <p className="mb-2">We will record your complaint in our central register and open a file for your complaint. We will conduct a full investigation and an independent review of the matter.</p>
-                  <p className="mb-2">We will aim to respond in full within <strong>7 days</strong> of receipt of your initial complaint. However, that may not always be possible, particularly where the complaint is of a more complex nature. We may require more time, but we will let you know the reason for the delay in responding fully and when you will receive a full response. Usually, our full response will be provided within <strong>28 days</strong> of receipt of your initial complaint.</p>
-                  <p className="mb-2">We may also invite you to meet with the Supervisor to gather more information and resolve the matter.</p>
+                <div className="p-4 bg-warmGray/30 rounded-xl border border-gray-100 space-y-2">
+                  <p>We will acknowledge the complaint within <strong>7 days</strong> of receipt which allows for any postal delays and notify you who will be handling your complaint.</p>
+                  <p>We will record your complaint in our central register and open a file for your complaint. We will conduct a full investigation and an independent review of the matter.</p>
+                  <p>We will aim to respond in full within <strong>7 days</strong> of receipt of your initial complaint. However, that may not always be possible, particularly where the complaint is of a more complex nature, We may require more time, but we will let you know the reason for the delay in responding fully and when you will receive a full response. Usually, our full response will be provided within <strong>28 days</strong> of receipt of your initial complaint.</p>
+                  <p>We may also invite you to meet with the Supervisor to gather more information and resolve the matter.</p>
                   <p>We will reply to you, always in writing following the outcome of the review of the complaints investigated.</p>
                 </div>
 
@@ -115,29 +125,32 @@ export default function ComplaintsPage() {
               <h2 className="text-xl font-serif font-bold text-legalDark mb-3 flex items-center gap-2">
                 <Scale className="w-5 h-5 text-tealAccent" /> LEGAL OMBUDSMAN
               </h2>
-              <p className="text-textMuted mb-3">
+              <p className="text-textMuted mb-3 text-xs">
                 The Legal Ombudsman is the independent body established by the Office for Legal Complaints under the Legal Services Act 2007 to deal with complaints against Solicitors.
               </p>
               <p className="text-textMuted font-semibold text-xs mb-2">The Legal Ombudsman may:</p>
               <ul className="list-disc pl-5 space-y-1 text-textMuted text-xs mb-4">
                 <li>Investigate the quality of professional service supplied by a conveyancer or licenced conveyancing firm to a client.</li>
                 <li>Investigate allegations that a conveyancer or licenced conveyancing firm has breached rules of professional conduct.</li>
-                <li>Investigate allegations that a conveyancer or licenced conveyancing firm has unreasonably refused to supply a professional service to a prospective client.</li>
-                <li>Investigate allegations that a conveyancer or licenced conveyancing firm has persistently or unreasonably offered a professional service that the client does not want.</li>
+                <li>Investigate allegations that a conveyancer or licenced conveyancing firm has unreasonably refused to supply a professional service to a prospective client</li>
+                <li>Investigate allegations that a conveyancer or licenced conveyancing firm has persistently or unreasonably offered a professional service that the client does not want</li>
               </ul>
               <p className="text-textMuted text-xs mb-3">
                 Before it will consider a complaint the Legal Ombudsman generally requires that the firm’s internal Complaints Procedure (outlined above) has been exhausted. If the Legal Ombudsman is satisfied that the firm’s proposals for resolving a complaint are reasonable, it may decline to investigate further.
               </p>
               <p className="text-textMuted text-xs mb-3">
-                You will have to bring your complaint to the Legal Ombudsman within <strong>a year</strong> from the date of the act or omission being complained about; or one year of you realising there was a cause for complaint concern. You must refer your concerns to the Legal Ombudsman within <strong>six months</strong> of our final response to you.
+                You will have to bring your complaint to the Legal Ombudsman within <strong>a year</strong> from the date of the act or omission being complained about; or one year of you realising there was a cause for complaint concern.
+              </p>
+              <p className="text-textMuted text-xs mb-3">
+                You must refer your concerns to the Legal Ombudsman within <strong>six months</strong> of our final response to you.
               </p>
 
               <div className="p-4 bg-warmGray/50 rounded-xl border border-gray-100 text-xs space-y-1 text-textMuted">
                 <strong className="text-legalDark block mb-1">The Legal Ombudsman’s address and contact details are:</strong>
                 <p>PO Box 6167, Slough, SL1 0EH</p>
                 <p>Telephone: 0300 555 0333</p>
-                <p>Website: <a href="https://www.legalombudsman.org.uk" target="_blank" rel="noreferrer" className="text-legalDark underline">www.legalombudsman.org.uk</a></p>
-                <p>Email: <a href="mailto:enquiries@legalombudsman.org.uk" className="text-legalDark underline">enquiries@legalombudsman.org.uk</a></p>
+                <p>Website: <a href="https://www.legalombudsman.org.uk" target="_blank" rel="noopener noreferrer" className="text-tealAccent underline">www.legalombudsman.org.uk</a></p>
+                <p>Email: <a href="mailto:enquiries@legalombudsman.org.uk" className="text-tealAccent underline">enquiries@legalombudsman.org.uk</a></p>
               </div>
             </div>
 
@@ -153,10 +166,17 @@ export default function ComplaintsPage() {
               </p>
 
               <div className="p-4 bg-warmGray/50 rounded-xl border border-gray-100 text-xs space-y-1 text-textMuted">
-                <strong className="text-legalDark block mb-1">Contact Details (Contact Centre open Mon-Fri, 8am-5pm):</strong>
+                <strong className="text-legalDark block mb-1">You can raise your concerns with the Council for Licensed Conveyancers using the following contact details:</strong>
+                <p>Contact Centre open Mon-Fri, 8am-5pm.</p>
                 <p>Tel: 020 3859 0904</p>
-                <p>Email: <a href="mailto:clc@clc-uk.org" className="text-legalDark underline">clc@clc-uk.org</a></p>
-                <p className="pt-1">Postal address:<br />Council for Licensed Conveyancers<br />WeWork, 131 Finsbury Pavement<br />London EC2A 1NT</p>
+                <p>Email: <a href="mailto:clc@clc-uk.org" className="text-tealAccent underline">clc@clc-uk.org</a></p>
+                <p className="pt-1">
+                  Postal address:<br />
+                  Council for Licensed Conveyancers<br />
+                  WeWork<br />
+                  120 Moorgate<br />
+                  London EC2M 6UR
+                </p>
               </div>
             </div>
 
@@ -172,6 +192,18 @@ export default function ComplaintsPage() {
               </p>
               <p className="text-textMuted text-xs leading-relaxed mt-2">
                 However, we don’t currently agree to use this Alternative Dispute Resolution service in view of the availability of the independent Legal Ombudsman Service established under the Legal Services Act 2007. We are bound by our Regulatory Code to comply with the Legal Ombudsman and our Regulator.
+              </p>
+            </div>
+
+            <hr className="border-gray-100" />
+
+            {/* COMPLAINTS RELATING TO DSAR HANDLING (DUAA / data rights) */}
+            <div>
+              <h2 className="text-xl font-serif font-bold text-legalDark mb-3 flex items-center gap-2">
+                <Database className="w-5 h-5 text-tealAccent" /> COMPLAINTS RELATING TO DSAR HANDLING (DUAA / data rights)
+              </h2>
+              <p className="text-textMuted text-xs leading-relaxed">
+                Where an individual raises a complaint regarding the Firm’s handling of a Data Subject Access Request, this will be treated as a data protection complaint and managed in accordance with the Firm’s complaints procedure. The Firm will promptly acknowledge the complaint, investigate whether the DSAR was handled in compliance with applicable data protection legislation (including the UK GDPR/Data Protection Act 2018 as amended by the Data (Use and Access) Act), and provide a reasoned written response addressing the issues raised, including any corrective action taken. Where appropriate, the Firm will rectify any deficiencies without undue delay. The complainant will be informed of their right to escalate the matter to the Information Commissioner’s Office (ICO) if they remain dissatisfied, and, where the complaint also engages service or conduct issues, it may additionally be progressed under the Firm’s regulatory complaints framework.
               </p>
             </div>
 

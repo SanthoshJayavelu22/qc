@@ -263,8 +263,8 @@ export default function SpeakToTeam() {
                     <h4 className="font-serif font-bold text-base text-legalDark mb-1.5">Office Address</h4>
                     <address className="not-italic text-xs text-legalDark/80 leading-relaxed">
                       <p className="font-bold text-legalDark">Quality Conveyancing</p>
-                      <p>Ealing Cross, 1st Floor, 85 Uxbridge Road</p>
-                      <p>London W5 5BW</p>
+                      <p>Aurora House, 71–75 Uxbridge Road</p>
+                      <p>Ealing, London W5 5SL</p>
                     </address>
                   </div>
                 </div>

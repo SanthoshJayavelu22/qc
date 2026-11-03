@@ -36,8 +36,25 @@ export const sendCustomerQuoteEmail = async (params: {
   totalIncVat: string;
   subtotal: string;
   vatAmount: string;
+  sdltAmount?: string;
+  totalDisbursements?: string;
+  grandTotal?: string;
+  disbursements?: Array<{ name: string; amount: string; description: string }>;
 }) => {
-  const { clientName, clientEmail, transactionType, propertyValue, tenureType, totalIncVat, subtotal, vatAmount } = params;
+  const {
+    clientName,
+    clientEmail,
+    transactionType,
+    propertyValue,
+    tenureType,
+    totalIncVat,
+    subtotal,
+    vatAmount,
+    sdltAmount,
+    totalDisbursements,
+    grandTotal,
+    disbursements,
+  } = params;
 
   const htmlContent = `
     <!DOCTYPE html>
@@ -46,21 +63,22 @@ export const sendCustomerQuoteEmail = async (params: {
       <meta charset="utf-8">
       <style>
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 24px; color: #1c2e2a; }
-        .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
+        .container { max-width: 620px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
         .header { background: #0A1E1B; padding: 32px 24px; text-align: center; color: #ffffff; }
         .logo { font-size: 24px; font-weight: bold; letter-spacing: 1px; color: #2dd4bf; margin-bottom: 4px; }
         .subtitle { font-size: 13px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 2px; }
         .content { padding: 32px 28px; }
         .greeting { font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #0A1E1B; }
-        .summary-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin: 20px 0; }
-        .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #e2e8f0; font-size: 14px; }
+        .summary-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px; margin: 18px 0; }
+        .section-title { font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #0f766e; margin-bottom: 8px; border-bottom: 1px solid #ccfbf1; padding-bottom: 4px; }
+        .row { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px dashed #e2e8f0; font-size: 13px; }
         .row:last-child { border-bottom: none; }
         .label { color: #64748b; }
         .value { font-weight: 600; color: #0A1E1B; text-align: right; }
         .total-box { background: #0A1E1B; color: #ffffff; border-radius: 12px; padding: 18px; margin-top: 16px; text-align: center; }
-        .total-title { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #2dd4bf; margin-bottom: 4px; }
-        .total-amount { font-size: 28px; font-weight: bold; color: #ffffff; }
-        .cta { display: block; text-align: center; background: #2dd4bf; color: #0A1E1B; padding: 14px 24px; border-radius: 10px; font-weight: bold; text-decoration: none; margin: 28px 0 16px 0; font-size: 15px; }
+        .total-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #2dd4bf; margin-bottom: 4px; }
+        .total-amount { font-size: 26px; font-weight: bold; color: #ffffff; }
+        .cta { display: block; text-align: center; background: #2dd4bf; color: #0A1E1B; padding: 14px 24px; border-radius: 10px; font-weight: bold; text-decoration: none; margin: 24px 0 16px 0; font-size: 15px; }
         .footer { background: #f1f5f9; padding: 20px; text-align: center; font-size: 12px; color: #64748b; border-top: 1px solid #e2e8f0; }
       </style>
     </head>
@@ -68,43 +86,65 @@ export const sendCustomerQuoteEmail = async (params: {
       <div class="container">
         <div class="header">
           <div class="logo">Quality Conveyancing</div>
-          <div class="subtitle">Official Legal Fee Estimate</div>
+          <div class="subtitle">Official Legal Fee & Disbursement Quote</div>
         </div>
         <div class="content">
           <div class="greeting">Hello ${clientName},</div>
           <p style="line-height: 1.6; font-size: 14px; color: #334155;">
-            Thank you for requesting an instant conveyancing quote with Quality Conveyancing. Below is your transparent, fixed-fee quotation breakdown for your property transaction:
+            Thank you for requesting an instant conveyancing quote with Quality Conveyancing. Below is your transparent quotation breakdown, itemising both your legal fees and third-party estimated disbursements:
           </p>
 
           <div class="summary-card">
+            <div class="section-title">Transaction Information</div>
             <div class="row"><span class="label">Transaction Type:</span><span class="value">${transactionType}</span></div>
             <div class="row"><span class="label">Property Value:</span><span class="value">£${propertyValue || "N/A"}</span></div>
             <div class="row"><span class="label">Tenure:</span><span class="value">${tenureType || "Freehold"}</span></div>
-            <div class="row"><span class="label">Legal Fee (Excl. VAT):</span><span class="value">${subtotal || "N/A"}</span></div>
-            <div class="row"><span class="label">VAT (20%):</span><span class="value">${vatAmount || "N/A"}</span></div>
-            
-            <div class="total-box">
-              <div class="total-title">Total Estimated Fee (Inc. VAT)</div>
-              <div class="total-amount">${totalIncVat || "£0.00"}</div>
-            </div>
           </div>
 
-          <p style="font-size: 13px; color: #475569; line-height: 1.5;">
+          <div class="summary-card">
+            <div class="section-title">1. Legal Fees Breakdown</div>
+            <div class="row"><span class="label">Legal Work (Excl. VAT):</span><span class="value">${subtotal || "N/A"}</span></div>
+            <div class="row"><span class="label">VAT (20%):</span><span class="value">${vatAmount || "N/A"}</span></div>
+            <div class="row"><span class="label"><strong>Total Legal Fees (Inc. VAT):</strong></span><span class="value"><strong>${totalIncVat || "£0.00"}</strong></span></div>
+          </div>
+
+          <div class="summary-card">
+            <div class="section-title">2. Estimated Disbursements & Taxes</div>
+            ${sdltAmount ? `<div class="row"><span class="label">Stamp Duty Land Tax (SDLT):</span><span class="value">${sdltAmount}</span></div>` : ""}
+            ${
+              disbursements && disbursements.length > 0
+                ? disbursements
+                    .filter((d) => !d.name.includes("Stamp Duty"))
+                    .map((d) => `<div class="row"><span class="label">${d.name}:</span><span class="value">${d.amount}</span></div>`)
+                    .join("")
+                : ""
+            }
+            <div class="row"><span class="label"><strong>Total Estimated Disbursements:</strong></span><span class="value"><strong>${totalDisbursements || "£0.00"}</strong></span></div>
+          </div>
+
+          <div class="total-box">
+            <div class="total-title">Estimated Grand Total (Completion Funds Required)</div>
+            <div class="total-amount">${grandTotal || totalIncVat || "£0.00"}</div>
+            <p style="font-size: 11px; color: #94a3b8; margin: 4px 0 0 0;">Legal Fees + Estimated Third-Party Disbursements</p>
+          </div>
+
+          <p style="font-size: 13px; color: #475569; line-height: 1.6; margin-top: 20px;">
             ✓ Fixed Legal Fee Guarantee<br>
-            ✓ No Hidden Legal Surcharges<br>
+            ✓ Regulated by the Council for Licensed Conveyancers (CLC Practice 11359)<br>
             ✓ Dedicated Solicitor Assigned from Day 1<br>
-            ✓ Direct Dial & WhatsApp Updates
+            ✓ Direct Dial Phone Line & Email to Your Lawyer
           </p>
 
           <a href="tel:02037636767" class="cta">Instruct Your Solicitor Today • 020 3763 6767</a>
 
           <p style="font-size: 12px; color: #94a3b8; text-align: center;">
-            Have questions? Reply directly to this email or chat live with our property solicitors on our website.
+            Have questions? Reply directly to this email or call our direct line on 020 3763 6767.
           </p>
         </div>
         <div class="footer">
-          Quality Conveyancing • Regulated Solicitors • London UK<br>
-          Telephone: 020 3763 6767 | Mobile / WhatsApp: 07843 476 594
+          Quality Conveyancing • Regulated Licensed Conveyancers • London UK<br>
+          Aurora House, 71–75 Uxbridge Road, Ealing, London W5 5SL<br>
+          Telephone: 020 3763 6767 | Mobile: 07843 476 594
         </div>
       </div>
     </body>

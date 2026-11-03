@@ -115,8 +115,8 @@ export default function Footer({
               </div>
               <div>
                 <h4 className="font-serif font-bold text-sm text-tealAccent uppercase tracking-wider mb-1">Office Location</h4>
-                <p className="text-xs text-white/80">Quality Conveyancing, Ealing Cross, 1st Floor</p>
-                <p className="text-xs text-white/60">85 Uxbridge Road, London W5 5BW</p>
+                <p className="text-xs text-white/80">Quality Conveyancing, Aurora House</p>
+                <p className="text-xs text-white/60">71–75 Uxbridge Road, Ealing, London W5 5SL</p>
               </div>
             </div>
           </div>

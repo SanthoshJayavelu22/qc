@@ -14,6 +14,11 @@ export async function POST(request: Request) {
       totalIncVat,
       subtotal,
       vatAmount,
+      sdltAmount,
+      totalDisbursements,
+      grandTotal,
+      disbursements,
+      sdltBreakdown,
       questionnaireAnswers,
       seasonalDiscountNote,
     } = data;
@@ -25,9 +30,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const emailSubject = `Your Instant Conveyancing Quote: ${transactionType} (${totalIncVat || ""})`;
+    const emailSubject = `Your Instant Conveyancing Quote: ${transactionType} (${grandTotal || totalIncVat || ""})`;
 
-    const emailPayload = {
+    const emailPayload: Record<string, any> = {
       _subject: emailSubject,
       _template: "table",
       _replyto: clientEmail,
@@ -37,9 +42,13 @@ export async function POST(request: Request) {
       "Transaction Type": transactionType,
       "Property Value": propertyValue,
       "Tenure": tenureType,
-      "Subtotal (Excl. VAT)": subtotal,
+      "Legal Fee Subtotal (Excl. VAT)": subtotal,
       "VAT (20%)": vatAmount,
-      "Estimated Total (Inc. VAT)": totalIncVat,
+      "Total Legal Fees (Inc. VAT)": totalIncVat,
+      "Stamp Duty Land Tax (SDLT)": sdltAmount || "£0",
+      "Total Estimated Disbursements": totalDisbursements || "£0",
+      "Estimated Grand Total": grandTotal || totalIncVat,
+      "Disbursements Breakdown": disbursements ? JSON.stringify(disbursements, null, 2) : "N/A",
       "Questionnaire Responses": questionnaireAnswers ? JSON.stringify(questionnaireAnswers, null, 2) : "N/A",
       "Seasonal Discount Notice": seasonalDiscountNote || "We may have seasonal discounts available for your quote. Please get in touch at 020 3763 6767 to discuss",
     };
@@ -64,7 +73,7 @@ export async function POST(request: Request) {
           "Accept": "application/json",
         },
         body: JSON.stringify({
-          _subject: `Your Instant Conveyancing Quote: ${transactionType} (${totalIncVat || ""})`,
+          _subject: emailSubject,
           _template: "table",
           "Client Name": clientName,
           "Client Email": clientEmail,
@@ -72,9 +81,10 @@ export async function POST(request: Request) {
           "Transaction Type": transactionType,
           "Property Value": propertyValue,
           "Tenure": tenureType,
-          "Subtotal (Excl. VAT)": subtotal,
-          "VAT (20%)": vatAmount,
-          "Total Estimated Fee (Inc. VAT)": totalIncVat,
+          "Legal Fees (Inc. VAT)": totalIncVat,
+          "Stamp Duty (SDLT)": sdltAmount || "£0",
+          "Estimated Disbursements": totalDisbursements || "£0",
+          "Estimated Grand Total": grandTotal || totalIncVat,
           "Seasonal Discount Notice": seasonalDiscountNote || "Seasonal discounts may be available. Call 020 3763 6767 to discuss.",
         }),
       });

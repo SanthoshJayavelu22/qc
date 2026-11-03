@@ -92,6 +92,10 @@ export const submitQuoteAndSendEmail = async (req: Request, res: Response) => {
       totalIncVat,
       subtotal,
       vatAmount,
+      sdltAmount,
+      totalDisbursements,
+      grandTotal,
+      disbursements,
       questionnaireAnswers,
       seasonalDiscountNote,
     } = req.body;
@@ -115,6 +119,10 @@ export const submitQuoteAndSendEmail = async (req: Request, res: Response) => {
         totalIncVat: totalIncVat || "£0.00",
         subtotal: subtotal || "£0.00",
         vatAmount: vatAmount || "£0.00",
+        sdltAmount,
+        totalDisbursements,
+        grandTotal,
+        disbursements,
       });
     } catch (mailErr) {
       console.error("[Quote API] Direct email dispatch error:", mailErr);
