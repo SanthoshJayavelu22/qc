@@ -42,8 +42,8 @@ export const metadata: Metadata = {
 
 // Price Tables based on Quality_Conveyancing_Fees_Schedule.docx
 const purchasePriceBrackets = [
-  { bracket: "Up to £300,000", fee: "£1,099" },
-  { bracket: "£301,000 to £400,000", fee: "£1,099" },
+  { bracket: "Up to £300,000", fee: "£1,299" },
+  { bracket: "£301,000 to £400,000", fee: "£1,299" },
   { bracket: "£401,000 to £500,000", fee: "£1,299" },
   { bracket: "£501,000 to £600,000", fee: "£1,399" },
   { bracket: "£601,000 to £700,000", fee: "£1,499" },
@@ -55,8 +55,8 @@ const purchasePriceBrackets = [
 ];
 
 const salePriceBrackets = [
-  { bracket: "Up to £300,000", fee: "£1,099" },
-  { bracket: "£301,000 to £400,000", fee: "£1,099" },
+  { bracket: "Up to £300,000", fee: "£1,299" },
+  { bracket: "£301,000 to £400,000", fee: "£1,299" },
   { bracket: "£401,000 to £500,000", fee: "£1,299" },
   { bracket: "£501,000 to £600,000", fee: "£1,399" },
   { bracket: "£601,000 to £700,000", fee: "£1,499" },
@@ -313,7 +313,7 @@ const declarationsTrustsFees = [
 const specialPropertyFees = [
   { name: "Auction purchase", fee: "£2,500 + VAT (if Leasehold add £275 extra)" },
   { name: "PR/administrator/company sale or purchase", fee: "£350–£950" },
-  { name: "Newly built property/plot", fee: "£450–£950 (usually £475, then LH additionally)" },
+  { name: "Newly built property/plot", fee: "£750 + VAT (if Leasehold add £275 extra)" },
   { name: "Retirement property", fee: "£500" },
   { name: "Right to buy", fee: "Do not charge extra, only Leasehold fee (£275) if applicable" },
   { name: "Islamic mortgages", fee: "£850–£1,500" },

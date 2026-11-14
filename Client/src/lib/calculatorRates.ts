@@ -314,14 +314,6 @@ export function calculateEstimatedDisbursements(params: {
       description: `£6.00 per client (${effectiveClientCount} applicant${effectiveClientCount > 1 ? "s" : ""})`,
       isMandatory: true,
     });
-
-    // 1E. Standard Conveyancing Search Pack (Local Authority, Drainage, Environmental)
-    items.push({
-      name: "Standard Property Searches Pack",
-      amount: 250.0,
-      description: "Local Authority, Drainage & Environmental searches (estimated standard pack)",
-      isMandatory: false,
-    });
   }
 
   // 2. SALE

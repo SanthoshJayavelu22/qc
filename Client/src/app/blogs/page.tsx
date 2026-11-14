@@ -163,66 +163,65 @@ export default function BlogsPage() {
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.04 }}
-                    className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+                    className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
                   >
-                    <div>
-                      {/* Card Image */}
-                      <div className="relative h-44 w-full overflow-hidden bg-warmGray">
-                        {isExternalImg ? (
-                          <img
-                            src={cover}
-                            alt={post.title}
-                            className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                          />
-                        ) : (
-                          <Image
-                            src={cover}
-                            alt={post.title}
-                            fill
-                            className="object-cover transition-transform duration-500 hover:scale-105"
-                          />
-                        )}
-                        <div className="absolute top-3 left-3">
-                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1 bg-white/90 backdrop-blur-md text-legalDark rounded-full shadow-sm">
-                            <Tag className="w-3 h-3 text-tealAccent" />
-                            {post.category}
-                          </span>
+                    <Link href={`/blogs/${post.slug}`} className="flex flex-col h-full justify-between cursor-pointer">
+                      <div>
+                        {/* Card Image */}
+                        <div className="relative h-44 w-full overflow-hidden bg-warmGray">
+                          {isExternalImg ? (
+                            <img
+                              src={cover}
+                              alt={post.title}
+                              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                          ) : (
+                            <Image
+                              src={cover}
+                              alt={post.title}
+                              fill
+                              className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            />
+                          )}
+                          <div className="absolute top-3 left-3">
+                            <span className="inline-flex items-center gap-1 text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1 bg-white/90 backdrop-blur-md text-legalDark rounded-full shadow-sm">
+                              <Tag className="w-3 h-3 text-tealAccent" />
+                              {post.category}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="p-5">
+                          <h2 className="text-lg font-bold font-serif text-legalDark mb-2 line-clamp-2 group-hover:text-tealAccent transition-colors">
+                            {post.title}
+                          </h2>
+
+                          <p className="text-textMuted text-xs leading-relaxed line-clamp-3 mb-4">
+                            {post.excerpt}
+                          </p>
                         </div>
                       </div>
 
-                      <div className="p-5">
-                        <h2 className="text-lg font-bold font-serif text-legalDark mb-2 line-clamp-2 hover:text-tealAccent transition-colors">
-                          {post.title}
-                        </h2>
+                      <div className="px-5 pb-5">
+                        <div className="border-t border-gray-100 pt-3">
+                          <div className="flex items-center justify-between text-[11px] text-textMuted mb-3">
+                            <span className="flex items-center gap-1">
+                              <User className="w-3 h-3 text-tealAccent" />
+                              {post.author}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3 h-3 text-tealAccent" />
+                              {post.readTime}
+                            </span>
+                          </div>
 
-                        <p className="text-textMuted text-xs leading-relaxed line-clamp-3 mb-4">
-                          {post.excerpt}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="px-5 pb-5">
-                      <div className="border-t border-gray-100 pt-3">
-                        <div className="flex items-center justify-between text-[11px] text-textMuted mb-3">
-                          <span className="flex items-center gap-1">
-                            <User className="w-3 h-3 text-tealAccent" />
-                            {post.author}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Clock className="w-3 h-3 text-tealAccent" />
-                            {post.readTime}
-                          </span>
+                          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-legalDark group-hover:text-tealAccent transition-colors">
+                            <span>Read Full Article</span>
+                            <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                          </div>
                         </div>
-
-                        <Link
-                          href={`/blogs/${post.slug}`}
-                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-legalDark hover:text-tealAccent transition-colors group"
-                        >
-                          Read Full Article
-                          <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-                        </Link>
                       </div>
-                    </div>
+                    </Link>
                   </motion.article>
                 );
               })}

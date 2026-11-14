@@ -98,6 +98,8 @@ export default function FeeCalculator({
   // Step 1: Core Transaction & Property Value
   const [transactionType, setTransactionType] = useState<string>("Purchase");
   const [propertyValue, setPropertyValue] = useState<string>("");
+  const [salePropertyValue, setSalePropertyValue] = useState<string>("");
+  const [purchasePropertyValue, setPurchasePropertyValue] = useState<string>("");
 
   // Step 2A: Purchase Specific Enquiries (from user's image 1 & Paul's SDLT sections)
   const [purchaseBuyerCategory, setPurchaseBuyerCategory] = useState<"First Time Buyer" | "Moving Home" | "Additional Property">("Moving Home");
@@ -151,8 +153,8 @@ export default function FeeCalculator({
   // Price Tables based on Quality_Conveyancing_Fees_Schedule.docx
   const PRICE_TABLES: Record<string, { min: number; max: number; fee: number | "POA" }[]> = {
     Purchase: [
-      { min: 0, max: 300000, fee: 1099 },
-      { min: 300001, max: 400000, fee: 1099 },
+      { min: 0, max: 300000, fee: 1299 },
+      { min: 300001, max: 400000, fee: 1299 },
       { min: 400001, max: 500000, fee: 1299 },
       { min: 500001, max: 600000, fee: 1399 },
       { min: 600001, max: 700000, fee: 1499 },
@@ -163,8 +165,8 @@ export default function FeeCalculator({
       { min: 3000001, max: Infinity, fee: "POA" }
     ],
     Sale: [
-      { min: 0, max: 300000, fee: 1099 },
-      { min: 300001, max: 400000, fee: 1099 },
+      { min: 0, max: 300000, fee: 1299 },
+      { min: 300001, max: 400000, fee: 1299 },
       { min: 400001, max: 500000, fee: 1299 },
       { min: 500001, max: 600000, fee: 1399 },
       { min: 600001, max: 700000, fee: 1499 },
@@ -214,8 +216,17 @@ export default function FeeCalculator({
   // Step 1 -> Step 2 Validation
   const handleNextToStep2 = () => {
     const errs: { [key: string]: string } = {};
-    if (!propertyValue || parseFloat(propertyValue) <= 0) {
-      errs.propertyValue = "Please enter an estimated property value (£)";
+    if (transactionType === "Sale & Purchase") {
+      if (!salePropertyValue || parseFloat(salePropertyValue) <= 0) {
+        errs.salePropertyValue = "Please enter your sale property value (£)";
+      }
+      if (!purchasePropertyValue || parseFloat(purchasePropertyValue) <= 0) {
+        errs.purchasePropertyValue = "Please enter your purchase property value (£)";
+      }
+    } else {
+      if (!propertyValue || parseFloat(propertyValue) <= 0) {
+        errs.propertyValue = "Please enter an estimated property value (£)";
+      }
     }
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
@@ -265,10 +276,30 @@ export default function FeeCalculator({
     setIsSubmitting(true);
 
     const val = parseFloat(propertyValue) || 0;
+    const sVal = parseFloat(salePropertyValue) || val;
+    const pVal = parseFloat(purchasePropertyValue) || val;
 
     // Structured Questionnaire Answers for email & caseworkers
     let questionnaireAnswers: Record<string, any> = {};
-    if (transactionType === "Purchase" || transactionType === "Sale & Purchase") {
+    if (transactionType === "Sale & Purchase") {
+      questionnaireAnswers = {
+        "Sale Property Value": formatCurrency(sVal),
+        "Sale Property Tenure": saleTenure,
+        "Existing mortgage on sale property?": saleExistingMortgage,
+        "Names on sale property deed": saleDeedNames,
+        "Purchase Property Value": formatCurrency(pVal),
+        "Purchase SDLT Status": purchaseBuyerCategory,
+        "Purchase Property Tenure": purchaseTenure,
+        "Is purchase property a new build?": purchaseNewBuild,
+        "First time buyer?": purchaseFirstTimeBuyer,
+        "Second home or Buy to Let?": purchaseSecondHome,
+        "Right to Buy?": purchaseRightToBuy,
+        "Shared Ownership?": purchaseSharedOwnership,
+        "Names on purchase property deed": purchaseDeedNames,
+        "Lifetime / Help to Buy ISA?": purchaseLifetimeIsa,
+        "New mortgage for purchase?": purchaseMortgage,
+      };
+    } else if (transactionType === "Purchase") {
       questionnaireAnswers = {
         "Property Tenure": purchaseTenure,
         "Is the property a new build?": purchaseNewBuild,
@@ -285,7 +316,6 @@ export default function FeeCalculator({
         "New Mortgage Value": remortgageValue ? `£${remortgageValue}` : formatCurrency(val),
         "Current Lender": currentLender || "Not specified",
         "Proposed New Lender": proposedLender || "Not specified",
-        "Current Mortgage Account Number": currentMortgageAccNum || "Not specified",
         "Does remortgage involve Transfer of Equity?": remortgageTransferOfEquity,
       };
     } else if (transactionType === "Sale") {
@@ -345,8 +375,8 @@ export default function FeeCalculator({
     let isPOA = false;
 
     if (transactionType === "Sale & Purchase") {
-      const sRes = getBaseFee("Sale", val);
-      const pRes = getBaseFee("Purchase", val);
+      const sRes = getBaseFee("Sale", sVal);
+      const pRes = getBaseFee("Purchase", pVal);
       if (sRes === "POA" || pRes === "POA" || sRes === null || pRes === null) {
         isPOA = true;
       } else {
@@ -367,10 +397,19 @@ export default function FeeCalculator({
 
     // Determine Client Count for ID checks and Source of Funds checks based on deed answers
     let clientCount = 1;
-    if (transactionType === "Purchase" || transactionType === "Sale & Purchase") {
+    let saleClientCount = 1;
+    let purchaseClientCount = 1;
+
+    if (transactionType === "Sale & Purchase") {
+      saleClientCount = saleDeedNames === "Two" ? 2 : saleDeedNames === "Three or more" ? 3 : 1;
+      purchaseClientCount = purchaseDeedNames === "Two" ? 2 : purchaseDeedNames === "Three or more" ? 3 : 1;
+      clientCount = Math.max(saleClientCount, purchaseClientCount);
+    } else if (transactionType === "Purchase") {
       clientCount = purchaseDeedNames === "Two" ? 2 : purchaseDeedNames === "Three or more" ? 3 : 1;
+      purchaseClientCount = clientCount;
     } else if (transactionType === "Sale") {
       clientCount = saleDeedNames === "Two" ? 2 : saleDeedNames === "Three or more" ? 3 : 1;
+      saleClientCount = clientCount;
     } else if (remortgageTransferOfEquity === "Yes") {
       clientCount = 2;
     }
@@ -379,44 +418,52 @@ export default function FeeCalculator({
     const idCheckTotal = ID_CHECK_FEE * clientCount; // £90 per person
     const sourceOfFundsTotal = SOURCE_OF_FUNDS_FEE * clientCount; // £95 per person
 
-    // Non-refundable Admin Fee (Mandatory on Sales and Remortgages only: £100 + VAT)
-    const adminFee = (transactionType === "Sale" || transactionType === "Re-Mortgage" || transactionType === "Sale & Purchase" || transactionType === "Transfer of Equity") 
-      ? ADMIN_FEE_SALE_REMORTGAGE 
-      : 0;
+    // Non-refundable Admin Fee (Mandatory on ALL quotes: £100 + VAT)
+    const adminFee = 100;
 
     // Telegraphic Transfer (TT) Fee (Mandatory on All Completions: £45 per transfer)
-    const ttFee = TT_FEE;
+    const ttFee = transactionType === "Sale & Purchase" ? TT_FEE * 2 : TT_FEE;
 
-    // Determine Tenure and Tenure Fees
-    const activeTenure = transactionType === "Sale" ? saleTenure : purchaseTenure;
+    // Property Searches Pack (under legal fees for Purchase and Sale & Purchase): £485 + VAT
+    const includesPurchase = transactionType === "Purchase" || transactionType === "Sale & Purchase";
+    const searchesFee = includesPurchase ? 485 : 0;
+    const searchesFeeDescription = "Property Searches/: Search Pack Managing, Analysing and Reporting. Searches included: Local Authority, Drainage & Environmental searches";
+
+    // Determine Tenure and Tenure Fees (Leasehold Fee £275, Deed of covenant removed)
     let tenureFees = 0;
     const tenureDetails: { label: string; amount: number }[] = [];
 
-    if (activeTenure === "Leasehold") {
-      // Leasehold fee (£275) + Deed of Covenant (£275) per schedule
-      tenureFees = 550;
-      tenureDetails.push({ label: "Leasehold Fee", amount: 275 });
-      tenureDetails.push({ label: "Deed of Covenant", amount: 275 });
+    if (transactionType === "Sale & Purchase") {
+      if (saleTenure === "Leasehold") {
+        tenureFees += 275;
+        tenureDetails.push({ label: "Sale Leasehold Fee", amount: 275 });
+      }
+      if (purchaseTenure === "Leasehold") {
+        tenureFees += 275;
+        tenureDetails.push({ label: "Purchase Leasehold Fee", amount: 275 });
+      }
+    } else {
+      const activeTenure = transactionType === "Sale" ? saleTenure : purchaseTenure;
+      if (activeTenure === "Leasehold") {
+        tenureFees = 275;
+        tenureDetails.push({ label: "Leasehold Fee", amount: 275 });
+      }
     }
 
     // Dynamic Additional Services Breakdown based on answers
     const addOnsDetails: { label: string; amount: number }[] = [];
     let addOnsTotal = 0;
 
-    if (transactionType === "Purchase" || transactionType === "Sale & Purchase") {
+    if (includesPurchase) {
       if (purchaseNewBuild === "Yes") {
-        // Newly built property/plot: usually £475 per schedule
-        addOnsDetails.push({ label: "Newly Built Property / Plot Compliance", amount: 475 });
-        addOnsTotal += 475;
+        addOnsDetails.push({ label: "Newly Built Property / Plot Compliance", amount: 750 });
+        addOnsTotal += 750;
       }
       if (purchaseSharedOwnership !== "No") {
-        // Shared ownership leases: £450 per schedule
         addOnsDetails.push({ label: `Shared Ownership (${purchaseSharedOwnership})`, amount: 450 });
         addOnsTotal += 450;
       }
-      // Right to Buy: "Right to buy – do not charge extra only LH fee if applicable" per schedule
       if (purchaseMortgage === "Yes") {
-        // Mortgagee / Lender fee: £350-£400, usually £375 per schedule
         addOnsDetails.push({ label: "Acting on Behalf of Mortgage Lender", amount: 375 });
         addOnsTotal += 375;
       }
@@ -428,7 +475,6 @@ export default function FeeCalculator({
 
     if (transactionType === "Sale" || transactionType === "Sale & Purchase") {
       if (saleExistingMortgage === "Yes") {
-        // Acting for lender in redeeming mortgage: £350 per schedule
         addOnsDetails.push({ label: "Acting for Lender in Redeeming Mortgage", amount: 350 });
         addOnsTotal += 350;
       }
@@ -436,17 +482,15 @@ export default function FeeCalculator({
 
     if (transactionType === "Re-Mortgage") {
       if (remortgageTransferOfEquity === "Yes") {
-        // Transfer of equity – £375 extra to Remortgage quote per schedule
         addOnsDetails.push({ label: "Transfer of Equity (Additional to Remortgage)", amount: 375 });
         addOnsTotal += 375;
       }
-      // Remortgage involves lender acting fee
       addOnsDetails.push({ label: "Acting on Behalf of Mortgage Lender", amount: 375 });
       addOnsTotal += 375;
     }
 
     // Subtotal, VAT, Total of Legal Fees
-    const subtotal = baseFee + adminFee + idCheckTotal + sourceOfFundsTotal + ttFee + tenureFees + addOnsTotal;
+    const subtotal = baseFee + adminFee + searchesFee + idCheckTotal + sourceOfFundsTotal + ttFee + tenureFees + addOnsTotal;
     const vatAmount = subtotal * VAT_RATE;
     const totalIncVat = subtotal + vatAmount;
 
@@ -460,22 +504,152 @@ export default function FeeCalculator({
         ? "additionalProperty"
         : "movingHome";
 
-    const sdltCalculation: SDLTResult = calculateSDLT(val, sdltBuyerCategory);
+    const effectivePurchaseVal = transactionType === "Sale & Purchase" ? pVal : val;
+    const sdltCalculation: SDLTResult = calculateSDLT(effectivePurchaseVal, sdltBuyerCategory);
 
     // Calculate Estimated Disbursements
-    const disbursementsData: EstimatedDisbursementsResult = calculateEstimatedDisbursements({
-      transactionType,
-      propertyValue: val,
-      tenure: activeTenure,
-      isNewBuild: purchaseNewBuild === "Yes",
-      clientCount,
-      isFirstTimeBuyer: isFirstTime,
-      isSecondHome: isAdditional,
-      sdltBuyerType: sdltBuyerCategory,
-    });
+    let disbursementsData: EstimatedDisbursementsResult;
+    if (transactionType === "Sale & Purchase") {
+      const saleDisb = calculateEstimatedDisbursements({
+        transactionType: "Sale",
+        propertyValue: sVal,
+        tenure: saleTenure,
+        clientCount: saleClientCount,
+      });
+      const purchaseDisb = calculateEstimatedDisbursements({
+        transactionType: "Purchase",
+        propertyValue: pVal,
+        tenure: purchaseTenure,
+        isNewBuild: purchaseNewBuild === "Yes",
+        clientCount: purchaseClientCount,
+        isFirstTimeBuyer: isFirstTime,
+        isSecondHome: isAdditional,
+        sdltBuyerType: sdltBuyerCategory,
+      });
+
+      disbursementsData = {
+        items: [...saleDisb.items, ...purchaseDisb.items],
+        totalDisbursements: saleDisb.totalDisbursements + purchaseDisb.totalDisbursements,
+        sdltAmount: purchaseDisb.sdltAmount,
+        landRegistryFee: saleDisb.landRegistryFee + purchaseDisb.landRegistryFee,
+      };
+    } else {
+      const activeTenure = transactionType === "Sale" ? saleTenure : purchaseTenure;
+      disbursementsData = calculateEstimatedDisbursements({
+        transactionType,
+        propertyValue: val,
+        tenure: activeTenure,
+        isNewBuild: purchaseNewBuild === "Yes",
+        clientCount,
+        isFirstTimeBuyer: isFirstTime,
+        isSecondHome: isAdditional,
+        sdltBuyerType: sdltBuyerCategory,
+      });
+    }
 
     // Grand Total: Legal Fees (Inc VAT) + Estimated Disbursements
     const grandTotal = totalIncVat + disbursementsData.totalDisbursements;
+
+    // Separate breakdown for Sale & Purchase comparison
+    let saleBreakdown: any = null;
+    let purchaseBreakdown: any = null;
+
+    if (transactionType === "Sale & Purchase") {
+      // Sale side
+      const sAdmin = 100;
+      const sId = ID_CHECK_FEE * saleClientCount;
+      const sSof = SOURCE_OF_FUNDS_FEE * saleClientCount;
+      const sTt = TT_FEE;
+      const sTenure = saleTenure === "Leasehold" ? 275 : 0;
+      const sAddons = saleExistingMortgage === "Yes" ? 350 : 0;
+      const sSubtotal = saleFee + sAdmin + sId + sSof + sTt + sTenure + sAddons;
+      const sVat = sSubtotal * VAT_RATE;
+      const sTotalIncVat = sSubtotal + sVat;
+      const saleDisb = calculateEstimatedDisbursements({
+        transactionType: "Sale",
+        propertyValue: sVal,
+        tenure: saleTenure,
+        clientCount: saleClientCount,
+      });
+
+      saleBreakdown = {
+        propertyValue: sVal,
+        tenure: saleTenure,
+        clientCount: saleClientCount,
+        baseFee: saleFee,
+        adminFee: sAdmin,
+        idCheck: sId,
+        sourceOfFunds: sSof,
+        ttFee: sTt,
+        tenureFee: sTenure,
+        addons: saleExistingMortgage === "Yes" ? [{ label: "Acting for Lender in Redeeming Mortgage", amount: 350 }] : [],
+        subtotal: sSubtotal,
+        vatAmount: sVat,
+        totalIncVat: sTotalIncVat,
+        disbursements: saleDisb,
+        grandTotal: sTotalIncVat + saleDisb.totalDisbursements,
+      };
+
+      // Purchase side
+      const pAdmin = 100;
+      const pId = ID_CHECK_FEE * purchaseClientCount;
+      const pSof = SOURCE_OF_FUNDS_FEE * purchaseClientCount;
+      const pTt = TT_FEE;
+      const pSearches = 485;
+      const pTenure = purchaseTenure === "Leasehold" ? 275 : 0;
+      let pAddons = 0;
+      const pAddonsList: { label: string; amount: number }[] = [];
+      if (purchaseNewBuild === "Yes") {
+        pAddonsList.push({ label: "Newly Built Property / Plot Compliance", amount: 750 });
+        pAddons += 750;
+      }
+      if (purchaseSharedOwnership !== "No") {
+        pAddonsList.push({ label: `Shared Ownership (${purchaseSharedOwnership})`, amount: 450 });
+        pAddons += 450;
+      }
+      if (purchaseMortgage === "Yes") {
+        pAddonsList.push({ label: "Acting on Behalf of Mortgage Lender", amount: 375 });
+        pAddons += 375;
+      }
+      if (purchaseLifetimeIsa === "Yes") {
+        pAddonsList.push({ label: "Lifetime / Help to Buy ISA Processing", amount: 100 });
+        pAddons += 100;
+      }
+      const pSubtotal = purchaseFee + pAdmin + pSearches + pId + pSof + pTt + pTenure + pAddons;
+      const pVat = pSubtotal * VAT_RATE;
+      const pTotalIncVat = pSubtotal + pVat;
+      const purchaseDisb = calculateEstimatedDisbursements({
+        transactionType: "Purchase",
+        propertyValue: pVal,
+        tenure: purchaseTenure,
+        isNewBuild: purchaseNewBuild === "Yes",
+        clientCount: purchaseClientCount,
+        isFirstTimeBuyer: isFirstTime,
+        isSecondHome: isAdditional,
+        sdltBuyerType: sdltBuyerCategory,
+      });
+
+      purchaseBreakdown = {
+        propertyValue: pVal,
+        tenure: purchaseTenure,
+        clientCount: purchaseClientCount,
+        baseFee: purchaseFee,
+        adminFee: pAdmin,
+        searchesFee: pSearches,
+        searchesFeeDescription,
+        idCheck: pId,
+        sourceOfFunds: pSof,
+        ttFee: pTt,
+        tenureFee: pTenure,
+        addons: pAddonsList,
+        subtotal: pSubtotal,
+        vatAmount: pVat,
+        totalIncVat: pTotalIncVat,
+        disbursements: purchaseDisb,
+        sdlt: sdltCalculation,
+        grandTotal: pTotalIncVat + purchaseDisb.totalDisbursements,
+      };
+    }
 
     // Build breakdown payload
     const breakdown = {
@@ -486,15 +660,19 @@ export default function FeeCalculator({
         amount: baseFee,
         details: transactionType === "Sale & Purchase" 
           ? [
-              { label: "Sale Fee", amount: saleFee },
-              { label: "Purchase Fee", amount: purchaseFee }
+              { label: `Sale Fee (${formatCurrency(sVal)})`, amount: saleFee },
+              { label: `Purchase Fee (${formatCurrency(pVal)})`, amount: purchaseFee }
             ]
           : []
       },
       adminFee: {
-        label: "Non-Refundable Admin Fee (Sale/Remortgage)",
+        label: "Admin Fee: A non-refundable fee for opening your file only, including setting you up on our systems before substantive work starts",
         amount: adminFee
       },
+      searchesFee: searchesFee > 0 ? {
+        label: "Property Searches/: Search Pack Managing, Analysing and Reporting. Searches included: Local Authority, Drainage & Environmental searches",
+        amount: searchesFee
+      } : null,
       idChecks: {
         label: `Electronic ID Checks (${clientCount} client${clientCount > 1 ? "s" : ""})`,
         amount: idCheckTotal,
@@ -506,11 +684,11 @@ export default function FeeCalculator({
         perPerson: SOURCE_OF_FUNDS_FEE
       },
       ttFee: {
-        label: "Telegraphic Transfer (TT) Fee (Completion)",
+        label: transactionType === "Sale & Purchase" ? "Telegraphic Transfer (TT) Fee (Sale & Purchase Completions)" : "Telegraphic Transfer (TT) Fee (Completion)",
         amount: ttFee
       },
       tenureFees: {
-        label: `${activeTenure} Fees`,
+        label: transactionType === "Sale & Purchase" ? "Leasehold Fees" : `${transactionType === "Sale" ? saleTenure : purchaseTenure} Fees`,
         amount: tenureFees,
         details: tenureDetails
       },
@@ -529,6 +707,9 @@ export default function FeeCalculator({
       }
     };
 
+    const primaryVal = transactionType === "Sale & Purchase" ? `${formatCurrency(sVal)} (Sale) / ${formatCurrency(pVal)} (Purchase)` : formatCurrency(val);
+    const primaryTenure = transactionType === "Sale & Purchase" ? `Sale: ${saleTenure} | Purchase: ${purchaseTenure}` : (transactionType === "Sale" ? saleTenure : purchaseTenure);
+
     // Dispatch Email Asynchronously via Next.js API route
     try {
       fetch("/api/quote/send", {
@@ -539,8 +720,8 @@ export default function FeeCalculator({
           clientEmail,
           clientPhone,
           transactionType,
-          propertyValue: formatCurrency(val),
-          tenureType: activeTenure,
+          propertyValue: primaryVal,
+          tenureType: primaryTenure,
           subtotal: formatCurrency(subtotal),
           vatAmount: formatCurrency(vatAmount),
           totalIncVat: formatCurrency(totalIncVat),
@@ -562,6 +743,8 @@ export default function FeeCalculator({
     setQuoteResult({
       type: isPOA ? "POA" : "calculated",
       breakdown,
+      saleBreakdown,
+      purchaseBreakdown,
       subtotal,
       vatAmount,
       totalIncVat,
@@ -569,8 +752,10 @@ export default function FeeCalculator({
       sdlt: sdltCalculation,
       grandTotal,
       transactionType,
-      propertyValue: val,
-      tenureType: activeTenure,
+      propertyValue: transactionType === "Sale & Purchase" ? pVal : val,
+      salePropertyValue: sVal,
+      purchasePropertyValue: pVal,
+      tenureType: primaryTenure,
       clients: clientCount,
       clientName,
       clientPhone,
@@ -790,30 +975,93 @@ export default function FeeCalculator({
                     </div>
                   </div>
 
-                  {/* Property Value Input */}
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs font-semibold text-textMuted uppercase tracking-widest">
-                      Estimated Property Value (£) *
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <PoundSterling className="h-4 w-4 text-legalDark/40" />
+                  {/* Property Value Input - Conditional for Sale & Purchase vs Single Transaction */}
+                  {transactionType === "Sale & Purchase" ? (
+                    <div className="space-y-4 p-4 bg-warmGray/40 rounded-2xl border border-gray-100">
+                      <div>
+                        <span className="text-xs font-bold text-legalDark uppercase tracking-wider block mb-1">
+                          Step 1 of 2: Property Values for Sale & Purchase
+                        </span>
+                        <p className="text-xs text-textMuted">
+                          Please enter the values of both the property you are selling and the property you are purchasing.
+                        </p>
                       </div>
-                      <input
-                        type="number"
-                        placeholder="e.g. 350000"
-                        value={propertyValue}
-                        onChange={(e) => {
-                          setPropertyValue(e.target.value);
-                          if (errors.propertyValue) setErrors({});
-                        }}
-                        className={`w-full bg-lightBg border ${errors.propertyValue ? "border-red-400" : "border-legalDark/20"} rounded-xl pl-10 pr-4 py-3.5 text-sm text-legalDark font-medium placeholder:text-legalDark/30 focus:outline-none focus:border-tealAccent focus:bg-white transition-all hover:border-legalDark/40`}
-                      />
+
+                      {/* Sale Property Value */}
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-xs font-semibold text-textMuted uppercase tracking-widest">
+                          (1) Sale Property Value (£) *
+                        </label>
+                        <div className="relative">
+                          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <PoundSterling className="h-4 w-4 text-legalDark/40" />
+                          </div>
+                          <input
+                            type="number"
+                            placeholder="e.g. 450000"
+                            value={salePropertyValue}
+                            onChange={(e) => {
+                              setSalePropertyValue(e.target.value);
+                              if (errors.salePropertyValue) setErrors({ ...errors, salePropertyValue: "" });
+                            }}
+                            className={`w-full bg-lightBg border ${errors.salePropertyValue ? "border-red-400" : "border-legalDark/20"} rounded-xl pl-10 pr-4 py-3.5 text-sm text-legalDark font-medium placeholder:text-legalDark/30 focus:outline-none focus:border-tealAccent focus:bg-white transition-all hover:border-legalDark/40`}
+                          />
+                        </div>
+                        {errors.salePropertyValue && (
+                          <p className="text-red-500 text-xs mt-0.5">{errors.salePropertyValue}</p>
+                        )}
+                      </div>
+
+                      {/* Purchase Property Value */}
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-xs font-semibold text-textMuted uppercase tracking-widest">
+                          (2) Purchase Property Value (£) *
+                        </label>
+                        <div className="relative">
+                          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <PoundSterling className="h-4 w-4 text-legalDark/40" />
+                          </div>
+                          <input
+                            type="number"
+                            placeholder="e.g. 550000"
+                            value={purchasePropertyValue}
+                            onChange={(e) => {
+                              setPurchasePropertyValue(e.target.value);
+                              if (errors.purchasePropertyValue) setErrors({ ...errors, purchasePropertyValue: "" });
+                            }}
+                            className={`w-full bg-lightBg border ${errors.purchasePropertyValue ? "border-red-400" : "border-legalDark/20"} rounded-xl pl-10 pr-4 py-3.5 text-sm text-legalDark font-medium placeholder:text-legalDark/30 focus:outline-none focus:border-tealAccent focus:bg-white transition-all hover:border-legalDark/40`}
+                          />
+                        </div>
+                        {errors.purchasePropertyValue && (
+                          <p className="text-red-500 text-xs mt-0.5">{errors.purchasePropertyValue}</p>
+                        )}
+                      </div>
                     </div>
-                    {errors.propertyValue && (
-                      <p className="text-red-500 text-xs mt-0.5">{errors.propertyValue}</p>
-                    )}
-                  </div>
+                  ) : (
+                    <div className="flex flex-col gap-2">
+                      <label className="text-xs font-semibold text-textMuted uppercase tracking-widest">
+                        Estimated Property Value (£) *
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                          <PoundSterling className="h-4 w-4 text-legalDark/40" />
+                        </div>
+                        <input
+                          type="number"
+                          placeholder="e.g. 350000"
+                          value={propertyValue}
+                          onChange={(e) => {
+                            setPropertyValue(e.target.value);
+                            if (errors.propertyValue) setErrors({});
+                          }}
+                          className={`w-full bg-lightBg border ${errors.propertyValue ? "border-red-400" : "border-legalDark/20"} rounded-xl pl-10 pr-4 py-3.5 text-sm text-legalDark font-medium placeholder:text-legalDark/30 focus:outline-none focus:border-tealAccent focus:bg-white transition-all hover:border-legalDark/40`}
+                        />
+                      </div>
+                      {errors.propertyValue && (
+                        <p className="text-red-500 text-xs mt-0.5">{errors.propertyValue}</p>
+                      )}
+                    </div>
+                  )}
 
                   <div className="pt-4 flex justify-end">
                     <button
@@ -833,8 +1081,141 @@ export default function FeeCalculator({
               {/* ========================================================= */}
               {step === 2 && (
                 <div className="space-y-6">
-                  {/* PURCHASE ENQUIRIES (User Image 1) */}
-                  {(transactionType === "Purchase" || transactionType === "Sale & Purchase") && (
+                  {/* SALE & PURCHASE SEQUENTIAL ENQUIRIES */}
+                  {transactionType === "Sale & Purchase" && (
+                    <div className="space-y-8">
+                      {/* Section (1): Sale Details */}
+                      <div className="p-5 bg-warmGray/40 rounded-2xl border border-gray-100 space-y-5">
+                        <div className="flex items-center gap-2 pb-2 border-b border-gray-200">
+                          <span className="w-6 h-6 rounded-full bg-tealAccent text-white text-xs font-bold flex items-center justify-center">
+                            1
+                          </span>
+                          <div>
+                            <h3 className="text-base sm:text-lg font-bold font-serif text-legalDark">
+                              Sale Property Enquiries ({formatCurrency(parseFloat(salePropertyValue) || 0)})
+                            </h3>
+                            <p className="text-textMuted text-xs">
+                              Please answer these questions regarding the property you are selling.
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Sale Tenure */}
+                        <SelectionGroup
+                          label="Is your sale property Freehold or Leasehold?"
+                          options={["Freehold", "Leasehold"]}
+                          value={saleTenure}
+                          onChange={setSaleTenure}
+                        />
+
+                        {/* Existing Mortgage */}
+                        <SelectionGroup
+                          label="Is there an existing mortgage to pay off with the sale proceeds?"
+                          options={["No", "Yes"]}
+                          value={saleExistingMortgage}
+                          onChange={setSaleExistingMortgage}
+                        />
+
+                        {/* Names on Deed */}
+                        <SelectionGroup
+                          label="How many names will be on the sale property deed?"
+                          options={["One", "Two", "Three or more"]}
+                          value={saleDeedNames}
+                          onChange={setSaleDeedNames}
+                        />
+                      </div>
+
+                      {/* Section (2): Purchase Details */}
+                      <div className="p-5 bg-tealAccent/5 rounded-2xl border border-tealAccent/20 space-y-5">
+                        <div className="flex items-center gap-2 pb-2 border-b border-tealAccent/20">
+                          <span className="w-6 h-6 rounded-full bg-legalDark text-white text-xs font-bold flex items-center justify-center">
+                            2
+                          </span>
+                          <div>
+                            <h3 className="text-base sm:text-lg font-bold font-serif text-legalDark">
+                              Purchase Property Enquiries ({formatCurrency(parseFloat(purchasePropertyValue) || 0)})
+                            </h3>
+                            <p className="text-textMuted text-xs">
+                              Please answer these questions regarding the new property you are purchasing.
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Buyer Type for Stamp Duty Land Tax (SDLT) */}
+                        <SelectionGroup
+                          label="Stamp Duty Land Tax (SDLT) Status for Purchase"
+                          tooltip="Select whether you are a First Time Buyer, Moving Home, or purchasing an Additional Property/Buy to Let"
+                          options={["First Time Buyer", "Moving Home", "Additional Property"]}
+                          value={purchaseBuyerCategory}
+                          onChange={(val: string) => {
+                            const cat = val as "First Time Buyer" | "Moving Home" | "Additional Property";
+                            setPurchaseBuyerCategory(cat);
+                            if (cat === "First Time Buyer") {
+                              setPurchaseFirstTimeBuyer("Yes");
+                              setPurchaseSecondHome("No");
+                            } else if (cat === "Additional Property") {
+                              setPurchaseFirstTimeBuyer("No");
+                              setPurchaseSecondHome("Yes");
+                            } else {
+                              setPurchaseFirstTimeBuyer("No");
+                              setPurchaseSecondHome("No");
+                            }
+                          }}
+                        />
+
+                        {/* Purchase Freehold or Leasehold */}
+                        <SelectionGroup
+                          label="Is the purchase property Freehold or Leasehold?"
+                          options={["Freehold", "Leasehold", "Unsure"]}
+                          value={purchaseTenure}
+                          onChange={setPurchaseTenure}
+                        />
+
+                        {/* New Build */}
+                        <SelectionGroup
+                          label="Is the purchase property a new build?"
+                          options={["No", "Yes"]}
+                          value={purchaseNewBuild}
+                          onChange={setPurchaseNewBuild}
+                        />
+
+                        {/* Shared Ownership */}
+                        <SelectionGroup
+                          label="Are you buying through a Shared Ownership scheme?"
+                          options={["No", "Housing Association", "Help to Buy"]}
+                          value={purchaseSharedOwnership}
+                          onChange={setPurchaseSharedOwnership}
+                        />
+
+                        {/* Deed Names */}
+                        <SelectionGroup
+                          label="How many names will be on the purchase property deed?"
+                          options={["One", "Two", "Three or more"]}
+                          value={purchaseDeedNames}
+                          onChange={setPurchaseDeedNames}
+                        />
+
+                        {/* Lifetime / Help to Buy ISA */}
+                        <SelectionGroup
+                          label="Are you using the Lifetime ISA or Help to Buy ISA saving schemes?"
+                          options={["No", "Yes"]}
+                          value={purchaseLifetimeIsa}
+                          onChange={setPurchaseLifetimeIsa}
+                        />
+
+                        {/* Purchase Mortgage */}
+                        <SelectionGroup
+                          label="Will you buy the property with help of a new mortgage?"
+                          options={["No", "Yes"]}
+                          value={purchaseMortgage}
+                          onChange={setPurchaseMortgage}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* PURCHASE ENQUIRIES ONLY (When transactionType === 'Purchase') */}
+                  {transactionType === "Purchase" && (
                     <div className="space-y-5">
                       <div>
                         <h3 className="text-xl sm:text-2xl font-bold font-serif text-legalDark mb-1">
@@ -996,20 +1377,6 @@ export default function FeeCalculator({
                           placeholder="e.g. Santander, HSBC, NatWest"
                           value={proposedLender}
                           onChange={(e) => setProposedLender(e.target.value)}
-                          className="w-full bg-lightBg border border-gray-200 rounded-xl px-4 py-3 text-xs text-legalDark focus:bg-white focus:outline-none focus:border-tealAccent"
-                        />
-                      </div>
-
-                      {/* Current Mortgage Account Number */}
-                      <div className="flex flex-col gap-2">
-                        <label className="text-xs font-semibold text-legalDark/90">
-                          What is your current mortgage account number?
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="e.g. 1234567890"
-                          value={currentMortgageAccNum}
-                          onChange={(e) => setCurrentMortgageAccNum(e.target.value)}
                           className="w-full bg-lightBg border border-gray-200 rounded-xl px-4 py-3 text-xs text-legalDark focus:bg-white focus:outline-none focus:border-tealAccent"
                         />
                       </div>
@@ -1347,6 +1714,202 @@ export default function FeeCalculator({
                         <span className="text-2xl font-serif font-bold text-legalDark">{formatCurrency(quoteResult.totalIncVat)}</span>
                       </div>
 
+                      {/* If Sale & Purchase, Display Side-by-Side Breakdown First */}
+                      {transactionType === "Sale & Purchase" && quoteResult.saleBreakdown && quoteResult.purchaseBreakdown && (
+                        <div className="mb-6 space-y-4">
+                          <div className="bg-gradient-to-r from-teal-50 to-warmGray/60 p-4 rounded-2xl border border-teal-200/60">
+                            <h4 className="font-serif font-bold text-base text-legalDark mb-1">
+                              Sale & Purchase Side-by-Side Quote Comparison
+                            </h4>
+                            <p className="text-xs text-textMuted">
+                              Detailed itemised breakdown of your sale transaction alongside your purchase transaction.
+                            </p>
+                          </div>
+
+                          <div className="grid md:grid-cols-2 gap-4">
+                            {/* Sale Column */}
+                            <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-xs space-y-3 text-xs">
+                              <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+                                <div>
+                                  <span className="text-[10px] uppercase font-bold tracking-wider text-tealAccent block">
+                                    Step (1)
+                                  </span>
+                                  <h5 className="font-serif font-bold text-sm text-legalDark">Sale Quote</h5>
+                                </div>
+                                <span className="text-xs font-mono font-bold bg-gray-100 px-2 py-0.5 rounded text-legalDark">
+                                  {formatCurrency(quoteResult.saleBreakdown.propertyValue)} ({quoteResult.saleBreakdown.tenure})
+                                </span>
+                              </div>
+
+                              <div className="space-y-1.5 text-legalDark/90">
+                                <div className="flex justify-between">
+                                  <span>Sale Legal Fee:</span>
+                                  <span className="font-bold">{formatCurrency(quoteResult.saleBreakdown.baseFee)}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="pr-2">Admin Fee (Non-refundable):</span>
+                                  <span className="font-bold">{formatCurrency(quoteResult.saleBreakdown.adminFee)}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Electronic ID Checks ({quoteResult.saleBreakdown.clientCount}):</span>
+                                  <span className="font-bold">{formatCurrency(quoteResult.saleBreakdown.idCheck)}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Source of Funds Checks:</span>
+                                  <span className="font-bold">{formatCurrency(quoteResult.saleBreakdown.sourceOfFunds)}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Telegraphic Transfer (TT) Fee:</span>
+                                  <span className="font-bold">{formatCurrency(quoteResult.saleBreakdown.ttFee)}</span>
+                                </div>
+                                {quoteResult.saleBreakdown.tenureFee > 0 && (
+                                  <div className="flex justify-between">
+                                    <span>Leasehold Fee:</span>
+                                    <span className="font-bold">{formatCurrency(quoteResult.saleBreakdown.tenureFee)}</span>
+                                  </div>
+                                )}
+                                {quoteResult.saleBreakdown.addons?.map((addon: any, idx: number) => (
+                                  <div key={idx} className="flex justify-between">
+                                    <span>{addon.label}:</span>
+                                    <span className="font-bold">{formatCurrency(addon.amount)}</span>
+                                  </div>
+                                ))}
+                              </div>
+
+                              <div className="pt-2 border-t border-gray-100 bg-gray-50/70 p-2.5 rounded-xl space-y-1">
+                                <div className="flex justify-between text-textMuted">
+                                  <span>Sale Legal Subtotal:</span>
+                                  <span className="font-semibold">{formatCurrency(quoteResult.saleBreakdown.subtotal)}</span>
+                                </div>
+                                <div className="flex justify-between text-textMuted">
+                                  <span>VAT (20%):</span>
+                                  <span className="font-semibold">{formatCurrency(quoteResult.saleBreakdown.vatAmount)}</span>
+                                </div>
+                                <div className="flex justify-between font-bold text-legalDark pt-0.5 border-t border-gray-200">
+                                  <span>Sale Legal Total (Inc. VAT):</span>
+                                  <span className="text-tealAccent">{formatCurrency(quoteResult.saleBreakdown.totalIncVat)}</span>
+                                </div>
+                              </div>
+
+                              {/* Sale Disbursements */}
+                              <div className="pt-1 space-y-1 text-[11px]">
+                                <span className="font-semibold text-textMuted uppercase tracking-wider block">
+                                  Sale Disbursements:
+                                </span>
+                                {quoteResult.saleBreakdown.disbursements.items.map((it: any, idx: number) => (
+                                  <div key={idx} className="flex justify-between text-legalDark/80">
+                                    <span>{it.name}</span>
+                                    <span className="font-medium">{formatCurrency(it.amount)}</span>
+                                  </div>
+                                ))}
+                                <div className="flex justify-between font-bold text-legalDark pt-1">
+                                  <span>Total Sale Disbursements:</span>
+                                  <span>{formatCurrency(quoteResult.saleBreakdown.disbursements.totalDisbursements)}</span>
+                                </div>
+                              </div>
+
+                              <div className="p-2.5 bg-legalDark text-white rounded-xl flex justify-between items-center font-bold">
+                                <span className="text-xs">Sale Overall Total:</span>
+                                <span className="font-serif text-sm text-tealAccent">{formatCurrency(quoteResult.saleBreakdown.grandTotal)}</span>
+                              </div>
+                            </div>
+
+                            {/* Purchase Column */}
+                            <div className="bg-white p-4 rounded-2xl border border-teal-200/80 shadow-xs space-y-3 text-xs">
+                              <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+                                <div>
+                                  <span className="text-[10px] uppercase font-bold tracking-wider text-tealAccent block">
+                                    Step (2)
+                                  </span>
+                                  <h5 className="font-serif font-bold text-sm text-legalDark">Purchase Quote</h5>
+                                </div>
+                                <span className="text-xs font-mono font-bold bg-teal-50 text-teal-800 px-2 py-0.5 rounded">
+                                  {formatCurrency(quoteResult.purchaseBreakdown.propertyValue)} ({quoteResult.purchaseBreakdown.tenure})
+                                </span>
+                              </div>
+
+                              <div className="space-y-1.5 text-legalDark/90">
+                                <div className="flex justify-between">
+                                  <span>Purchase Legal Fee:</span>
+                                  <span className="font-bold">{formatCurrency(quoteResult.purchaseBreakdown.baseFee)}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="pr-2">Admin Fee (Non-refundable):</span>
+                                  <span className="font-bold">{formatCurrency(quoteResult.purchaseBreakdown.adminFee)}</span>
+                                </div>
+                                <div className="flex justify-between items-start gap-2">
+                                  <span className="text-[11px] leading-tight pr-2">
+                                    Property Searches (Search Pack Managing, Analysing and Reporting):
+                                  </span>
+                                  <span className="font-bold shrink-0">{formatCurrency(quoteResult.purchaseBreakdown.searchesFee)}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Electronic ID Checks ({quoteResult.purchaseBreakdown.clientCount}):</span>
+                                  <span className="font-bold">{formatCurrency(quoteResult.purchaseBreakdown.idCheck)}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Source of Funds Checks:</span>
+                                  <span className="font-bold">{formatCurrency(quoteResult.purchaseBreakdown.sourceOfFunds)}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span>Telegraphic Transfer (TT) Fee:</span>
+                                  <span className="font-bold">{formatCurrency(quoteResult.purchaseBreakdown.ttFee)}</span>
+                                </div>
+                                {quoteResult.purchaseBreakdown.tenureFee > 0 && (
+                                  <div className="flex justify-between">
+                                    <span>Leasehold Fee:</span>
+                                    <span className="font-bold">{formatCurrency(quoteResult.purchaseBreakdown.tenureFee)}</span>
+                                  </div>
+                                )}
+                                {quoteResult.purchaseBreakdown.addons?.map((addon: any, idx: number) => (
+                                  <div key={idx} className="flex justify-between">
+                                    <span>{addon.label}:</span>
+                                    <span className="font-bold">{formatCurrency(addon.amount)}</span>
+                                  </div>
+                                ))}
+                              </div>
+
+                              <div className="pt-2 border-t border-gray-100 bg-teal-50/50 p-2.5 rounded-xl space-y-1">
+                                <div className="flex justify-between text-textMuted">
+                                  <span>Purchase Legal Subtotal:</span>
+                                  <span className="font-semibold">{formatCurrency(quoteResult.purchaseBreakdown.subtotal)}</span>
+                                </div>
+                                <div className="flex justify-between text-textMuted">
+                                  <span>VAT (20%):</span>
+                                  <span className="font-semibold">{formatCurrency(quoteResult.purchaseBreakdown.vatAmount)}</span>
+                                </div>
+                                <div className="flex justify-between font-bold text-legalDark pt-0.5 border-t border-teal-100">
+                                  <span>Purchase Legal Total (Inc. VAT):</span>
+                                  <span className="text-tealAccent">{formatCurrency(quoteResult.purchaseBreakdown.totalIncVat)}</span>
+                                </div>
+                              </div>
+
+                              {/* Purchase Disbursements */}
+                              <div className="pt-1 space-y-1 text-[11px]">
+                                <span className="font-semibold text-textMuted uppercase tracking-wider block">
+                                  Purchase Disbursements & SDLT:
+                                </span>
+                                {quoteResult.purchaseBreakdown.disbursements.items.map((it: any, idx: number) => (
+                                  <div key={idx} className="flex justify-between text-legalDark/80">
+                                    <span>{it.name}</span>
+                                    <span className="font-medium">{formatCurrency(it.amount)}</span>
+                                  </div>
+                                ))}
+                                <div className="flex justify-between font-bold text-legalDark pt-1">
+                                  <span>Total Purchase Disbursements:</span>
+                                  <span>{formatCurrency(quoteResult.purchaseBreakdown.disbursements.totalDisbursements)}</span>
+                                </div>
+                              </div>
+
+                              <div className="p-2.5 bg-legalDark text-white rounded-xl flex justify-between items-center font-bold">
+                                <span className="text-xs">Purchase Overall Total:</span>
+                                <span className="font-serif text-sm text-tealAccent">{formatCurrency(quoteResult.purchaseBreakdown.grandTotal)}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
                       <div className="grid md:grid-cols-2 gap-6 my-2">
                         {/* Left Column - Legal Fees Breakdown */}
                         <div className="space-y-4">
@@ -1375,11 +1938,25 @@ export default function FeeCalculator({
                             <span className="font-bold text-legalDark">{formatCurrency(quoteResult.breakdown.baseFee.amount)}</span>
                           </div>
 
-                          {/* Admin Fee (Only if applicable) */}
+                          {/* Non-refundable Admin Fee (Shows on ALL quotes) */}
                           {quoteResult.breakdown.adminFee?.amount > 0 && (
-                            <div className="flex justify-between py-2 border-b border-gray-100 text-xs">
+                            <div className="flex justify-between items-start py-2 border-b border-gray-100 text-xs gap-3">
                               <span className="font-semibold text-legalDark">{quoteResult.breakdown.adminFee.label}</span>
-                              <span className="font-bold text-legalDark">{formatCurrency(quoteResult.breakdown.adminFee.amount)}</span>
+                              <span className="font-bold text-legalDark shrink-0">{formatCurrency(quoteResult.breakdown.adminFee.amount)}</span>
+                            </div>
+                          )}
+
+                          {/* Property Searches Pack (Under Legal Fees Breakdown) */}
+                          {quoteResult.breakdown.searchesFee?.amount > 0 && (
+                            <div className="flex justify-between items-start py-2 border-b border-gray-100 text-xs gap-3">
+                              <div>
+                                <span className="font-semibold text-legalDark block">
+                                  {quoteResult.breakdown.searchesFee.label}
+                                </span>
+                              </div>
+                              <span className="font-bold text-legalDark shrink-0">
+                                {formatCurrency(quoteResult.breakdown.searchesFee.amount)}
+                              </span>
                             </div>
                           )}
 
