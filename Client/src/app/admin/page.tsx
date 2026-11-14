@@ -429,14 +429,20 @@ export default function AdminPortalPage() {
     try {
       setUploadingImage(true);
       const res = await fetch(`${API_URL}/api/blogs/upload`, { method: "POST", body: formData });
-      const data = await res.json();
-      if (data.success && data.url) {
+      let data: any = {};
+      try {
+        data = await res.json();
+      } catch (e) {
+        data = { error: `Server error (${res.status} ${res.statusText})` };
+      }
+
+      if (res.ok && data.success && data.url) {
         setBlogFormData((prev) => ({ ...prev, coverImage: data.url }));
       } else {
-        alert(data.error || "Failed to upload image");
+        alert(data.error || "Failed to upload image. Please ensure the file is an image under 25MB.");
       }
-    } catch (err) {
-      alert("Error uploading image");
+    } catch (err: any) {
+      alert(`Error uploading image: ${err?.message || "Network error"}`);
     } finally {
       setUploadingImage(false);
     }
@@ -447,14 +453,20 @@ export default function AdminPortalPage() {
     formData.append("image", file);
     try {
       const res = await fetch(`${API_URL}/api/blogs/upload`, { method: "POST", body: formData });
-      const data = await res.json();
-      if (data.success && data.url) {
+      let data: any = {};
+      try {
+        data = await res.json();
+      } catch (e) {
+        data = { error: `Server error (${res.status} ${res.statusText})` };
+      }
+
+      if (res.ok && data.success && data.url) {
         return data.url;
       }
-      alert(data.error || "Failed to upload image");
+      alert(data.error || "Failed to upload image. Please ensure the file is an image under 25MB.");
       return null;
-    } catch (err) {
-      alert("Error uploading image");
+    } catch (err: any) {
+      alert(`Error uploading image: ${err?.message || "Network error"}`);
       return null;
     }
   };
