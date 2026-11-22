@@ -193,29 +193,29 @@ export default function PrivacyPage() {
                 laws and regulation, as set out in the table below:
               </p>
 
-              <div className="overflow-x-auto my-4">
-                <table className="w-full text-left border-collapse text-xs">
+              <div className="overflow-x-auto my-4 rounded-xl border border-gray-200">
+                <table className="w-full text-left border-collapse text-xs table-fixed">
                   <thead>
                     <tr className="bg-warmGray text-legalDark font-bold border-b border-gray-200">
-                      <th className="p-3">Purpose</th>
-                      <th className="p-3">Legal Basis</th>
+                      <th className="p-3 w-1/3 sm:w-2/5">Purpose</th>
+                      <th className="p-3 w-2/3 sm:w-3/5">Legal Basis</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 text-textMuted">
                     <tr>
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         Providing a service and internal processing
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         To assess your needs and provide you with suitable
                         products and services
                       </td>
                     </tr>
                     <tr className="bg-warmGray/30">
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         Service administration
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         Contractual obligation to provide you with, or a proposal
                         including a cost estimate. Where special categories of
                         personal data are processed, these are necessary to
@@ -223,102 +223,102 @@ export default function PrivacyPage() {
                       </td>
                     </tr>
                     <tr>
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         Identity verification
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         To comply with legal obligations to prevent money
                         laundering
                       </td>
                     </tr>
                     <tr className="bg-warmGray/30">
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         Record management
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         To comply with legal obligations in the Data Protection
                         legislation
                       </td>
                     </tr>
                     <tr>
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         Information provision
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         To meet our contractual obligation to provide information
                         on the services you have requested
                       </td>
                     </tr>
                     <tr className="bg-warmGray/30">
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         Relationship management
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         Legitimate interest to service your matter and improve
                         our service to you
                       </td>
                     </tr>
                     <tr>
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         Marketing communications
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         To inform you of products and services that may be of
                         interest to you, where you have chosen to be made aware
                         of this (with your consent)
                       </td>
                     </tr>
                     <tr className="bg-warmGray/30">
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         Training and development
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         Legitimate interests and legal obligation to improve our
                         services and develop our employees
                       </td>
                     </tr>
                     <tr>
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         Crime prevention
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         To comply with legal obligations for prevention of
                         financial crime and money laundering
                       </td>
                     </tr>
                     <tr className="bg-warmGray/30">
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         Auditing
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         To comply with our legitimate interest to conduct audits
                       </td>
                     </tr>
                     <tr>
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         Legal disclosure
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         If we are obliged to disclose information by reason of
                         any law, regulation or court order - to comply with legal
                         obligations
                       </td>
                     </tr>
                     <tr className="bg-warmGray/30">
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         Business transfer
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         To transfer information to any entity which may acquire
                         rights in us - legitimate interests for commercial
                         interests
                       </td>
                     </tr>
                     <tr>
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         Other purposes
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         For any other purpose to which you agree (with your
                         consent)
                       </td>
@@ -343,44 +343,44 @@ export default function PrivacyPage() {
                 we have set out above.
               </p>
 
-              <div className="overflow-x-auto my-4">
-                <table className="w-full text-left border-collapse text-xs">
+              <div className="overflow-x-auto my-4 rounded-xl border border-gray-200">
+                <table className="w-full text-left border-collapse text-xs table-fixed">
                   <thead>
                     <tr className="bg-warmGray text-legalDark font-bold border-b border-gray-200">
-                      <th className="p-3">Type of personal Information</th>
-                      <th className="p-3">Retention Period</th>
+                      <th className="p-3 w-1/3 sm:w-2/5">Type of personal Information</th>
+                      <th className="p-3 w-2/3 sm:w-3/5">Retention Period</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 text-textMuted">
                     <tr>
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         General personal data which includes your normal
                         personal data, personal identity and personal financial
                         data
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         6 years after the end of our business relationship with
                         you, or the end of your matter which ever comes later
                       </td>
                     </tr>
                     <tr className="bg-warmGray/30">
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         Client Due Diligence Material which includes copies of
                         your Passport, Driving Licence, Bank Statements and any
                         associated documents and explanations you have given to
                         us to prevent fraud, financial crime and money laundering
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         We obtain your consent to retain such documentation for 6
                         years after the end of our business relationship with
                         you, or the end of your matter which ever comes later
                       </td>
                     </tr>
                     <tr>
-                      <td className="p-3 font-semibold text-legalDark">
+                      <td className="p-3 font-semibold text-legalDark align-top">
                         Special categories of personal data
                       </td>
-                      <td className="p-3">
+                      <td className="p-3 align-top leading-relaxed">
                         6 years after the end of our relationship with you
                       </td>
                     </tr>

@@ -81,10 +81,10 @@ const teamMembers = [
   },
   {
     name: "Ewa Stanisz",
-    role: "PA To Conveyancers",
+    role: "Business Development",
     image: ewaImg,
     category: "Business Development",
-    description: "Providing essential administrative oversight and executive support to ensure cases progress smoothly.",
+    description: "Providing essential operational oversight, broker coordination, and client development support.",
   },
   {
     name: "Soumya Pareek",

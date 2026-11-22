@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import { 
   Calculator, 
   PoundSterling, 
@@ -22,7 +23,8 @@ import {
   AlertCircle,
   Receipt,
   FileCheck2,
-  Percent
+  Percent,
+  Lock
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -103,6 +105,7 @@ export default function FeeCalculator({
 
   // Step 2A: Purchase Specific Enquiries (from user's image 1 & Paul's SDLT sections)
   const [purchaseBuyerCategory, setPurchaseBuyerCategory] = useState<"First Time Buyer" | "Moving Home" | "Additional Property">("Moving Home");
+  const [purchaseInWales, setPurchaseInWales] = useState<string>("No");
   const [purchaseTenure, setPurchaseTenure] = useState<string>("Freehold");
   const [purchaseNewBuild, setPurchaseNewBuild] = useState<string>("No");
   const [purchaseFirstTimeBuyer, setPurchaseFirstTimeBuyer] = useState<string>("No");
@@ -125,10 +128,11 @@ export default function FeeCalculator({
   const [saleExistingMortgage, setSaleExistingMortgage] = useState<string>("No");
   const [saleDeedNames, setSaleDeedNames] = useState<string>("One");
 
-  // Step 3: Compulsory Contact Details
+  // Step 3: Compulsory Contact Details & Agreement
   const [clientName, setClientName] = useState<string>("");
   const [clientPhone, setClientPhone] = useState<string>("");
   const [clientEmail, setClientEmail] = useState<string>("");
+  const [agreeTerms, setAgreeTerms] = useState<boolean>(false);
 
   // Validation errors
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -267,6 +271,9 @@ export default function FeeCalculator({
     if (!clientEmail.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail.trim())) {
       errs.clientEmail = "Valid email address is required (e.g. name@example.com)";
     }
+    if (!agreeTerms) {
+      errs.agreeTerms = "Please agree to our Privacy Policy and Terms & Conditions to proceed";
+    }
 
     if (Object.keys(errs).length > 0) {
       setErrors(errs);
@@ -289,6 +296,7 @@ export default function FeeCalculator({
         "Names on sale property deed": saleDeedNames,
         "Purchase Property Value": formatCurrency(pVal),
         "Purchase SDLT Status": purchaseBuyerCategory,
+        "Is the property in Wales?": purchaseInWales,
         "Purchase Property Tenure": purchaseTenure,
         "Is purchase property a new build?": purchaseNewBuild,
         "First time buyer?": purchaseFirstTimeBuyer,
@@ -301,6 +309,8 @@ export default function FeeCalculator({
       };
     } else if (transactionType === "Purchase") {
       questionnaireAnswers = {
+        "Property SDLT Status": purchaseBuyerCategory,
+        "Is the property in Wales?": purchaseInWales,
         "Property Tenure": purchaseTenure,
         "Is the property a new build?": purchaseNewBuild,
         "Are you a first time buyer?": purchaseFirstTimeBuyer,
@@ -807,7 +817,7 @@ export default function FeeCalculator({
 
             <ul className="space-y-3.5">
               {[
-                "Transparent Fixed Fees",
+                "Transparent Quotes",
                 "Highly Skilled & Experienced Lawyers",
                 "Direct Dial Access To Your Caseworker",
                 "On Panel Of All Major Lenders",
@@ -1171,12 +1181,44 @@ export default function FeeCalculator({
                           onChange={setPurchaseTenure}
                         />
 
+                        {/* Is the purchase property in Wales? */}
+                        <SelectionGroup
+                          label="Is the property in Wales?"
+                          options={["No", "Yes"]}
+                          value={purchaseInWales}
+                          onChange={setPurchaseInWales}
+                        />
+
                         {/* New Build */}
                         <SelectionGroup
                           label="Is the purchase property a new build?"
                           options={["No", "Yes"]}
                           value={purchaseNewBuild}
                           onChange={setPurchaseNewBuild}
+                        />
+
+                        {/* First Time Buyer */}
+                        <SelectionGroup
+                          label="Are you a first time buyer?"
+                          options={["No", "Yes"]}
+                          value={purchaseFirstTimeBuyer}
+                          onChange={setPurchaseFirstTimeBuyer}
+                        />
+
+                        {/* Second home / Buy to Let */}
+                        <SelectionGroup
+                          label="Is this a second home or a Buy to Let property?"
+                          options={["No", "Yes"]}
+                          value={purchaseSecondHome}
+                          onChange={setPurchaseSecondHome}
+                        />
+
+                        {/* Right to Buy */}
+                        <SelectionGroup
+                          label="Are you purchasing using the Right to Buy Scheme?"
+                          options={["No", "Yes"]}
+                          value={purchaseRightToBuy}
+                          onChange={setPurchaseRightToBuy}
                         />
 
                         {/* Shared Ownership */}
@@ -1246,6 +1288,14 @@ export default function FeeCalculator({
                             setPurchaseSecondHome("No");
                           }
                         }}
+                      />
+
+                      {/* Is the property in Wales? */}
+                      <SelectionGroup
+                        label="Is the property in Wales?"
+                        options={["No", "Yes"]}
+                        value={purchaseInWales}
+                        onChange={setPurchaseInWales}
                       />
 
                       {/* 1. Freehold or Leasehold */}
@@ -1524,6 +1574,36 @@ export default function FeeCalculator({
                     />
                     {errors.clientEmail && (
                       <p className="text-red-500 text-xs mt-0.5">{errors.clientEmail}</p>
+                    )}
+                  </div>
+
+                  {/* Compulsory Terms & Privacy Agreement Checkbox */}
+                  <div className="pt-2">
+                    <label className="flex items-start gap-3 cursor-pointer group p-3.5 rounded-xl bg-warmGray/40 border border-gray-200 hover:bg-warmGray/60 transition-colors">
+                      <input
+                        type="checkbox"
+                        checked={agreeTerms}
+                        onChange={(e) => {
+                          setAgreeTerms(e.target.checked);
+                          if (errors.agreeTerms) setErrors({ ...errors, agreeTerms: "" });
+                        }}
+                        className="mt-0.5 w-4 h-4 rounded text-tealAccent focus:ring-tealAccent border-gray-300 accent-teal-600 cursor-pointer"
+                      />
+                      <span className="text-xs text-legalDark leading-relaxed">
+                        <Lock className="w-3.5 h-3.5 inline text-legalDark mr-1 shrink-0 -mt-0.5" />
+                        By ticking this box you agree to us processing your information in strict accordance with our{" "}
+                        <Link href="/privacy" target="_blank" className="text-teal-700 font-semibold underline hover:text-legalDark">
+                          Privacy Policy
+                        </Link>{" "}
+                        &amp;{" "}
+                        <Link href="/terms" target="_blank" className="text-teal-700 font-semibold underline hover:text-legalDark">
+                          Terms &amp; Conditions
+                        </Link>
+                        .
+                      </span>
+                    </label>
+                    {errors.agreeTerms && (
+                      <p className="text-red-500 text-xs mt-1.5 font-medium">{errors.agreeTerms}</p>
                     )}
                   </div>
 
@@ -2178,7 +2258,66 @@ export default function FeeCalculator({
                         </p>
                       </div>
 
-                      <div className="mt-2.5 text-center pb-2">
+                      {/* Quote Validity & Inclusions / Exclusions Section */}
+                      <div className="mt-6 pt-5 border-t border-gray-100 space-y-4">
+                        <div className="p-3 bg-warmGray/40 rounded-xl text-center border border-gray-100">
+                          <p className="text-xs sm:text-sm font-semibold text-legalDark">
+                            This quote is valid for 30 days subject to receiving your instruction to proceed.
+                          </p>
+                        </div>
+
+                        {/* What Our Fee Includes & Does Not Include */}
+                        <div className="grid md:grid-cols-2 gap-4 text-xs">
+                          {/* Includes */}
+                          <div className="p-4 bg-emerald-50/40 rounded-2xl border border-emerald-100 space-y-2">
+                            <h4 className="font-serif font-bold text-sm text-legalDark flex items-center gap-1.5">
+                              <CheckCircle className="w-4 h-4 text-emerald-600" /> What our fee includes
+                            </h4>
+                            <p className="text-textMuted text-[11px] leading-relaxed">
+                              Our legal fee covers all the stages listed for a standard residential sale or purchase, including:
+                            </p>
+                            <ul className="space-y-1 text-textMuted text-[11px] list-disc pl-4">
+                              <li>acting for your mortgage lender on a purchase</li>
+                              <li>dealing with one mortgage on a sale</li>
+                              <li>preparing and submitting your SDLT return</li>
+                              <li>registering your ownership at HM Land Registry</li>
+                            </ul>
+                          </div>
+
+                          {/* Does Not Include */}
+                          <div className="p-4 bg-amber-50/40 rounded-2xl border border-amber-100 space-y-2">
+                            <h4 className="font-serif font-bold text-sm text-legalDark flex items-center gap-1.5">
+                              <AlertCircle className="w-4 h-4 text-amber-600" /> What our fee does not include
+                            </h4>
+                            <p className="text-textMuted text-[11px] leading-relaxed">
+                              These are charged separately, and we will tell you the cost before we do the work:
+                            </p>
+                            <ul className="space-y-1 text-textMuted text-[11px] list-disc pl-4">
+                              <li>Building Safety Act 2022 advice or investigation</li>
+                              <li>Unregistered land</li>
+                              <li>Gifted deposits</li>
+                              <li>Help to Buy or shared ownership</li>
+                              <li>Defective title</li>
+                              <li>Indemnity policies</li>
+                              <li>Restrictions on the title</li>
+                              <li>Management pack fees</li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        <div className="text-center pt-1">
+                          <Link
+                            href="/price-information"
+                            target="_blank"
+                            className="inline-flex items-center gap-1 text-xs font-semibold text-teal-700 hover:text-legalDark underline"
+                          >
+                            <span>Read More on Our Price Information &amp; Key Stages</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </Link>
+                        </div>
+                      </div>
+
+                      <div className="mt-3 text-center pb-2">
                         <p className="text-[11px] text-textMuted leading-relaxed">
                           * Indicative quote for standard property transactions. Final fees may vary if your transaction becomes unusually complex or protracted. All fees subject to VAT at 20%.
                         </p>

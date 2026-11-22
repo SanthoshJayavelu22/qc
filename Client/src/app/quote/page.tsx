@@ -129,7 +129,7 @@ export default function QuotePage() {
                 <div className="w-10 h-10 rounded-xl bg-tealAccent/20 text-legalDark flex items-center justify-center mb-4">
                   <FileText className="w-5 h-5 text-tealAccent" />
                 </div>
-                <h3 className="font-serif font-bold text-lg text-legalDark mb-2">Itemised Disbursements</h3>
+                <h3 className="font-serif font-bold text-lg text-legalDark mb-2">Transparent Quotes</h3>
                 <p className="text-textMuted text-xs leading-relaxed">
                   Complete breakdown of Land Registry fees, SDLT, local authority searches, and conveyancing legal fees.
                 </p>

@@ -2,197 +2,204 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Cookie, ShieldCheck, X, SlidersHorizontal, Check } from "lucide-react";
+import { Cookie, ShieldCheck, ChevronDown, ChevronUp } from "lucide-react";
+import Link from "next/link";
 
 export default function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
-  const [showPreferences, setShowPreferences] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   
   const [preferences, setPreferences] = useState({
     necessary: true,
-    analytics: true,
+    preferences: true,
+    statistics: true,
     marketing: false,
   });
 
   useEffect(() => {
     const consent = localStorage.getItem("qc-cookie-consent");
     if (!consent) {
-      const timer = setTimeout(() => setIsVisible(true), 1500);
+      const timer = setTimeout(() => setIsVisible(true), 1200);
       return () => clearTimeout(timer);
     }
   }, []);
 
-  const handleAcceptAll = () => {
-    localStorage.setItem("qc-cookie-consent", JSON.stringify({ necessary: true, analytics: true, marketing: true }));
+  const handleAllowAll = () => {
+    localStorage.setItem(
+      "qc-cookie-consent",
+      JSON.stringify({ necessary: true, preferences: true, statistics: true, marketing: true })
+    );
     setIsVisible(false);
-    setShowPreferences(false);
   };
 
-  const handleDeclineAll = () => {
-    localStorage.setItem("qc-cookie-consent", JSON.stringify({ necessary: true, analytics: false, marketing: false }));
-    setIsVisible(false);
-    setShowPreferences(false);
-  };
-
-  const handleSavePreferences = () => {
+  const handleAllowSelection = () => {
     localStorage.setItem("qc-cookie-consent", JSON.stringify(preferences));
     setIsVisible(false);
-    setShowPreferences(false);
   };
 
   if (!isVisible) return null;
 
   return (
-    <>
-      {/* Floating Bottom Left Cookie Banner */}
-      <AnimatePresence>
-        {isVisible && !showPreferences && (
-          <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 50, scale: 0.95 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed bottom-6 left-6 right-6 md:right-auto md:max-w-md z-[90]"
-          >
-            <div className="bg-white/95 backdrop-blur-md border border-gray-100 p-4 md:p-5 rounded-2xl shadow-xl text-legalDark flex flex-col gap-3">
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-tealAccent/20 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                  <Cookie className="w-4 h-4 text-legalDark" />
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ y: "100%", opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: "100%", opacity: 0 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          className="fixed bottom-0 left-0 right-0 z-[999] bg-legalDark text-white border-t border-white/10 shadow-2xl px-4 sm:px-8 py-5 md:py-6"
+        >
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              
+              {/* Left Column: Heading & Description */}
+              <div className="space-y-2 max-w-3xl">
+                <div className="flex items-center gap-2">
+                  <Cookie className="w-5 h-5 text-tealAccent" />
+                  <h3 className="font-serif font-bold text-base sm:text-lg text-white">
+                    This website uses cookies
+                  </h3>
                 </div>
-                <div>
-                  <h4 className="font-serif font-bold text-xs text-legalDark mb-0.5">Privacy & Cookie Settings</h4>
-                  <p className="text-[11px] text-textMuted leading-relaxed">
-                    We use cookies to secure the site and optimize your conveyancing experience.
-                  </p>
-                </div>
+                <p className="text-white/80 text-xs sm:text-sm leading-relaxed">
+                  We use cookies to personalise content and ads, to provide social media features and to analyse our traffic. We also share information about your use of our site with our social media, advertising and analytics partners who may combine it with other information that you&apos;ve provided to them or that they&apos;ve collected from your use of their services.
+                </p>
               </div>
 
-              <div className="flex items-center gap-2 justify-end pt-1 border-t border-gray-100/80">
+              {/* Right Column: Allow All & Allow Selection Buttons */}
+              <div className="flex flex-col sm:flex-row lg:flex-col gap-2.5 shrink-0 w-full sm:w-auto lg:w-48">
                 <button
-                  onClick={() => setShowPreferences(true)}
-                  className="px-3 py-1.5 text-[11px] font-semibold text-textMuted hover:text-legalDark border border-gray-200 rounded-md hover:bg-warmGray/50 transition-all flex items-center gap-1"
+                  type="button"
+                  onClick={handleAllowAll}
+                  className="w-full bg-tealAccent hover:bg-tealAccent/90 text-legalDark font-bold text-xs uppercase tracking-wider py-3 px-5 rounded-xl transition-all shadow-md text-center"
                 >
-                  <SlidersHorizontal className="w-3 h-3 text-tealAccent" /> Customise
+                  Allow all
                 </button>
                 <button
-                  onClick={handleDeclineAll}
-                  className="px-3 py-1.5 text-[11px] font-semibold text-legalDark border border-gray-200 rounded-md hover:bg-warmGray/50 transition-all"
+                  type="button"
+                  onClick={handleAllowSelection}
+                  className="w-full bg-white/10 hover:bg-white/20 text-white font-semibold text-xs uppercase tracking-wider py-3 px-5 rounded-xl border border-white/20 transition-all text-center"
                 >
-                  Decline
-                </button>
-                <button
-                  onClick={handleAcceptAll}
-                  className="px-3.5 py-1.5 text-[11px] font-bold text-legalDark bg-tealAccent rounded-md hover:shadow-md transition-all"
-                >
-                  Accept All
+                  Allow selection
                 </button>
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
-      {/* Preferences Modal Dialog */}
-      <AnimatePresence>
-        {showPreferences && (
-          <div className="fixed inset-0 z-[130] flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowPreferences(false)}
-              className="absolute inset-0 bg-legalDark/60 backdrop-blur-sm"
-            />
+            {/* Bottom Row: Toggle Categories & Show Details Link */}
+            <div className="mt-5 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs">
+              <div className="flex flex-wrap items-center gap-5 sm:gap-8">
+                {/* Necessary */}
+                <label className="flex items-center gap-2 cursor-not-allowed select-none">
+                  <span className="font-semibold text-white/95">Necessary</span>
+                  <span className="relative inline-flex h-5 w-9 shrink-0 cursor-not-allowed items-center rounded-full bg-tealAccent transition-colors">
+                    <span className="translate-x-4 inline-block h-4 w-4 rounded-full bg-legalDark transition-transform" />
+                  </span>
+                </label>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl p-6 border border-gray-100 z-10"
-            >
-              <div className="flex items-center justify-between border-b border-gray-100 pb-4 mb-5">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-tealAccent" />
-                  <h3 className="text-lg font-serif font-bold text-legalDark">Cookie Preferences</h3>
-                </div>
-                <button
-                  onClick={() => setShowPreferences(false)}
-                  className="p-1 rounded-full text-gray-400 hover:text-legalDark transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              <div className="space-y-4 mb-6 text-xs">
-                {/* Necessary Cookies */}
-                <div className="p-3.5 bg-warmGray/40 rounded-xl border border-gray-100 flex items-start justify-between gap-4">
-                  <div>
-                    <div className="font-bold text-legalDark flex items-center gap-2">
-                      Necessary Cookies
-                      <span className="text-[10px] uppercase bg-tealAccent/20 text-legalDark px-2 py-0.5 rounded-full font-semibold">Always Active</span>
-                    </div>
-                    <p className="text-textMuted text-[11px] mt-1">Required for essential website navigation, form security, and legal portal access.</p>
-                  </div>
-                </div>
-
-                {/* Performance & Analytics */}
-                <div className="p-3.5 bg-white rounded-xl border border-gray-200 flex items-start justify-between gap-4">
-                  <div>
-                    <div className="font-bold text-legalDark">Performance & Analytics</div>
-                    <p className="text-textMuted text-[11px] mt-1">Allows us to analyze visitor traffic to improve page load speed and user experience.</p>
-                  </div>
+                {/* Preferences */}
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <span className="text-white/80 hover:text-white transition-colors">Preferences</span>
                   <button
-                    onClick={() => setPreferences({ ...preferences, analytics: !preferences.analytics })}
-                    className={`w-6 h-6 rounded-md border flex items-center justify-center transition-colors shrink-0 ${
-                      preferences.analytics ? "bg-legalDark border-legalDark text-tealAccent" : "border-gray-300"
+                    type="button"
+                    role="switch"
+                    aria-checked={preferences.preferences}
+                    onClick={() => setPreferences((p) => ({ ...p, preferences: !p.preferences }))}
+                    className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
+                      preferences.preferences ? "bg-tealAccent" : "bg-white/20"
                     }`}
                   >
-                    {preferences.analytics && <Check className="w-4 h-4 stroke-[3]" />}
+                    <span
+                      className={`inline-block h-4 w-4 rounded-full transition-transform ${
+                        preferences.preferences ? "translate-x-4 bg-legalDark" : "translate-x-0.5 bg-white"
+                      }`}
+                    />
                   </button>
-                </div>
+                </label>
 
-                {/* Marketing Cookies */}
-                <div className="p-3.5 bg-white rounded-xl border border-gray-200 flex items-start justify-between gap-4">
-                  <div>
-                    <div className="font-bold text-legalDark">Marketing & Relevance</div>
-                    <p className="text-textMuted text-[11px] mt-1">Used to measure campaign performance and deliver relevant conveyancing insights.</p>
-                  </div>
+                {/* Statistics */}
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <span className="text-white/80 hover:text-white transition-colors">Statistics</span>
                   <button
-                    onClick={() => setPreferences({ ...preferences, marketing: !preferences.marketing })}
-                    className={`w-6 h-6 rounded-md border flex items-center justify-center transition-colors shrink-0 ${
-                      preferences.marketing ? "bg-legalDark border-legalDark text-tealAccent" : "border-gray-300"
+                    type="button"
+                    role="switch"
+                    aria-checked={preferences.statistics}
+                    onClick={() => setPreferences((p) => ({ ...p, statistics: !p.statistics }))}
+                    className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
+                      preferences.statistics ? "bg-tealAccent" : "bg-white/20"
                     }`}
                   >
-                    {preferences.marketing && <Check className="w-4 h-4 stroke-[3]" />}
+                    <span
+                      className={`inline-block h-4 w-4 rounded-full transition-transform ${
+                        preferences.statistics ? "translate-x-4 bg-legalDark" : "translate-x-0.5 bg-white"
+                      }`}
+                    />
                   </button>
-                </div>
+                </label>
+
+                {/* Marketing */}
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <span className="text-white/80 hover:text-white transition-colors">Marketing</span>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={preferences.marketing}
+                    onClick={() => setPreferences((p) => ({ ...p, marketing: !p.marketing }))}
+                    className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors ${
+                      preferences.marketing ? "bg-tealAccent" : "bg-white/20"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 rounded-full transition-transform ${
+                        preferences.marketing ? "translate-x-4 bg-legalDark" : "translate-x-0.5 bg-white"
+                      }`}
+                    />
+                  </button>
+                </label>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-2 justify-end pt-2 border-t border-gray-100">
+              {/* Show Details Toggle */}
+              <div className="flex items-center gap-4">
                 <button
-                  onClick={handleDeclineAll}
-                  className="px-4 py-2.5 text-xs font-semibold text-legalDark border border-gray-200 rounded-lg hover:bg-warmGray/50 transition-all"
+                  type="button"
+                  onClick={() => setShowDetails(!showDetails)}
+                  className="text-tealAccent hover:underline inline-flex items-center gap-1 font-medium text-xs"
                 >
-                  Decline All
+                  <span>{showDetails ? "Hide details" : "Show details"}</span>
+                  {showDetails ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                 </button>
-                <button
-                  onClick={handleSavePreferences}
-                  className="px-4 py-2.5 text-xs font-semibold text-legalDark border border-legalDark rounded-lg hover:bg-warmGray/50 transition-all"
-                >
-                  Save Preferences
-                </button>
-                <button
-                  onClick={handleAcceptAll}
-                  className="px-5 py-2.5 text-xs font-bold text-legalDark bg-tealAccent rounded-lg hover:shadow-md transition-all"
-                >
-                  Accept All
-                </button>
+                <Link href="/privacy" className="text-white/60 hover:text-tealAccent transition-colors">
+                  Privacy Policy
+                </Link>
               </div>
-            </motion.div>
+            </div>
+
+            {/* Expandable Details Pane */}
+            <AnimatePresence>
+              {showDetails && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="mt-4 pt-4 border-t border-white/10 text-xs text-white/70 space-y-2"
+                >
+                  <p>
+                    <strong>Necessary cookies:</strong> Help make a website usable by enabling basic functions like page navigation and access to secure areas of the website. The website cannot function properly without these cookies.
+                  </p>
+                  <p>
+                    <strong>Preference cookies:</strong> Enable a website to remember information that changes the way the website behaves or looks, like your preferred language or the region that you are in.
+                  </p>
+                  <p>
+                    <strong>Statistic cookies:</strong> Help website owners to understand how visitors interact with websites by collecting and reporting information anonymously.
+                  </p>
+                  <p>
+                    <strong>Marketing cookies:</strong> Are used to track visitors across websites to display ads that are relevant and engaging for the individual user.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-        )}
-      </AnimatePresence>
-    </>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

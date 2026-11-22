@@ -2,7 +2,17 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileSignature, FolderSearch, FileText, Handshake, KeySquare, FileSpreadsheet, MessageSquareQuote, CheckCircle2 } from "lucide-react";
+import { 
+  FileSignature, 
+  FolderSearch, 
+  FileText, 
+  Handshake, 
+  KeySquare, 
+  FileSpreadsheet, 
+  MessageSquareQuote, 
+  CheckCircle2,
+  Clock
+} from "lucide-react";
 
 export default function ProcessTimeline() {
   const [activeTab, setActiveTab] = useState<"purchase" | "sale">("purchase");
@@ -189,6 +199,24 @@ export default function ProcessTimeline() {
             ))}
           </motion.div>
         </AnimatePresence>
+
+        {/* Conveyancing Timeframes Note */}
+        <div className="mt-12 bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-sm max-w-4xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-tealAccent/20 text-teal-700 flex items-center justify-center shrink-0">
+              <Clock className="w-6 h-6" />
+            </div>
+            <div className="space-y-1.5 text-xs sm:text-sm text-textMuted leading-relaxed">
+              <h4 className="font-serif font-bold text-legalDark text-base">Expected Conveyancing Timeframes</h4>
+              <p>
+                A typical <strong>freehold purchase or sale takes 8 to 12 weeks</strong> from instruction to completion.
+              </p>
+              <p>
+                A <strong>leasehold purchase or sale usually takes 12 to 16 weeks</strong>. It may take longer if there is a chain, or if there are delays with the mortgage offer, searches or information from a landlord or managing agent.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

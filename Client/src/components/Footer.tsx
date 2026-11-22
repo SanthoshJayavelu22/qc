@@ -174,6 +174,7 @@ export default function Footer({
                   { name: "Terms of Use", href: "/terms" },
                   { name: "Terms of Business", href: "/terms-of-business" },
                   { name: "Complaints Procedure", href: "/complaints" },
+                  { name: "CLC Compensation Fund", href: "/compensation-fund" },
                 ].map((link) => (
                   <li key={link.name}>
                     <Link href={link.href} className="hover:text-tealAccent transition-colors">
