@@ -31,6 +31,7 @@ import {
   ExternalLink,
   ChevronDown,
   Layers,
+  Wand2,
 } from "lucide-react";
 
 interface RichBlogEditorProps {
@@ -152,6 +153,218 @@ export default function RichBlogEditor({
     }
     if (editorRef.current) {
       onChange(editorRef.current.innerHTML);
+    }
+  };
+
+  // Smart Beautifier: Transforms pasted raw/plain text into an editorial, magazine-grade blog layout
+  const beautifyContent = () => {
+    let raw = "";
+    if (editorRef.current && viewMode !== "html") {
+      raw = editorRef.current.innerText || editorRef.current.textContent || "";
+    } else {
+      // Strip existing simple tags to clean string
+      raw = content.replace(/<\/p>|<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, "").trim();
+    }
+
+    if (!raw.trim()) {
+      alert("Please paste or type content in the editor first before clicking Beautify.");
+      return;
+    }
+
+    const lines = raw.split(/\r?\n/).map((l) => l.trim()).filter((l) => l.length > 0);
+    const htmlChunks: string[] = [];
+    let inList = false;
+    let inTable = false;
+    let tableHeaders: string[] = [];
+    let tableRows: string[][] = [];
+
+    const flushList = () => {
+      if (inList) {
+        htmlChunks.push("</ul>");
+        inList = false;
+      }
+    };
+
+    const flushTable = () => {
+      if (inTable && tableHeaders.length > 0) {
+        let t = '<div class="my-6 overflow-x-auto rounded-xl border border-gray-200 shadow-xs"><table class="min-w-full text-sm text-left">';
+        t += '<thead class="bg-legalDark text-white font-bold uppercase tracking-wider text-xs"><tr>';
+        tableHeaders.forEach((th) => {
+          t += `<th class="px-4 py-3">${th}</th>`;
+        });
+        t += "</tr></thead><tbody class=\"divide-y divide-gray-100 bg-white\">";
+        tableRows.forEach((row, idx) => {
+          const bg = idx % 2 === 1 ? 'class="bg-gray-50/60"' : "";
+          t += `<tr ${bg}>`;
+          row.forEach((cell, cIdx) => {
+            const fontStyle = cIdx === 0 ? "font-semibold text-gray-900" : "text-gray-700";
+            t += `<td class="px-4 py-3 ${fontStyle}">${cell}</td>`;
+          });
+          t += "</tr>";
+        });
+        t += "</tbody></table></div>";
+        htmlChunks.push(t);
+        inTable = false;
+        tableHeaders = [];
+        tableRows = [];
+      }
+    };
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+
+      // 1. Detect Table (e.g. pipe delimited or tab delimited or specific known table header)
+      if (line.includes("|") || line.startsWith("Feature\t") || (line.toLowerCase() === "feature" && i + 2 < lines.length && lines[i + 1].toLowerCase().includes("your first home"))) {
+        flushList();
+        // Pipe syntax table: Feature | Your First Home | Previous Help to Buy
+        if (line.includes("|")) {
+          const parts = line.split("|").map((p) => p.trim()).filter((p) => p.length > 0);
+          if (parts.length >= 2) {
+            // Check if delimiter row e.g. |---|---|
+            if (parts.every((p) => /^[-:]+$/.test(p))) {
+              continue;
+            }
+            if (!inTable) {
+              inTable = true;
+              tableHeaders = parts;
+              tableRows = [];
+            } else {
+              tableRows.push(parts);
+            }
+            continue;
+          }
+        }
+      }
+
+      // Check for sequential table detection like:
+      // Feature
+      // Your First Home
+      // Previous Help to Buy
+      if (line.toLowerCase() === "feature" && !inTable && i + 2 < lines.length) {
+        flushList();
+        inTable = true;
+        tableHeaders = [lines[i], lines[i + 1], lines[i + 2]];
+        tableRows = [];
+        i += 2;
+        continue;
+      }
+
+      if (inTable) {
+        // Collect rows (3 entries per row if headers length is 3)
+        if (tableHeaders.length === 3 && i + 2 < lines.length && !lines[i].endsWith("?") && !lines[i].toLowerCase().startsWith("what") && !lines[i].toLowerCase().startsWith("how")) {
+          tableRows.push([lines[i], lines[i + 1], lines[i + 2]]);
+          i += 2;
+          continue;
+        } else {
+          flushTable();
+        }
+      }
+
+      // 2. Headings Detection (questions or clear section headers)
+      const isQuestionHeading = /^(what|how|who|will|can|does|why|is|are|when|where)\s/i.test(line) && line.endsWith("?");
+      const isNamedHeading = /^(your first home scheme|key details|example:|frequently asked questions|step-by-step|conclusion|summary|important considerations)/i.test(line);
+      const isShortHeading = line.length <= 65 && !line.endsWith(".") && (line.endsWith(":") || isQuestionHeading || /^[A-Z0-9\s—–-]{4,60}$/.test(line));
+
+      if (isQuestionHeading || isNamedHeading || isShortHeading) {
+        flushList();
+        flushTable();
+        const cleanHeading = line.replace(/^#+\s*/, "").replace(/:$/, "").trim();
+        // Use H2 for main questions/sections, H3 for sub-examples
+        if (cleanHeading.toLowerCase().startsWith("example") || cleanHeading.toLowerCase().startsWith("option")) {
+          htmlChunks.push(`<h3 class="text-xl font-serif font-bold text-legalDark mt-8 mb-3">${cleanHeading}</h3>`);
+        } else {
+          htmlChunks.push(`<h2 class="text-2xl font-serif font-bold text-legalDark mt-10 mb-4 pb-2 border-b border-gray-100">${cleanHeading}</h2>`);
+        }
+        continue;
+      }
+
+      // 3. Bullet points or Key: Value pairs
+      const isBullet = line.startsWith("•") || line.startsWith("-") || line.startsWith("*");
+      const isKeyValue = /^([A-Z][A-Za-z0-9\s/–—-]+):\s+(.+)$/.test(line) && !line.toLowerCase().startsWith("option");
+
+      if (isBullet || isKeyValue) {
+        flushTable();
+        if (!inList) {
+          htmlChunks.push('<ul class="my-4 space-y-2 font-sans">');
+          inList = true;
+        }
+
+        if (isKeyValue) {
+          const match = line.match(/^([A-Z][A-Za-z0-9\s/–—-]+):\s+(.+)$/);
+          if (match) {
+            htmlChunks.push(
+              `<li class="flex flex-col sm:flex-row sm:items-baseline gap-1.5 sm:gap-2 text-gray-800"><strong class="text-legalDark min-w-[200px] shrink-0">${match[1]}:</strong> <span class="text-gray-700">${match[2]}</span></li>`
+            );
+          } else {
+            htmlChunks.push(`<li class="text-gray-700">${line.replace(/^[•\-*]\s*/, "")}</li>`);
+          }
+        } else {
+          const content = line.replace(/^[•\-*]\s*/, "");
+          htmlChunks.push(`<li class="text-gray-700">${content}</li>`);
+        }
+        continue;
+      }
+
+      // 4. Numbered FAQ / Steps (e.g. "1. Can I apply...")
+      const isNumbered = /^\d+[\.\)]\s+(.+)$/.test(line);
+      if (isNumbered) {
+        flushList();
+        flushTable();
+        const match = line.match(/^\d+[\.\)]\s+(.+)$/);
+        const itemText = match ? match[1] : line;
+        if (itemText.endsWith("?")) {
+          htmlChunks.push(
+            `<div class="my-4 p-4 rounded-xl bg-gray-50 border border-gray-200/80"><h4 class="font-bold text-sm text-legalDark mb-1">❓ ${itemText}</h4>`
+          );
+          // Check if next line is answer
+          if (i + 1 < lines.length && !lines[i + 1].endsWith("?") && !/^\d+[\.\)]/.test(lines[i + 1])) {
+            i++;
+            htmlChunks.push(`<p class="text-sm text-gray-700 m-0">${lines[i]}</p></div>`);
+          } else {
+            htmlChunks.push(`</div>`);
+          }
+          continue;
+        }
+      }
+
+      // 5. Comparison or Calculation Options (e.g. "Option 1: With a 2.5% deposit")
+      if (/^option\s+\d+:/i.test(line)) {
+        flushList();
+        flushTable();
+        htmlChunks.push(
+          `<div class="my-5 p-5 rounded-2xl bg-tealAccent/5 border border-tealAccent/20"><h4 class="font-serif font-bold text-base text-legalDark mb-2 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-tealAccent"></span>${line}</h4>`
+        );
+        // Gather subsequent lines until next Option or Heading
+        let cardList = '<ul class="space-y-1.5 text-sm text-gray-700 font-sans mt-2">';
+        while (i + 1 < lines.length && lines[i + 1].includes(":") && !/^option/i.test(lines[i + 1]) && !lines[i + 1].endsWith("?")) {
+          i++;
+          const [k, ...v] = lines[i].split(":");
+          cardList += `<li class="flex justify-between border-b border-gray-100 py-1"><span>${k.trim()}</span><strong class="text-legalDark">${v.join(":").trim()}</strong></li>`;
+        }
+        cardList += "</ul></div>";
+        htmlChunks.push(cardList);
+        continue;
+      }
+
+      // Regular Paragraph
+      flushList();
+      flushTable();
+
+      // Lead paragraph enhancement for first 1-2 paragraphs
+      if (htmlChunks.length <= 1) {
+        htmlChunks.push(`<p class="text-base sm:text-lg leading-relaxed text-gray-700 font-sans">${line}</p>`);
+      } else {
+        htmlChunks.push(`<p class="text-gray-700 leading-relaxed font-sans">${line}</p>`);
+      }
+    }
+
+    flushList();
+    flushTable();
+
+    const formattedHtml = htmlChunks.join("\n\n");
+    onChange(formattedHtml);
+    if (editorRef.current) {
+      editorRef.current.innerHTML = formattedHtml;
     }
   };
 
@@ -462,6 +675,17 @@ export default function RichBlogEditor({
           </div>
 
           <div className="flex items-center gap-3 text-xs text-gray-500">
+            {/* 1-Click Smart Beautifier Button */}
+            <button
+              type="button"
+              onClick={beautifyContent}
+              title="Automatically formats pasted plain text into styled headings, comparison tables, option cards, lists, and FAQs"
+              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-teal-600 to-emerald-700 hover:from-teal-700 hover:to-emerald-800 text-white flex items-center gap-1.5 transition shadow-xs cursor-pointer"
+            >
+              <Wand2 className="w-3.5 h-3.5 animate-pulse" />
+              <span>Auto-Format & Align Content</span>
+            </button>
+
             <span className="flex items-center gap-1">
               <FileText className="w-3.5 h-3.5 text-[#005f73]" />
               <strong>{wordCount}</strong> words
