@@ -36,3 +36,7 @@ next-env.d.ts
 # uploads
 Server/uploads/*
 !Server/uploads/.gitkeep
+
+# docs
+*.docx
+
