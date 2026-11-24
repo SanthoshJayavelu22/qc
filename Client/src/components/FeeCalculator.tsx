@@ -145,57 +145,15 @@ export default function FeeCalculator({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState<boolean>(false);
 
-  // Single-Click Instant PDF Download Function
-  const handleDownloadPdf = async () => {
+  // Instant Direct PDF Download / Print Function (Zero Freezing)
+  const handleDownloadPdf = () => {
     if (typeof window === "undefined") return;
     try {
       setIsGeneratingPdf(true);
-      const element = document.getElementById("printable-quote-body");
-      if (!element) {
-        return;
-      }
-
-      // Clone element to isolate only quote contents without web UI buttons or scroll artifacts
-      const clone = element.cloneNode(true) as HTMLElement;
-
-      // Show print letterhead in clone
-      const printHeader = clone.querySelector(".print\\:block");
-      if (printHeader) {
-        (printHeader as HTMLElement).classList.remove("hidden");
-        (printHeader as HTMLElement).style.display = "block";
-      }
-
-      // Remove interactive non-printable elements in clone
-      const noPrints = clone.querySelectorAll(".no-print, button");
-      noPrints.forEach((el) => el.remove());
-
-      // Container for clean rendering
-      const container = document.createElement("div");
-      container.style.position = "fixed";
-      container.style.top = "-99999px";
-      container.style.left = "-99999px";
-      container.style.width = "780px";
-      container.style.backgroundColor = "#ffffff";
-      container.style.padding = "20px";
-      container.style.color = "#1c3327";
-      container.appendChild(clone);
-      document.body.appendChild(container);
-
-      // Dynamic import to support SSR
-      const html2pdf = (await import("html2pdf.js")).default;
-      const opt: any = {
-        margin: [10, 10, 10, 10] as [number, number, number, number],
-        filename: `Quality_Conveyancing_Quote_${(clientName || "Client").replace(/\s+/g, "_")}.pdf`,
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-        pagebreak: { mode: ["avoid-all", "css", "legacy"] },
-      };
-
-      await (html2pdf() as any).set(opt).from(clone).save();
-      document.body.removeChild(container);
+      // Native window.print is 100% hardware accelerated, does not lock JavaScript thread or freeze DOM
+      window.print();
     } catch (err) {
-      console.error("Error generating PDF directly:", err);
+      console.error("Print error:", err);
     } finally {
       setIsGeneratingPdf(false);
     }
@@ -1773,31 +1731,15 @@ export default function FeeCalculator({
                   <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                     {quoteResult.type !== "COMMERCIAL" && quoteResult.type !== "POA" && (
                       <>
-                        {/* 1. Direct 1-Click PDF Download */}
+                        {/* Download as PDF / Print Button */}
                         <button
                           type="button"
                           onClick={handleDownloadPdf}
-                          disabled={isGeneratingPdf}
-                          className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl bg-tealAccent hover:bg-emerald-600 text-legalDark hover:text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
-                          title="Instant 1-Click PDF Download to your device"
+                          className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-tealAccent hover:bg-emerald-600 text-legalDark hover:text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
+                          title="Save as PDF or Print your official quote"
                         >
                           <Download className="w-3.5 h-3.5" />
-                          <span>{isGeneratingPdf ? "Downloading..." : "Download PDF"}</span>
-                        </button>
-
-                        {/* 2. Print Quote Button */}
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (typeof window !== "undefined") {
-                              window.print();
-                            }
-                          }}
-                          className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl bg-legalDark hover:bg-legalNavy text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
-                          title="Open Print Dialog"
-                        >
-                          <Printer className="w-3.5 h-3.5 text-tealAccent" />
-                          <span className="hidden sm:inline">Print</span>
+                          <span>Save as PDF / Print</span>
                         </button>
 
                         <div className="text-right hidden md:block bg-warmGray/60 px-3.5 py-1.5 rounded-xl border border-gray-100">
@@ -2467,32 +2409,17 @@ export default function FeeCalculator({
                         </div>
                       </div>
 
-                      {/* Action Buttons: Download PDF & Print Quote Separated */}
+                      {/* Action Buttons: Save as PDF / Print Quote & Contact */}
                       <div className="mt-6 pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3 no-print">
                         <div className="flex flex-wrap items-center gap-2.5">
-                          {/* Single-Click Instant Download PDF Button */}
+                          {/* Save as PDF / Print Button */}
                           <button
                             type="button"
                             onClick={handleDownloadPdf}
-                            disabled={isGeneratingPdf}
                             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-tealAccent hover:bg-emerald-600 text-legalDark hover:text-white text-xs sm:text-sm font-bold shadow-md transition-all cursor-pointer"
                           >
                             <Download className="w-4 h-4" />
-                            <span>{isGeneratingPdf ? "Generating PDF..." : "Download PDF File"}</span>
-                          </button>
-
-                          {/* Dedicated Print Button */}
-                          <button
-                            type="button"
-                            onClick={() => {
-                              if (typeof window !== "undefined") {
-                                window.print();
-                              }
-                            }}
-                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-legalDark hover:bg-legalNavy text-white text-xs sm:text-sm font-semibold shadow-sm transition-all cursor-pointer"
-                          >
-                            <Printer className="w-4 h-4 text-tealAccent" />
-                            <span>Print Quote</span>
+                            <span>Download / Save Quote as PDF</span>
                           </button>
                         </div>
 
