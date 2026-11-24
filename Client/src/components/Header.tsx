@@ -32,12 +32,12 @@ export default function Header() {
   // Main core header navigation links
   const mainNavLinks = [
     { name: "Home", href: "/" },
-    { name: "Our Services", href: "/services" },
-    { name: "Get a Quote", href: "/quote" },
-    { name: "Meet the Team", href: "/team" },
-    { name: "Endorsements", href: "/endorsements" },
+    { name: "Our Services", href: "/our-services" },
+    { name: "Get a Quote", href: "/get-a-quote" },
+    { name: "Meet the Team", href: "/meet-the-team" },
+    { name: "Endorsements", href: "/endorsement" },
     { name: "Property Update", href: "/blogs" },
-    { name: "Contact Us", href: "/contact" },
+    { name: "Contact Us", href: "/contact-us" },
   ];
 
   // Secondary top utility links (Admin Portal removed from header)
@@ -141,7 +141,7 @@ export default function Header() {
             {/* Right Action Button / Mobile Menu Toggle */}
             <div className="flex items-center gap-3 shrink-0">
               <Link
-                href="/quote"
+                href="/get-a-quote"
                 className="hidden sm:inline-flex items-center justify-center bg-tealAccent hover:bg-emerald-600 text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all shadow-md"
               >
                 Instant Quote

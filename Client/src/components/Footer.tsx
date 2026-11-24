@@ -60,14 +60,14 @@ export default function Footer({
               ) : (
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
                   <Link
-                    href="/quote"
+                    href="/get-a-quote"
                     className="inline-flex items-center justify-center gap-2 bg-legalDark text-white font-bold text-sm uppercase tracking-wider px-8 py-4 rounded-xl shadow-md hover:bg-legalNavy hover:shadow-xl transition-all duration-300 group"
                   >
                     <span>Get A Quote</span>
                     <ArrowRight className="w-4 h-4 text-tealAccent group-hover:translate-x-1 transition-transform" />
                   </Link>
                   <Link
-                    href="/contact"
+                    href="/contact-us"
                     className="inline-flex items-center justify-center bg-white text-legalDark font-bold text-sm uppercase tracking-wider px-8 py-4 rounded-xl border border-legalDark/20 shadow-sm hover:bg-gray-50 hover:border-legalDark transition-all duration-300"
                   >
                     Instruct Us Online
@@ -145,14 +145,14 @@ export default function Footer({
               <ul className="space-y-2.5 text-xs text-white/80">
                 {[
                   { name: "Home", href: "/" },
-                  { name: "Our Services", href: "/services" },
-                  { name: "Get a Quote", href: "/quote" },
-                  { name: "Meet the Team", href: "/team" },
-                  { name: "Endorsements", href: "/endorsements" },
+                  { name: "Our Services", href: "/our-services" },
+                  { name: "Get a Quote", href: "/get-a-quote" },
+                  { name: "Meet the Team", href: "/meet-the-team" },
+                  { name: "Endorsements", href: "/endorsement" },
                   { name: "Refer Work", href: "/refer-work" },
                   { name: "Community/Charity Work", href: "/community-work" },
                   { name: "Property Update", href: "/blogs" },
-                  { name: "Contact Us", href: "/contact" },
+                  { name: "Contact Us", href: "/contact-us" },
                 ].map((link) => (
                   <li key={link.name}>
                     <Link href={link.href} className="hover:text-tealAccent transition-colors">
@@ -169,11 +169,11 @@ export default function Footer({
               <ul className="space-y-2.5 text-xs text-white/80">
                 {[
                   { name: "Price Information", href: "/price-information" },
-                  { name: "Disclaimer", href: "/disclaimer" },
-                  { name: "Privacy Statement", href: "/privacy" },
-                  { name: "Terms of Use", href: "/terms" },
+                  { name: "Disclaimer", href: "/disclaimer-of-liability-for-content" },
+                  { name: "Privacy Statement", href: "/privacy-statement" },
+                  { name: "Terms of Use", href: "/terms-conditions" },
                   { name: "Terms of Business", href: "/terms-of-business" },
-                  { name: "Complaints Procedure", href: "/complaints" },
+                  { name: "Complaints Procedure", href: "/complaints-procedure" },
                   { name: "CLC Compensation Fund", href: "/compensation-fund" },
                 ].map((link) => (
                   <li key={link.name}>
