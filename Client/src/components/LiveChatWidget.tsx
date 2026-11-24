@@ -175,14 +175,36 @@ export default function LiveChatWidget() {
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputMessage.trim()) return;
+    const textToSend = inputMessage.trim();
+    if (!textToSend) return;
 
+    // 1. Optimistically display user's message immediately so it doesn't vanish
+    const optimisticMessage: ChatMessage = {
+      sender: "client",
+      senderName: clientName || "Visitor",
+      text: textToSend,
+      timestamp: new Date().toISOString(),
+    };
+
+    setMessages((prev) => {
+      const updated = [...prev, optimisticMessage];
+      persistMessages(updated);
+      return updated;
+    });
+
+    setInputMessage("");
+
+    // 2. Dispatch via socket to server
     const socket = getSocket();
+    if (!socket.connected) {
+      socket.connect();
+    }
+
     socket.emit("send_message", {
       sessionId,
       sender: "client",
       senderName: clientName || "Visitor",
-      text: inputMessage,
+      text: textToSend,
     });
 
     socket.emit("typing", {
@@ -190,8 +212,6 @@ export default function LiveChatWidget() {
       sender: "client",
       isTyping: false,
     });
-
-    setInputMessage("");
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

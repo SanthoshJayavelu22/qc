@@ -1,4 +1,10 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+export const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  (typeof window !== "undefined"
+    ? (window.location.port === "3000"
+        ? `${window.location.protocol}//${window.location.hostname}:5001`
+        : window.location.origin)
+    : "http://127.0.0.1:5001");
 
 export interface BlogItem {
   _id?: string;

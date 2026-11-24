@@ -3,6 +3,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
+import { API_URL } from "@/lib/api";
 import { 
   Phone, 
   Mail, 
@@ -64,10 +65,10 @@ export default function ContactPage() {
     setLoading(true);
 
     try {
-      // 1. Submit to local Express MongoDB backend
+      // 1. Submit to Express MongoDB backend
       let backendSuccess = false;
       try {
-        const backendRes = await fetch("http://localhost:5000/api/inquiries/contact", {
+        const backendRes = await fetch(`${API_URL}/api/inquiries/contact`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
