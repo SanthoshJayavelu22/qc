@@ -34,9 +34,9 @@ export const getBlogs = async (req: Request, res: Response) => {
 // Get single blog by slug or ID
 export const getBlogBySlugOrId = async (req: Request, res: Response) => {
   try {
-    const { identifier } = req.params;
+    const identifier = String(req.params.identifier || "");
     let blog = await Blog.findOne({ slug: identifier });
-    if (!blog && identifier.match(/^[0-9a-fA-F]{24}$/)) {
+    if (!blog && identifier && /^[0-9a-fA-F]{24}$/.test(identifier)) {
       blog = await Blog.findById(identifier);
     }
 

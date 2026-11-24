@@ -19,25 +19,41 @@ const server = http.createServer(app);
 // Connect to MongoDB
 connectDB();
 
-// CORS setup
+// CORS setup - Allow domain, VPS IP, localhost, and preflight options
 const allowedOrigins = [
-  process.env.CLIENT_ORIGIN || "http://localhost:3000",
+  "https://qconveyancing.com",
+  "http://qconveyancing.com",
+  "https://www.qconveyancing.com",
+  "http://www.qconveyancing.com",
+  "http://45.8.225.24:3000",
+  "http://45.8.225.24:5001",
+  "http://31.97.59.85:3000",
+  "http://localhost:3000",
   "http://localhost:3001",
   "http://127.0.0.1:3000",
   "http://127.0.0.1:3001",
 ];
 
+if (process.env.CLIENT_ORIGIN && !allowedOrigins.includes(process.env.CLIENT_ORIGIN)) {
+  allowedOrigins.push(process.env.CLIENT_ORIGIN);
+}
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Allow requests with no origin (mobile apps, curl, server-to-server) or matching origins
+      if (!origin || allowedOrigins.includes(origin) || origin.includes("qconveyancing.com") || origin.includes("45.8.225.24")) {
         return callback(null, true);
       }
-      return callback(null, true);
+      return callback(null, true); // Fallback allow to avoid blocking production admin
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
   })
 );
+
+app.options("*", cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
