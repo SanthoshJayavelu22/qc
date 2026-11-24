@@ -65,45 +65,23 @@ export default function ContactPage() {
     setLoading(true);
 
     try {
-      // 1. Submit to Express MongoDB backend
-      let backendSuccess = false;
-      try {
-        const backendRes = await fetch(`${API_URL}/api/inquiries/contact`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        });
-        if (backendRes.ok) backendSuccess = true;
-      } catch (beErr) {
-        console.warn("Backend contact API unreachable, using FormSubmit fallback:", beErr);
-      }
-
-      // 2. Email transmission via FormSubmit
-      const response = await fetch("https://formsubmit.co/ajax/santhoshjayavelu57@gmail.com", {
+      // Submit directly to Express MongoDB backend (which stores and emails the admin)
+      const res = await fetch(`${API_URL}/api/inquiries/contact`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify({
-          _subject: `New Contact Form Enquiry: ${formData.name}`,
-          _template: "table",
-          Name: formData.name,
-          Email: formData.email,
-          Phone: formData.phone,
-          "Service Required": formData.service,
-          Message: formData.message,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
 
-      if (response.ok || backendSuccess) {
+      const data = await res.json();
+
+      if (res.ok && data.success) {
         setSubmitted(true);
       } else {
-        setSubmitError("Failed to transmit enquiry. Please call us directly on 020 3763 6767.");
+        setSubmitError(data.error || "Failed to transmit enquiry. Please call us directly on 020 3763 6767.");
       }
     } catch (err) {
       console.error("Submission error:", err);
-      setSubmitted(true);
+      setSubmitError("Network connection error. Please call us directly on 020 3763 6767.");
     } finally {
       setLoading(false);
     }
@@ -247,7 +225,7 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              {/* Right Column: FormSubmit Integrated Contact Form */}
+              {/* Right Column: Direct Backend Contact Form */}
               <div className="lg:col-span-7 bg-warmGray/30 p-8 md:p-10 rounded-2xl border border-gray-100">
                 <span className="text-xs font-bold uppercase tracking-widest text-tealAccent mb-2 block">
                   Enquire Online

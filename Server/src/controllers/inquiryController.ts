@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ContactSubmission } from "../models/ContactSubmission";
 import { QuoteSubmission } from "../models/QuoteSubmission";
-import { sendCustomerQuoteEmail } from "../services/emailService";
+import { sendCustomerQuoteEmail, sendContactNotificationEmail } from "../services/emailService";
 
 // Submit Contact Form
 export const submitContactForm = async (req: Request, res: Response) => {
@@ -24,24 +24,16 @@ export const submitContactForm = async (req: Request, res: Response) => {
       status: "new",
     });
 
-    // Also send email copy to management via FormSubmit in background
-    try {
-      await fetch("https://formsubmit.co/ajax/santhoshjayavelu57@gmail.com", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          _subject: `New Conveyancing Enquiry from ${name} (${service})`,
-          _template: "table",
-          "Client Name": name,
-          "Client Email": email,
-          "Client Phone": phone,
-          "Requested Service": service,
-          "Message": message || "No notes provided",
-        }),
-      });
-    } catch (e) {
-      console.error("[Contact API] Background notification error:", e);
-    }
+    // Send email notification to QC admin / management in background
+    sendContactNotificationEmail({
+      name,
+      email,
+      phone,
+      service: service || "Property Purchase",
+      message,
+    }).catch((err) => {
+      console.error("[Contact API] Background email error:", err);
+    });
 
     res.status(201).json({
       success: true,

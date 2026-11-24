@@ -26,19 +26,20 @@ export default function TawkToChat() {
     setSubmitError(null);
 
     try {
-      const response = await fetch("https://formsubmit.co/ajax/santhoshjayavelu57@gmail.com", {
+      const apiUrl = typeof window !== "undefined" && window.location.port === "3000"
+        ? `${window.location.protocol}//${window.location.hostname}:5001`
+        : "";
+      const response = await fetch(`${apiUrl}/api/inquiries/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
         },
         body: JSON.stringify({
-          _subject: `New Live Chat Lead: ${formData.name}`,
-          _template: "table",
-          "Full Name": formData.name,
-          "Email Address": formData.email,
-          "Phone Number": formData.phone,
-          "Query / Message": formData.message,
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          service: "Live Lead Inquiry",
+          message: formData.message,
         }),
       });
 
@@ -49,7 +50,7 @@ export default function TawkToChat() {
       }
     } catch (err) {
       console.error("Live chat submission error:", err);
-      setSubmitted(true);
+      setSubmitError("Failed to transmit chat enquiry. Please call us on 020 3763 6767.");
     } finally {
       setLoading(false);
     }

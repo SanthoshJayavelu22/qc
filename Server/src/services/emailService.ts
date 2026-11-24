@@ -151,9 +151,8 @@ export const sendCustomerQuoteEmail = async (params: {
     </html>
   `;
 
-  // Always attempt FormSubmit as fallback or primary reliable delivery
-  let emailDispatched = false;
   const transporter = createEmailTransporter();
+  let emailDispatched = false;
 
   if (transporter) {
     try {
@@ -166,31 +165,8 @@ export const sendCustomerQuoteEmail = async (params: {
       emailDispatched = true;
       console.log(`[Email] Instant quote successfully sent to customer: ${clientEmail}`);
     } catch (err) {
-      console.error("[Email] Transporter send failed, attempting FormSubmit bridge:", err);
+      console.error("[Email] Transporter quote email error:", err);
     }
-  }
-
-  // Backup dispatch via FormSubmit target to notify office & reply-to customer
-  try {
-    await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(clientEmail)}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        _subject: `Your Instant Conveyancing Quote: ${transactionType} (${totalIncVat})`,
-        _template: "table",
-        "Client Name": clientName,
-        "Transaction Type": transactionType,
-        "Property Value": propertyValue,
-        "Tenure": tenureType,
-        "Subtotal (Excl. VAT)": subtotal,
-        "VAT (20%)": vatAmount,
-        "Total (Inc. VAT)": totalIncVat,
-        "Message": "Thank you for your quote inquiry! Our senior solicitors are available to assist on 020 3763 6767."
-      }),
-    });
-    emailDispatched = true;
-  } catch (err) {
-    console.error("[Email] FormSubmit customer bridge error:", err);
   }
 
   return emailDispatched;
@@ -224,6 +200,56 @@ export const sendPasswordResetEmail = async (email: string, resetToken: string, 
 
   console.log(`[Email] Password reset link for ${email}: ${resetUrl}`);
   return true;
+};
+
+// Send admin notification when a new contact inquiry is submitted
+export const sendContactNotificationEmail = async (params: {
+  name: string;
+  email: string;
+  phone: string;
+  service: string;
+  message?: string;
+}) => {
+  const { name, email, phone, service, message } = params;
+  const adminEmail = process.env.ADMIN_NOTIFY_EMAIL || process.env.SMTP_USER || "info@qualityconveyancing.co.uk";
+
+  const transporter = createEmailTransporter();
+  if (transporter) {
+    try {
+      await transporter.sendMail({
+        from: `"Quality Conveyancing Web" <${process.env.SMTP_USER || "noreply@qualityconveyancing.co.uk"}>`,
+        to: adminEmail,
+        replyTo: email,
+        subject: `New Conveyancing Enquiry: ${name} (${service})`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+            <div style="background-color: #0A1E1B; color: #fff; padding: 20px; text-align: center;">
+              <h2 style="margin: 0; color: #2dd4bf;">New Contact Enquiry</h2>
+              <p style="margin: 5px 0 0 0; color: #94a3b8; font-size: 13px;">Quality Conveyancing Website</p>
+            </div>
+            <div style="padding: 24px;">
+              <p><strong>Client Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+              <p><strong>Phone:</strong> <a href="tel:${phone}">${phone}</a></p>
+              <p><strong>Service Requested:</strong> ${service}</p>
+              <p><strong>Message / Notes:</strong></p>
+              <div style="background: #f8fafc; padding: 12px; border-left: 4px solid #2dd4bf; border-radius: 4px;">
+                ${message ? message.replace(/\n/g, "<br>") : "<em>No message provided</em>"}
+              </div>
+            </div>
+            <div style="background-color: #f1f5f9; padding: 12px; text-align: center; font-size: 12px; color: #64748b;">
+              Submitted through qconveyancing.com contact form. Check Admin Portal to review and update status.
+            </div>
+          </div>
+        `,
+      });
+      console.log(`[Email] Contact enquiry notification sent to ${adminEmail}`);
+      return true;
+    } catch (err) {
+      console.error("[Email] Transporter error sending contact notification:", err);
+    }
+  }
+  return false;
 };
 
 // Send live chat alert email to all active admin staff
@@ -306,28 +332,6 @@ export const sendAdminLiveChatAlert = async (params: {
     } catch (err) {
       console.error("[Email] Transporter error sending admin chat alert:", err);
     }
-  }
-
-  // Backup notification bridge via FormSubmit
-  try {
-    await fetch("https://formsubmit.co/ajax/santhoshjayavelu57@gmail.com", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        _subject: `🚨 Live Chat Started: ${clientName}`,
-        _template: "table",
-        "Client Name": clientName,
-        "Email": clientEmail || "N/A",
-        "Phone": clientPhone || "N/A",
-        "Message": firstMessage,
-        "Session ID": sessionId,
-        "Action": "Open Admin Portal to reply",
-      }),
-    });
-    console.log(`[Email] Live chat notification dispatched via FormSubmit alert bridge`);
-    return true;
-  } catch (err) {
-    console.error("[Email] FormSubmit live chat alert error:", err);
   }
 
   return false;

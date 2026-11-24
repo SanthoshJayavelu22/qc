@@ -75,51 +75,9 @@ export async function POST(request: Request) {
       }
     }
 
-    // Direct client email copy via FormSubmit as backup guarantee
-    try {
-      await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(clientEmail)}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify({
-          _subject: emailSubject,
-          _template: "table",
-          "Client Name": clientName,
-          "Client Email": clientEmail,
-          "Client Phone": clientPhone,
-          "Transaction Type": transactionType,
-          "Property Value": propertyValue,
-          "Tenure": tenureType,
-          "Legal Fees (Inc. VAT)": totalIncVat,
-          "Stamp Duty (SDLT)": sdltAmount || "£0",
-          "Estimated Disbursements": totalDisbursements || "£0",
-          "Estimated Grand Total": grandTotal || totalIncVat,
-          "Seasonal Discount Notice": seasonalDiscountNote || "Seasonal discounts may be available. Call 020 3763 6767 to discuss.",
-        }),
-      });
-    } catch (err) {
-      console.error("Quote email direct dispatch error:", err);
-    }
-
-    // Also notify internal office mailbox
-    try {
-      await fetch("https://formsubmit.co/ajax/santhoshjayavelu57@gmail.com", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify(emailPayload),
-      });
-    } catch (err) {
-      console.error("Quote internal office copy error:", err);
-    }
-
     return NextResponse.json({
       success: true,
-      message: `Instant quote copy dispatched directly to ${clientEmail}`,
+      message: `Instant quote registered and forwarded to conveyancing team`,
     });
   } catch (error: any) {
     console.error("Quote API error:", error);

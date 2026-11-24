@@ -28,21 +28,20 @@ export default function SpeakToTeam() {
     setError(null);
 
     try {
-      const response = await fetch("https://formsubmit.co/ajax/santhoshjayavelu57@gmail.com", {
+      const apiUrl = typeof window !== "undefined" && window.location.port === "3000"
+        ? `${window.location.protocol}//${window.location.hostname}:5001`
+        : "";
+      const response = await fetch(`${apiUrl}/api/inquiries/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json",
         },
         body: JSON.stringify({
-          _subject: `New Speak To Our Team Inquiry: ${formData.firstName} ${formData.lastName}`,
-          _template: "table",
-          "First Name": formData.firstName,
-          "Last Name": formData.lastName,
-          "Email": formData.email,
-          "Location / Postcode": formData.location,
-          "Phone": formData.phone,
-          "Message": formData.message,
+          name: `${formData.firstName} ${formData.lastName}`.trim(),
+          email: formData.email,
+          phone: formData.phone,
+          service: `General Enquiry (${formData.location || "London"})`,
+          message: formData.message,
         }),
       });
 
@@ -53,7 +52,7 @@ export default function SpeakToTeam() {
       }
     } catch (err) {
       console.error("Speak to team submit error:", err);
-      setSubmitted(true);
+      setError("Failed to send message. Please call us directly on 020 3763 6767.");
     } finally {
       setLoading(false);
     }
