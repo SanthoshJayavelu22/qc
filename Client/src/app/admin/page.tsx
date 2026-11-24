@@ -636,15 +636,7 @@ export default function AdminPortalPage() {
             </button>
           </form>
 
-          {/* Quick Demo Credentials Box for Evaluation */}
-          <div className="mt-8 p-4 bg-[#f7faf7] rounded-2xl border border-gray-200 text-[11px] space-y-1 text-textMuted">
-            <span className="font-bold text-legalDark block mb-1">Pre-seeded Staff Logins:</span>
-            <div>• <strong className="text-legalDark">admin@qualityconveyancing.co.uk</strong> (Super Admin)</div>
-            <div>• <strong className="text-legalDark">brinda@qualityconveyancing.co.uk</strong> (Director)</div>
-            <div>• Password: <strong className="text-legalDark font-mono">Admin@123456</strong></div>
-          </div>
-
-          <div className="mt-6 text-center">
+          <div className="mt-8 text-center">
             <Link href="/" className="text-xs text-textMuted hover:text-legalDark transition font-semibold">
               ← Return to public website
             </Link>
