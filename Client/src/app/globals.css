@@ -231,21 +231,34 @@
 @media print {
   @page {
     size: A4 portrait;
-    margin: 12mm 10mm;
+    margin: 12mm 12mm;
   }
 
-  /* Hide everything on page by default */
-  body * {
+  html, body {
+    background: #ffffff !important;
+    color: #1c3327 !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Hide header, footer, background elements and backdrops */
+  header, footer, nav, .backdrop-blur-sm, .fixed.bg-black\/75 {
+    display: none !important;
     visibility: hidden !important;
   }
 
-  /* Show only printable quote modal content */
-  #printable-quote,
-  #printable-quote * {
+  /* When modal is open, only show #printable-quote-container */
+  body > * {
+    visibility: hidden !important;
+  }
+
+  #printable-quote-container,
+  #printable-quote-container * {
     visibility: visible !important;
   }
 
-  #printable-quote {
+  #printable-quote-container {
     position: absolute !important;
     left: 0 !important;
     top: 0 !important;
@@ -254,11 +267,20 @@
     margin: 0 !important;
     padding: 0 !important;
     background: #ffffff !important;
-    color: #1c3327 !important;
     box-shadow: none !important;
     border: none !important;
+    border-radius: 0 !important;
     overflow: visible !important;
     display: block !important;
+    max-height: none !important;
+    height: auto !important;
+  }
+
+  #printable-quote-body {
+    overflow: visible !important;
+    max-height: none !important;
+    height: auto !important;
+    padding: 0 !important;
   }
 
   /* Ensure background colors and borders print faithfully */
@@ -267,7 +289,7 @@
     print-color-adjust: exact !important;
   }
 
-  /* Hide UI buttons inside printout */
+  /* Hide print buttons and close buttons */
   .no-print,
   button,
   .print-hide {

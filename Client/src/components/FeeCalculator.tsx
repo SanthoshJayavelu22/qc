@@ -1664,7 +1664,7 @@ export default function FeeCalculator({
 
               {/* Modal Card */}
               <motion.div
-                id="quote-result"
+                id="printable-quote-container"
                 initial={{ opacity: 0, scale: 0.95, y: 15 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 15 }}
@@ -1731,7 +1731,7 @@ export default function FeeCalculator({
                 </div>
 
                 {/* Scrollable Modal Body */}
-                <div id="printable-quote" className="flex-1 overflow-y-auto px-5 sm:px-8 py-5">
+                <div id="printable-quote-body" className="flex-1 overflow-y-auto px-5 sm:px-8 py-5">
                   {/* Print-Only Official Brand Letterhead Header */}
                   <div className="hidden print:block mb-6 pb-4 border-b-2 border-legalDark">
                     <div className="flex justify-between items-start">
