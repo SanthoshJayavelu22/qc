@@ -37,6 +37,7 @@ import {
   EstimatedDisbursementsResult,
   SDLTResult
 } from "@/lib/calculatorRates";
+import { downloadQuotePdf } from "@/lib/generateQuotePdf";
 
 // Reusable Selection Box Component (matching user's design)
 function SelectionGroup({
@@ -145,33 +146,54 @@ export default function FeeCalculator({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState<boolean>(false);
 
-  // Isolated Direct Quote Print / Save as PDF Function (Only Quotes, 100% Guaranteed)
+  // 1-Click Instant Pure Vector PDF File Download (No browser print, zero lag)
   const handleDownloadPdf = () => {
+    if (!quoteResult) return;
+    try {
+      setIsGeneratingPdf(true);
+      const val = transactionType === "Sale & Purchase" ? purchasePropertyValue || propertyValue : propertyValue;
+      const primaryTenure = transactionType === "Sale & Purchase" 
+        ? `Sale: ${saleTenure} | Purchase: ${purchaseTenure}` 
+        : (transactionType === "Sale" ? saleTenure : purchaseTenure);
+
+      downloadQuotePdf({
+        clientName: clientName || quoteResult.clientName || "Valued Client",
+        clientEmail: clientEmail || quoteResult.clientEmail || "",
+        clientPhone: clientPhone || quoteResult.clientPhone || "",
+        transactionType,
+        tenureType: primaryTenure,
+        propertyValue: val,
+        quoteResult,
+        formatCurrency,
+      });
+    } catch (err) {
+      console.error("Error generating vector PDF:", err);
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
+
+  // Dedicated Print Quote Function
+  const handlePrintQuote = () => {
     if (typeof window === "undefined") return;
     try {
       const element = document.getElementById("printable-quote-body");
       if (!element) return;
 
-      // Extract existing stylesheet links so styling is preserved faithfully
       const styles = Array.from(document.querySelectorAll("link[rel='stylesheet'], style"))
         .map((node) => node.outerHTML)
         .join("\n");
 
-      // Build clone of the quote body
       const clone = element.cloneNode(true) as HTMLElement;
-
-      // Ensure official letterhead is visible in the print view
       const printHeader = clone.querySelector(".print\\:block");
       if (printHeader) {
         (printHeader as HTMLElement).classList.remove("hidden");
         (printHeader as HTMLElement).style.display = "block";
       }
 
-      // Remove UI buttons and interactive elements
       const noPrints = clone.querySelectorAll(".no-print, button");
       noPrints.forEach((el) => el.remove());
 
-      // Create a hidden isolated iframe to print ONLY the quote
       let iframe = document.getElementById("quote-print-iframe") as HTMLIFrameElement;
       if (!iframe) {
         iframe = document.createElement("iframe");
@@ -194,7 +216,7 @@ export default function FeeCalculator({
         <html>
           <head>
             <meta charset="utf-8" />
-            <title>Quality Conveyancing Official Quote - ${clientName || "Client"}</title>
+            <title>Quality Conveyancing Quote - ${clientName || "Client"}</title>
             ${styles}
             <style>
               @page { size: A4 portrait; margin: 12mm 12mm; }
@@ -1791,15 +1813,27 @@ export default function FeeCalculator({
                   <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                     {quoteResult.type !== "COMMERCIAL" && quoteResult.type !== "POA" && (
                       <>
-                        {/* Download as PDF / Print Button */}
+                        {/* 1. Single-Click Download PDF */}
                         <button
                           type="button"
                           onClick={handleDownloadPdf}
-                          className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-tealAccent hover:bg-emerald-600 text-legalDark hover:text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
-                          title="Save as PDF or Print your official quote"
+                          disabled={isGeneratingPdf}
+                          className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl bg-tealAccent hover:bg-emerald-600 text-legalDark hover:text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
+                          title="Instantly downloads quote PDF to your device"
                         >
                           <Download className="w-3.5 h-3.5" />
-                          <span>Save as PDF / Print</span>
+                          <span>{isGeneratingPdf ? "Downloading..." : "Download PDF"}</span>
+                        </button>
+
+                        {/* 2. Separate Print Button */}
+                        <button
+                          type="button"
+                          onClick={handlePrintQuote}
+                          className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl bg-legalDark hover:bg-legalNavy text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
+                          title="Print quote on paper"
+                        >
+                          <Printer className="w-3.5 h-3.5 text-tealAccent" />
+                          <span className="hidden sm:inline">Print</span>
                         </button>
 
                         <div className="text-right hidden md:block bg-warmGray/60 px-3.5 py-1.5 rounded-xl border border-gray-100">
@@ -2469,17 +2503,28 @@ export default function FeeCalculator({
                         </div>
                       </div>
 
-                      {/* Action Buttons: Save as PDF / Print Quote & Contact */}
+                      {/* Action Buttons: 1-Click Download PDF & Print Quote */}
                       <div className="mt-6 pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3 no-print">
                         <div className="flex flex-wrap items-center gap-2.5">
-                          {/* Save as PDF / Print Button */}
+                          {/* 1-Click Instant Download PDF */}
                           <button
                             type="button"
                             onClick={handleDownloadPdf}
+                            disabled={isGeneratingPdf}
                             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-tealAccent hover:bg-emerald-600 text-legalDark hover:text-white text-xs sm:text-sm font-bold shadow-md transition-all cursor-pointer"
                           >
                             <Download className="w-4 h-4" />
-                            <span>Download / Save Quote as PDF</span>
+                            <span>{isGeneratingPdf ? "Generating..." : "Download PDF File"}</span>
+                          </button>
+
+                          {/* Dedicated Print Quote */}
+                          <button
+                            type="button"
+                            onClick={handlePrintQuote}
+                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-legalDark hover:bg-legalNavy text-white text-xs sm:text-sm font-semibold shadow-sm transition-all cursor-pointer"
+                          >
+                            <Printer className="w-4 h-4 text-tealAccent" />
+                            <span>Print Quote</span>
                           </button>
                         </div>
 
