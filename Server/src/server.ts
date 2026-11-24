@@ -41,20 +41,14 @@ if (process.env.CLIENT_ORIGIN && !allowedOrigins.includes(process.env.CLIENT_ORI
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (mobile apps, curl, server-to-server) or matching origins
-      if (!origin || allowedOrigins.includes(origin) || origin.includes("qconveyancing.com") || origin.includes("45.8.225.24")) {
-        return callback(null, true);
-      }
-      return callback(null, true); // Fallback allow to avoid blocking production admin
+      // Allow all origins (mobile apps, web, proxies)
+      return callback(null, true);
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
   })
 );
-
-// Enable preflight for all routes
-app.options(/(.*)/, cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
