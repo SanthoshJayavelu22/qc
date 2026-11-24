@@ -145,17 +145,77 @@ export default function FeeCalculator({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isGeneratingPdf, setIsGeneratingPdf] = useState<boolean>(false);
 
-  // Instant Direct PDF Download / Print Function (Zero Freezing)
+  // Isolated Direct Quote Print / Save as PDF Function (Only Quotes, 100% Guaranteed)
   const handleDownloadPdf = () => {
     if (typeof window === "undefined") return;
     try {
-      setIsGeneratingPdf(true);
-      // Native window.print is 100% hardware accelerated, does not lock JavaScript thread or freeze DOM
-      window.print();
+      const element = document.getElementById("printable-quote-body");
+      if (!element) return;
+
+      // Extract existing stylesheet links so styling is preserved faithfully
+      const styles = Array.from(document.querySelectorAll("link[rel='stylesheet'], style"))
+        .map((node) => node.outerHTML)
+        .join("\n");
+
+      // Build clone of the quote body
+      const clone = element.cloneNode(true) as HTMLElement;
+
+      // Ensure official letterhead is visible in the print view
+      const printHeader = clone.querySelector(".print\\:block");
+      if (printHeader) {
+        (printHeader as HTMLElement).classList.remove("hidden");
+        (printHeader as HTMLElement).style.display = "block";
+      }
+
+      // Remove UI buttons and interactive elements
+      const noPrints = clone.querySelectorAll(".no-print, button");
+      noPrints.forEach((el) => el.remove());
+
+      // Create a hidden isolated iframe to print ONLY the quote
+      let iframe = document.getElementById("quote-print-iframe") as HTMLIFrameElement;
+      if (!iframe) {
+        iframe = document.createElement("iframe");
+        iframe.id = "quote-print-iframe";
+        iframe.style.position = "fixed";
+        iframe.style.right = "0";
+        iframe.style.bottom = "0";
+        iframe.style.width = "0";
+        iframe.style.height = "0";
+        iframe.style.border = "0";
+        document.body.appendChild(iframe);
+      }
+
+      const iframeDoc = iframe.contentWindow?.document;
+      if (!iframeDoc) return;
+
+      iframeDoc.open();
+      iframeDoc.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8" />
+            <title>Quality Conveyancing Official Quote - ${clientName || "Client"}</title>
+            ${styles}
+            <style>
+              @page { size: A4 portrait; margin: 12mm 12mm; }
+              body { background: #ffffff !important; color: #1c3327 !important; padding: 10px !important; margin: 0 !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+              * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+              .no-print, button { display: none !important; }
+            </style>
+          </head>
+          <body>
+            ${clone.innerHTML}
+          </body>
+        </html>
+      `);
+      iframeDoc.close();
+
+      setTimeout(() => {
+        iframe.contentWindow?.focus();
+        iframe.contentWindow?.print();
+      }, 350);
     } catch (err) {
       console.error("Print error:", err);
-    } finally {
-      setIsGeneratingPdf(false);
     }
   };
 
