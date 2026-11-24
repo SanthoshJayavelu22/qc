@@ -152,9 +152,34 @@ export default function FeeCalculator({
       setIsGeneratingPdf(true);
       const element = document.getElementById("printable-quote-body");
       if (!element) {
-        window.print();
         return;
       }
+
+      // Clone element to isolate only quote contents without web UI buttons or scroll artifacts
+      const clone = element.cloneNode(true) as HTMLElement;
+
+      // Show print letterhead in clone
+      const printHeader = clone.querySelector(".print\\:block");
+      if (printHeader) {
+        (printHeader as HTMLElement).classList.remove("hidden");
+        (printHeader as HTMLElement).style.display = "block";
+      }
+
+      // Remove interactive non-printable elements in clone
+      const noPrints = clone.querySelectorAll(".no-print, button");
+      noPrints.forEach((el) => el.remove());
+
+      // Container for clean rendering
+      const container = document.createElement("div");
+      container.style.position = "fixed";
+      container.style.top = "-99999px";
+      container.style.left = "-99999px";
+      container.style.width = "780px";
+      container.style.backgroundColor = "#ffffff";
+      container.style.padding = "20px";
+      container.style.color = "#1c3327";
+      container.appendChild(clone);
+      document.body.appendChild(container);
 
       // Dynamic import to support SSR
       const html2pdf = (await import("html2pdf.js")).default;
@@ -167,11 +192,10 @@ export default function FeeCalculator({
         pagebreak: { mode: ["avoid-all", "css", "legacy"] },
       };
 
-      await (html2pdf() as any).set(opt).from(element).save();
+      await (html2pdf() as any).set(opt).from(clone).save();
+      document.body.removeChild(container);
     } catch (err) {
       console.error("Error generating PDF directly:", err);
-      // Fallback seamlessly to native print dialog
-      window.print();
     } finally {
       setIsGeneratingPdf(false);
     }
