@@ -54,14 +54,25 @@ export async function POST(request: Request) {
     };
 
     // Dispatch to Server backend which automatically emails the customer & saves to database
+    const backendUrl = process.env.INTERNAL_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:5001";
     try {
-      await fetch("http://localhost:5000/api/inquiries/quote", {
+      await fetch(`${backendUrl}/api/inquiries/quote`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
     } catch (serverErr) {
       console.error("Server quote API error:", serverErr);
+      // Fallback try localhost:5000 if 5001 failed
+      try {
+        await fetch("http://127.0.0.1:5000/api/inquiries/quote", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+      } catch (fallbackErr) {
+        console.error("Fallback server quote API error:", fallbackErr);
+      }
     }
 
     // Direct client email copy via FormSubmit as backup guarantee

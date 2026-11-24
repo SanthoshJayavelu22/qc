@@ -390,6 +390,16 @@ export default function FeeCalculator({
         seasonalDiscountNote: "* We may have seasonal discounts available for your quote. Please get in touch at 020 3763 6767 to discuss"
       };
 
+      // Save directly to Backend database as well
+      try {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
+        fetch(`${apiUrl}/api/inquiries/quote`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(emailPayload)
+        }).catch(err => console.error("Direct backend commercial quote save err:", err));
+      } catch (e) {}
+
       try {
         await fetch("/api/quote/send", {
           method: "POST",
@@ -755,33 +765,45 @@ export default function FeeCalculator({
     const primaryVal = transactionType === "Sale & Purchase" ? `${formatCurrency(sVal)} (Sale) / ${formatCurrency(pVal)} (Purchase)` : formatCurrency(val);
     const primaryTenure = transactionType === "Sale & Purchase" ? `Sale: ${saleTenure} | Purchase: ${purchaseTenure}` : (transactionType === "Sale" ? saleTenure : purchaseTenure);
 
-    // Dispatch Email Asynchronously via Next.js API route
+    const quotePayload = {
+      clientName,
+      clientEmail,
+      clientPhone,
+      transactionType,
+      propertyValue: primaryVal,
+      tenureType: primaryTenure,
+      subtotal: formatCurrency(subtotal),
+      vatAmount: formatCurrency(vatAmount),
+      totalIncVat: formatCurrency(totalIncVat),
+      sdltAmount: formatCurrency(disbursementsData.sdltAmount),
+      totalDisbursements: formatCurrency(disbursementsData.totalDisbursements),
+      grandTotal: formatCurrency(grandTotal),
+      disbursements: disbursementsData.items.map((d) => ({
+        name: d.name,
+        amount: formatCurrency(d.amount),
+        description: d.description,
+      })),
+      sdltBreakdown: sdltCalculation,
+      questionnaireAnswers,
+      seasonalDiscountNote: "* We may have seasonal discounts available for your quote. Please get in touch at 020 3763 6767 to discuss"
+    };
+
+    // 1. Save directly to Backend database & trigger customer email
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
+      fetch(`${apiUrl}/api/inquiries/quote`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(quotePayload)
+      }).catch(err => console.error("Direct backend quote save err:", err));
+    } catch (e) {}
+
+    // 2. Dispatch Email Asynchronously via Next.js API route as well
     try {
       fetch("/api/quote/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          clientName,
-          clientEmail,
-          clientPhone,
-          transactionType,
-          propertyValue: primaryVal,
-          tenureType: primaryTenure,
-          subtotal: formatCurrency(subtotal),
-          vatAmount: formatCurrency(vatAmount),
-          totalIncVat: formatCurrency(totalIncVat),
-          sdltAmount: formatCurrency(disbursementsData.sdltAmount),
-          totalDisbursements: formatCurrency(disbursementsData.totalDisbursements),
-          grandTotal: formatCurrency(grandTotal),
-          disbursements: disbursementsData.items.map((d) => ({
-            name: d.name,
-            amount: formatCurrency(d.amount),
-            description: d.description,
-          })),
-          sdltBreakdown: sdltCalculation,
-          questionnaireAnswers,
-          seasonalDiscountNote: "* We may have seasonal discounts available for your quote. Please get in touch at 020 3763 6767 to discuss"
-        })
+        body: JSON.stringify(quotePayload)
       }).catch(err => console.error("Email dispatch err:", err));
     } catch (e) {}
 
