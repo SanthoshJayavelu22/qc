@@ -143,6 +143,39 @@ export default function FeeCalculator({
   const [quoteResult, setQuoteResult] = useState<any>(null);
   const [showQuote, setShowQuote] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState<boolean>(false);
+
+  // Single-Click Instant PDF Download Function
+  const handleDownloadPdf = async () => {
+    if (typeof window === "undefined") return;
+    try {
+      setIsGeneratingPdf(true);
+      const element = document.getElementById("printable-quote-body");
+      if (!element) {
+        window.print();
+        return;
+      }
+
+      // Dynamic import to support SSR
+      const html2pdf = (await import("html2pdf.js")).default;
+      const opt: any = {
+        margin: [10, 10, 10, 10] as [number, number, number, number],
+        filename: `Quality_Conveyancing_Quote_${(clientName || "Client").replace(/\s+/g, "_")}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+      };
+
+      await (html2pdf() as any).set(opt).from(element).save();
+    } catch (err) {
+      console.error("Error generating PDF directly:", err);
+      // Fallback seamlessly to native print dialog
+      window.print();
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -1694,6 +1727,19 @@ export default function FeeCalculator({
                   <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                     {quoteResult.type !== "COMMERCIAL" && quoteResult.type !== "POA" && (
                       <>
+                        {/* 1. Direct 1-Click PDF Download */}
+                        <button
+                          type="button"
+                          onClick={handleDownloadPdf}
+                          disabled={isGeneratingPdf}
+                          className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl bg-tealAccent hover:bg-emerald-600 text-legalDark hover:text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
+                          title="Instant 1-Click PDF Download to your device"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          <span>{isGeneratingPdf ? "Downloading..." : "Download PDF"}</span>
+                        </button>
+
+                        {/* 2. Print Quote Button */}
                         <button
                           type="button"
                           onClick={() => {
@@ -1702,14 +1748,13 @@ export default function FeeCalculator({
                             }
                           }}
                           className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl bg-legalDark hover:bg-legalNavy text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
-                          title="Download Quote as PDF or Print"
+                          title="Open Print Dialog"
                         >
-                          <Download className="w-3.5 h-3.5 text-tealAccent" />
-                          <span className="hidden sm:inline">Download PDF / Print</span>
-                          <span className="sm:hidden">PDF</span>
+                          <Printer className="w-3.5 h-3.5 text-tealAccent" />
+                          <span className="hidden sm:inline">Print</span>
                         </button>
 
-                        <div className="text-right hidden sm:block bg-warmGray/60 px-3.5 py-1.5 rounded-xl border border-gray-100">
+                        <div className="text-right hidden md:block bg-warmGray/60 px-3.5 py-1.5 rounded-xl border border-gray-100">
                           <span className="text-[10px] text-textMuted uppercase font-semibold block leading-none">
                             Grand Total (Inc. Disbursements)
                           </span>
@@ -2376,25 +2421,39 @@ export default function FeeCalculator({
                         </div>
                       </div>
 
-                      {/* Action Buttons: Download PDF / Print Quote & Contact */}
+                      {/* Action Buttons: Download PDF & Print Quote Separated */}
                       <div className="mt-6 pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3 no-print">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (typeof window !== "undefined") {
-                              window.print();
-                            }
-                          }}
-                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-legalDark hover:bg-legalNavy text-white text-xs sm:text-sm font-bold shadow-md transition-all cursor-pointer"
-                        >
-                          <Download className="w-4 h-4 text-tealAccent" />
-                          <span>Download Quote as PDF / Print</span>
-                        </button>
+                        <div className="flex flex-wrap items-center gap-2.5">
+                          {/* Single-Click Instant Download PDF Button */}
+                          <button
+                            type="button"
+                            onClick={handleDownloadPdf}
+                            disabled={isGeneratingPdf}
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-tealAccent hover:bg-emerald-600 text-legalDark hover:text-white text-xs sm:text-sm font-bold shadow-md transition-all cursor-pointer"
+                          >
+                            <Download className="w-4 h-4" />
+                            <span>{isGeneratingPdf ? "Generating PDF..." : "Download PDF File"}</span>
+                          </button>
+
+                          {/* Dedicated Print Button */}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (typeof window !== "undefined") {
+                                window.print();
+                              }
+                            }}
+                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-legalDark hover:bg-legalNavy text-white text-xs sm:text-sm font-semibold shadow-sm transition-all cursor-pointer"
+                          >
+                            <Printer className="w-4 h-4 text-tealAccent" />
+                            <span>Print Quote</span>
+                          </button>
+                        </div>
 
                         <div className="flex items-center gap-2 text-xs">
                           <a
                             href="tel:02037636767"
-                            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-tealAccent/20 hover:bg-tealAccent/30 text-legalDark font-bold transition-all"
+                            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-warmGray/60 hover:bg-warmGray text-legalDark font-bold transition-all border border-gray-200"
                           >
                             <Phone className="w-3.5 h-3.5 text-legalDark" />
                             <span>Call 020 3763 6767</span>
