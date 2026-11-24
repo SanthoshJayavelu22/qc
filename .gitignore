@@ -28,6 +28,11 @@ Thumbs.db
 # env files
 .env*.local
 .env
+.env.*
+*.env
+Server/.env
+Client/.env
+Client/.env.*
 
 # typescript
 *.tsbuildinfo
