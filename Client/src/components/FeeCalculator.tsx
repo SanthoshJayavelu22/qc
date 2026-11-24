@@ -24,7 +24,9 @@ import {
   Receipt,
   FileCheck2,
   Percent,
-  Lock
+  Lock,
+  Printer,
+  Download,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -1689,16 +1691,33 @@ export default function FeeCalculator({
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3 shrink-0">
+                  <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                     {quoteResult.type !== "COMMERCIAL" && quoteResult.type !== "POA" && (
-                      <div className="text-right hidden sm:block bg-warmGray/60 px-3.5 py-1.5 rounded-xl border border-gray-100">
-                        <span className="text-[10px] text-textMuted uppercase font-semibold block leading-none">
-                          Grand Total (Inc. Disbursements)
-                        </span>
-                        <span className="text-base sm:text-lg font-serif font-bold text-legalDark">
-                          {formatCurrency(quoteResult.grandTotal || quoteResult.totalIncVat)}
-                        </span>
-                      </div>
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (typeof window !== "undefined") {
+                              window.print();
+                            }
+                          }}
+                          className="inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-xl bg-legalDark hover:bg-legalNavy text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
+                          title="Download Quote as PDF or Print"
+                        >
+                          <Download className="w-3.5 h-3.5 text-tealAccent" />
+                          <span className="hidden sm:inline">Download PDF / Print</span>
+                          <span className="sm:hidden">PDF</span>
+                        </button>
+
+                        <div className="text-right hidden sm:block bg-warmGray/60 px-3.5 py-1.5 rounded-xl border border-gray-100">
+                          <span className="text-[10px] text-textMuted uppercase font-semibold block leading-none">
+                            Grand Total (Inc. Disbursements)
+                          </span>
+                          <span className="text-base sm:text-lg font-serif font-bold text-legalDark">
+                            {formatCurrency(quoteResult.grandTotal || quoteResult.totalIncVat)}
+                          </span>
+                        </div>
+                      </>
                     )}
                     <button
                       type="button"
@@ -1712,7 +1731,47 @@ export default function FeeCalculator({
                 </div>
 
                 {/* Scrollable Modal Body */}
-                <div className="flex-1 overflow-y-auto px-5 sm:px-8 py-5">
+                <div id="printable-quote" className="flex-1 overflow-y-auto px-5 sm:px-8 py-5">
+                  {/* Print-Only Official Brand Letterhead Header */}
+                  <div className="hidden print:block mb-6 pb-4 border-b-2 border-legalDark">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h2 className="text-2xl font-serif font-bold text-legalDark">Quality Conveyancing</h2>
+                        <p className="text-xs text-gray-600 mt-0.5">Specialist Property Conveyancing Lawyers</p>
+                        <p className="text-[11px] text-gray-500">
+                          Aurora House, 71-75 Uxbridge Road, Ealing, London W5 5SL
+                        </p>
+                        <p className="text-[11px] text-gray-500">
+                          Tel: 020 3763 6767 • Email: info@qconveyancing.com • Web: www.qconveyancing.com
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <span className="inline-block px-3 py-1 bg-gray-100 text-gray-800 font-bold text-xs rounded uppercase tracking-wider mb-1">
+                          Official Quote
+                        </span>
+                        <p className="text-xs text-gray-600">
+                          Date: {new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+                        </p>
+                        <p className="text-xs text-gray-600">
+                          Valid for: 30 Days
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-gray-200 grid grid-cols-2 gap-4 text-xs">
+                      <div>
+                        <span className="text-gray-500 block text-[10px] uppercase font-bold">Prepared For:</span>
+                        <strong className="text-gray-900">{clientName || quoteResult.clientName || "Valued Client"}</strong>
+                        {clientEmail && <div className="text-gray-600">{clientEmail}</div>}
+                        {clientPhone && <div className="text-gray-600">{clientPhone}</div>}
+                      </div>
+                      <div className="text-right">
+                        <span className="text-gray-500 block text-[10px] uppercase font-bold">Transaction Details:</span>
+                        <strong className="text-gray-900">{transactionType} ({quoteResult.tenureType})</strong>
+                        <div className="text-gray-600">Property Value: {formatCurrency(quoteResult.propertyValue)}</div>
+                      </div>
+                    </div>
+                  </div>
                   {quoteResult.type === "COMMERCIAL" ? (
                     <div className="text-center py-4 px-2">
                       <div className="inline-flex p-4 bg-teal-50 text-teal-800 rounded-full mb-5">
@@ -2314,6 +2373,32 @@ export default function FeeCalculator({
                             <span>Read More on Our Price Information &amp; Key Stages</span>
                             <ArrowRight className="w-3.5 h-3.5" />
                           </Link>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons: Download PDF / Print Quote & Contact */}
+                      <div className="mt-6 pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3 no-print">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (typeof window !== "undefined") {
+                              window.print();
+                            }
+                          }}
+                          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-legalDark hover:bg-legalNavy text-white text-xs sm:text-sm font-bold shadow-md transition-all cursor-pointer"
+                        >
+                          <Download className="w-4 h-4 text-tealAccent" />
+                          <span>Download Quote as PDF / Print</span>
+                        </button>
+
+                        <div className="flex items-center gap-2 text-xs">
+                          <a
+                            href="tel:02037636767"
+                            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-tealAccent/20 hover:bg-tealAccent/30 text-legalDark font-bold transition-all"
+                          >
+                            <Phone className="w-3.5 h-3.5 text-legalDark" />
+                            <span>Call 020 3763 6767</span>
+                          </a>
                         </div>
                       </div>
 
