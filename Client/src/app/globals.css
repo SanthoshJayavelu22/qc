@@ -231,37 +231,49 @@
 @media print {
   @page {
     size: A4 portrait;
-    margin: 12mm 12mm;
+    margin: 10mm 10mm;
   }
 
   html, body {
     background: #ffffff !important;
     color: #1c3327 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     height: auto !important;
     min-height: auto !important;
     overflow: visible !important;
   }
 
-  /* Hide header, footer, background elements and backdrops */
-  header, footer, nav, .backdrop-blur-sm, .fixed.bg-black\/75 {
+  /* Hide entire page and background */
+  body > * {
     display: none !important;
     visibility: hidden !important;
   }
 
-  /* When modal is open, only show #printable-quote-container */
-  body > * {
-    visibility: hidden !important;
-  }
-
+  /* Unhide the modal wrapper and container */
+  div:has(#printable-quote-container),
   #printable-quote-container,
   #printable-quote-container * {
     visibility: visible !important;
   }
 
+  div:has(#printable-quote-container) {
+    display: block !important;
+    position: static !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Hide modal interactive header in print */
+  #modal-top-header {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
   #printable-quote-container {
-    position: absolute !important;
-    left: 0 !important;
-    top: 0 !important;
+    display: block !important;
+    position: static !important;
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
@@ -271,7 +283,6 @@
     border: none !important;
     border-radius: 0 !important;
     overflow: visible !important;
-    display: block !important;
     max-height: none !important;
     height: auto !important;
   }
@@ -281,6 +292,7 @@
     max-height: none !important;
     height: auto !important;
     padding: 0 !important;
+    margin: 0 !important;
   }
 
   /* Ensure background colors and borders print faithfully */
@@ -289,15 +301,17 @@
     print-color-adjust: exact !important;
   }
 
-  /* Hide print buttons and close buttons */
+  /* Hide print buttons and backdrops */
   .no-print,
   button,
-  .print-hide {
+  .print-hide,
+  .backdrop-blur-sm,
+  .fixed.bg-black\/75 {
     display: none !important;
     visibility: hidden !important;
   }
 
-  /* Avoid awkward page breaks */
+  /* Clean page breaks */
   .avoid-break {
     page-break-inside: avoid !important;
     break-inside: avoid !important;

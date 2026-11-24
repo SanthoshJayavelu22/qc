@@ -1704,8 +1704,8 @@ export default function FeeCalculator({
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 className="relative z-10 w-full max-w-4xl max-h-[calc(100vh-8.5rem)] bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-legalDark/10 flex flex-col overflow-hidden"
               >
-                {/* Pinned Modal Header (Always Visible) */}
-                <div className="bg-white px-5 sm:px-8 py-4 border-b border-gray-100 flex items-center justify-between gap-4 shrink-0">
+                {/* Pinned Modal Header (Always Visible on screen, hidden on print) */}
+                <div id="modal-top-header" className="bg-white px-5 sm:px-8 py-4 border-b border-gray-100 flex items-center justify-between gap-4 shrink-0 no-print">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="w-10 h-10 rounded-full bg-teal-50 border border-teal-200/60 flex items-center justify-center shrink-0">
                       <CheckCircle className="w-5 h-5 text-teal-600" />
