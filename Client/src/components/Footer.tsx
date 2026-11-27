@@ -82,9 +82,9 @@ export default function Footer({
       {/* Top Contact Strip (Matching Reference Image) */}
       <section className="bg-legalDark text-white py-8 px-6 lg:px-12 border-b border-white/10">
         <div className="container mx-auto max-w-7xl">
-          <div className="grid md:grid-cols-3 gap-8 text-center md:text-left divide-y md:divide-y-0 md:divide-x divide-white/10">
+          <div className="grid md:grid-cols-3 gap-0 md:gap-8 text-center md:text-left divide-y md:divide-y-0 md:divide-x divide-white/10">
             {/* Give Us A Call */}
-            <div className="flex items-start justify-center md:justify-start gap-4 pt-4 md:pt-0 md:pr-6">
+            <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-start gap-3 md:gap-4 py-5 md:py-0 md:pr-6">
               <div className="w-10 h-10 bg-tealAccent/20 rounded-xl flex items-center justify-center shrink-0 text-tealAccent">
                 <Phone className="w-5 h-5" />
               </div>
@@ -96,7 +96,7 @@ export default function Footer({
             </div>
 
             {/* Send Us A Message */}
-            <div className="flex items-start justify-center md:justify-start gap-4 pt-4 md:pt-0 md:px-6">
+            <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-start gap-3 md:gap-4 py-5 md:py-0 md:px-6">
               <div className="w-10 h-10 bg-tealAccent/20 rounded-xl flex items-center justify-center shrink-0 text-tealAccent">
                 <Mail className="w-5 h-5" />
               </div>
@@ -109,7 +109,7 @@ export default function Footer({
             </div>
 
             {/* Office Location */}
-            <div className="flex items-start justify-center md:justify-start gap-4 pt-4 md:pt-0 md:pl-6">
+            <div className="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-start gap-3 md:gap-4 py-5 md:py-0 md:pl-6">
               <div className="w-10 h-10 bg-tealAccent/20 rounded-xl flex items-center justify-center shrink-0 text-tealAccent">
                 <MapPin className="w-5 h-5" />
               </div>

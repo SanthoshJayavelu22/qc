@@ -920,7 +920,7 @@ export default function FeeCalculator({
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-2 sticky top-28"
+            className="lg:col-span-2 lg:sticky lg:top-28"
           >
             <div className="w-12 h-12 bg-tealAccent/20 rounded-xl flex items-center justify-center mb-8 border border-tealAccent/30">
               <Calculator className="text-tealAccent w-6 h-6" />
