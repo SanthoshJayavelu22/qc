@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { generateQuotePdfBuffer } from "./pdfService";
 
 // Send email via Resend REST API (https://resend.com/docs/api-reference/emails/send-email)
 export const sendViaResend = async (params: {
@@ -6,6 +7,7 @@ export const sendViaResend = async (params: {
   subject: string;
   html: string;
   replyTo?: string;
+  attachments?: Array<{ filename: string; content: string }>;
 }): Promise<boolean> => {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return false;
@@ -27,6 +29,9 @@ export const sendViaResend = async (params: {
         subject: params.subject,
         html: params.html,
         ...(params.replyTo ? { reply_to: params.replyTo } : {}),
+        ...(params.attachments && params.attachments.length > 0
+          ? { attachments: params.attachments }
+          : {}),
       }),
     });
 
@@ -198,11 +203,24 @@ export const sendCustomerQuoteEmail = async (params: {
 
   const subject = `Your Instant Conveyancing Quote: ${transactionType} (${totalIncVat})`;
 
+  // Generate PDF attachment with customer quote details
+  let pdfBuffer: Buffer | null = null;
+  try {
+    pdfBuffer = await generateQuotePdfBuffer(params);
+  } catch (pdfErr) {
+    console.error("[PDF] Failed to generate quote PDF:", pdfErr);
+  }
+
+  const resendAttachments = pdfBuffer
+    ? [{ filename: "Quality-Conveyancing-Quote.pdf", content: pdfBuffer.toString("base64") }]
+    : undefined;
+
   // 1. Try Resend API first
   const sentViaResend = await sendViaResend({
     to: clientEmail,
     subject,
     html: htmlContent,
+    attachments: resendAttachments,
   });
   if (sentViaResend) {
     return true;
@@ -219,6 +237,17 @@ export const sendCustomerQuoteEmail = async (params: {
         to: clientEmail,
         subject,
         html: htmlContent,
+        ...(pdfBuffer
+          ? {
+              attachments: [
+                {
+                  filename: "Quality-Conveyancing-Quote.pdf",
+                  content: pdfBuffer,
+                  contentType: "application/pdf",
+                },
+              ],
+            }
+          : {}),
       });
       emailDispatched = true;
       console.log(`[Email] Instant quote successfully sent to customer: ${clientEmail}`);
