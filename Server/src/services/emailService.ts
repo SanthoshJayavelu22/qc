@@ -406,16 +406,32 @@ export const sendAdminLiveChatAlert = async (params: {
     </html>
   `;
 
+  const recipients = Array.from(
+    new Set(["info@qconveyancing.com", ...(adminEmails || [])].filter(Boolean))
+  );
+  const subject = `🚨 [Live Chat] New Customer Inquiry from ${clientName}`;
+
+  const sentViaResend = await sendViaResend({
+    to: recipients,
+    subject,
+    html: htmlContent,
+    replyTo: clientEmail || undefined,
+  });
+  if (sentViaResend) {
+    console.log(`[Email] Live chat alert dispatched via Resend to:`, recipients);
+    return true;
+  }
+
   const transporter = createEmailTransporter();
   if (transporter) {
     try {
       await transporter.sendMail({
-        from: `"Quality Conveyancing Live Chat" <${process.env.SMTP_USER || "admin@qualityconveyancing.co.uk"}>`,
-        to: adminEmails.join(", "),
-        subject: `🚨 [Live Chat] New Customer Inquiry from ${clientName}`,
+        from: `"Quality Conveyancing Live Chat" <${process.env.SMTP_USER || "noreply@updates.qconveyancing.com"}>`,
+        to: recipients.join(", "),
+        subject,
         html: htmlContent,
       });
-      console.log(`[Email] Live chat alert dispatched to ${adminEmails.length} staff emails`);
+      console.log(`[Email] Live chat alert dispatched to ${recipients.length} staff emails`);
       return true;
     } catch (err) {
       console.error("[Email] Transporter error sending admin chat alert:", err);
