@@ -115,6 +115,7 @@ export const submitQuoteAndSendEmail = async (req: Request, res: Response) => {
         totalDisbursements,
         grandTotal,
         disbursements,
+        questionnaireAnswers,
       });
     } catch (mailErr) {
       console.error("[Quote API] Direct email dispatch error:", mailErr);

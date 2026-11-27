@@ -90,6 +90,7 @@ export const sendCustomerQuoteEmail = async (params: {
   totalDisbursements?: string;
   grandTotal?: string;
   disbursements?: Array<{ name: string; amount: string; description: string }>;
+  questionnaireAnswers?: Record<string, any>;
 }) => {
   const {
     clientName,

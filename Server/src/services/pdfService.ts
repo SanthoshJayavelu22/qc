@@ -13,6 +13,7 @@ export interface QuotePdfParams {
   totalDisbursements?: string;
   grandTotal?: string;
   disbursements?: Array<{ name: string; amount: string; description: string }>;
+  questionnaireAnswers?: Record<string, any>;
 }
 
 export const generateQuotePdfBuffer = (params: QuotePdfParams): Promise<Buffer> => {
@@ -183,11 +184,54 @@ export const generateQuotePdfBuffer = (params: QuotePdfParams): Promise<Buffer> 
             align: "right",
             width: doc.page.width - 120,
           });
-        y += 62;
+        y += 58;
+      }
+
+      // Customer Selected Options / Questionnaire Answers
+      const answers = params.questionnaireAnswers;
+      if (answers && typeof answers === "object") {
+        const entries = Object.entries(answers).filter(
+          ([, v]) => v !== undefined && v !== null && String(v).trim() !== ""
+        );
+        if (entries.length > 0) {
+          if (y > doc.page.height - 130) {
+            doc.addPage();
+            y = 50;
+          }
+          doc
+            .fillColor(brandDark)
+            .font("Helvetica-Bold")
+            .fontSize(12)
+            .text("3. Selected Options & Property Details", 45, y);
+          y += 18;
+
+          for (const [rawKey, rawVal] of entries) {
+            if (y > doc.page.height - 95) {
+              doc.addPage();
+              y = 50;
+            }
+            const label = rawKey
+              .replace(/([A-Z])/g, " $1")
+              .replace(/[_-]+/g, " ")
+              .replace(/\b\w/g, (c) => c.toUpperCase())
+              .trim();
+            const valStr =
+              typeof rawVal === "boolean"
+                ? rawVal
+                  ? "Yes"
+                  : "No"
+                : Array.isArray(rawVal)
+                ? rawVal.join(", ")
+                : String(rawVal);
+
+            drawRow(label, valStr);
+          }
+          y += 10;
+        }
       }
 
       // Footer / Contact Info
-      if (y > doc.page.height - 90) {
+      if (y > doc.page.height - 95) {
         doc.addPage();
         y = 50;
       }
@@ -209,8 +253,8 @@ export const generateQuotePdfBuffer = (params: QuotePdfParams): Promise<Buffer> 
         .text(
           "Quality Conveyancing Limited | Aurora House, 71-75 Uxbridge Road, Ealing, London W5 5SL | Regulated by CLC (No. 11359)",
           45,
-          doc.page.height - 40,
-          { align: "center", width: doc.page.width - 90 }
+          doc.page.height - 32,
+          { align: "center", width: doc.page.width - 90, lineBreak: false }
         );
 
       doc.end();
