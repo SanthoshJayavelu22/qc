@@ -1,5 +1,3 @@
-import AdminPortal from "@/components/AdminPortal";
-
 export default function AdminDashboardPage() {
-  return <AdminPortal initialTab="dashboard" />;
+  return null;
 }

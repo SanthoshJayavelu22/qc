@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   MessageSquare,
   FileText,
@@ -85,6 +85,7 @@ export default function AdminPortal({
   initialTab?: TabType;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
 
   // Authentication State
   const [currentUser, setCurrentUser] = useState<AdminUserItem | null>(null);
@@ -95,11 +96,27 @@ export default function AdminPortal({
   const [loginError, setLoginError] = useState<string | null>(null);
 
   // Active Navigation
-  const [activeTab, setActiveTabState] = useState<TabType>(initialTab);
+  const getTabFromPath = (path: string | null): TabType => {
+    if (!path) return initialTab;
+    if (path.startsWith("/admin/chat")) return "chat";
+    if (path.startsWith("/admin/quotes")) return "quotes";
+    if (path.startsWith("/admin/contacts")) return "contacts";
+    if (path.startsWith("/admin/blogs/new")) return "new_blog";
+    if (path.startsWith("/admin/blogs")) return "blogs";
+    if (path.startsWith("/admin/team-roles")) return "team_roles";
+    return "dashboard";
+  };
+
+  const [activeTab, setActiveTabState] = useState<TabType>(() => getTabFromPath(pathname));
+
+  useEffect(() => {
+    setActiveTabState(getTabFromPath(pathname));
+  }, [pathname]);
+
   const setActiveTab = (tab: TabType) => {
     setActiveTabState(tab);
     const targetRoute = TAB_ROUTES[tab];
-    if (targetRoute) {
+    if (targetRoute && pathname !== targetRoute) {
       router.push(targetRoute);
     }
   };
