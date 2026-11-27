@@ -4,8 +4,11 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, ShieldCheck, ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function CookieConsent() {
+  const pathname = usePathname();
+  const isAdminRoute = pathname?.startsWith("/admin");
   const [isVisible, setIsVisible] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   
@@ -37,7 +40,7 @@ export default function CookieConsent() {
     setIsVisible(false);
   };
 
-  if (!isVisible) return null;
+  if (isAdminRoute || !isVisible) return null;
 
   return (
     <AnimatePresence>
