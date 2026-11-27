@@ -1,5 +1,50 @@
 import nodemailer from "nodemailer";
 
+// Send email via Resend REST API (https://resend.com/docs/api-reference/emails/send-email)
+export const sendViaResend = async (params: {
+  to: string | string[];
+  subject: string;
+  html: string;
+  replyTo?: string;
+}): Promise<boolean> => {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return false;
+
+  const fromEmail =
+    process.env.RESEND_FROM_EMAIL ||
+    "Quality Conveyancing <noreply@updates.qconveyancing.com>";
+
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: fromEmail,
+        to: Array.isArray(params.to) ? params.to : [params.to],
+        subject: params.subject,
+        html: params.html,
+        ...(params.replyTo ? { reply_to: params.replyTo } : {}),
+      }),
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      console.error(`[Resend] API error (${response.status}):`, errorBody);
+      return false;
+    }
+
+    const data = (await response.json()) as { id?: string };
+    console.log(`[Resend] Email sent successfully (id: ${data.id || "unknown"}) to:`, params.to);
+    return true;
+  } catch (err) {
+    console.error("[Resend] Network/fetch error:", err);
+    return false;
+  }
+};
+
 // Create reusable transporter object using SMTP or test account
 export const createEmailTransporter = () => {
   const host = process.env.SMTP_HOST;
@@ -151,6 +196,19 @@ export const sendCustomerQuoteEmail = async (params: {
     </html>
   `;
 
+  const subject = `Your Instant Conveyancing Quote: ${transactionType} (${totalIncVat})`;
+
+  // 1. Try Resend API first
+  const sentViaResend = await sendViaResend({
+    to: clientEmail,
+    subject,
+    html: htmlContent,
+  });
+  if (sentViaResend) {
+    return true;
+  }
+
+  // 2. Fallback to SMTP / Nodemailer
   const transporter = createEmailTransporter();
   let emailDispatched = false;
 
@@ -159,7 +217,7 @@ export const sendCustomerQuoteEmail = async (params: {
       await transporter.sendMail({
         from: `"Quality Conveyancing" <${process.env.SMTP_USER || "info@qualityconveyancing.co.uk"}>`,
         to: clientEmail,
-        subject: `Your Instant Conveyancing Quote: ${transactionType} (${totalIncVat})`,
+        subject,
         html: htmlContent,
       });
       emailDispatched = true;
