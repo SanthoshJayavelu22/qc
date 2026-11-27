@@ -151,7 +151,7 @@ export default function LiveChatWidget() {
 
   const handleStartChat = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!clientName.trim()) return;
+    if (!clientName.trim() || !clientPhone.trim()) return;
 
     localStorage.setItem("qc_chat_name", clientName);
     localStorage.setItem("qc_chat_email", clientEmail);
@@ -320,9 +320,10 @@ export default function LiveChatWidget() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">Contact Phone (Optional)</label>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">Contact Phone *</label>
                     <input
                       type="tel"
+                      required
                       value={clientPhone}
                       onChange={(e) => setClientPhone(e.target.value)}
                       placeholder="e.g. 07123 456789"
